@@ -16,7 +16,7 @@ export const Table = ({ rows, deleteRow, editRow }) => {
             <th className="py-4 px-4 font-medium text-black dark:text-white">Criterion</th>
             <th className="py-4 px-4 font-medium text-black dark:text-white">Value to give alert</th>
             <th className="py-4 px-4 font-medium text-black dark:text-white">Alert type</th>
-            <th className="py-4 px-4 font-medium text-black dark:text-white">Actions</th>
+            <th className="py-4 px-4 font-medium text-black dark:text-white">Actionss</th>
           </tr>
         </thead>
         <tbody>

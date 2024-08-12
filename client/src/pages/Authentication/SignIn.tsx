@@ -16,7 +16,7 @@ const handleChange = (e) =>{
     const {name,value} = e.target;
     console.log(name,value)
     const copyloginInfo = {...loginInfo}
-    copyloginInfo[name] = value ;
+    copyloginInfo[name] = value;
     setLoginInfo(copyloginInfo)
 }
 const handleLogin = async(e)=>{
