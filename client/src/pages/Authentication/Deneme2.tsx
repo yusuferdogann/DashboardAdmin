@@ -41,7 +41,7 @@ const Deneme2 = () => {
           name: "Scope-2",
           states: [
             {
-              name: "Mobile Combustion Combustion",
+              name: "Mobile Combustion",
               cities: ["Dogalgaz", "Komur", "LPG"]
             },
           ],
@@ -61,6 +61,7 @@ const Deneme2 = () => {
       const changeCountry = (event) => {
         setCountry(event.target.value);
         setStates(Countries.find((ctr) => ctr.name === event.target.value).states);
+
         // setData(states)
       };
       const changeState=(event)=>{
@@ -73,7 +74,7 @@ const Deneme2 = () => {
         <div>
           {
             <>
-              <select
+              {/* <select
                 className="form-control"
                 value={country}
                 onChange={changeCountry}
@@ -83,7 +84,8 @@ const Deneme2 = () => {
                 {data.map((ctr,index) => (
                   <option  key={index}>{ctr.name}</option>
                 ))}
-              </select>
+              </select> */}
+              <button  value='Scope-2' onClick={changeCountry}>Scope-2</button>
     
               <select
                 className="form-control"
@@ -91,7 +93,7 @@ const Deneme2 = () => {
                 onChange={changeState}
                 multiple={false}
               >
-               <option>Select source</option>
+               <option>Select souttrce</option>
                 {states.map((state,index) => (
                   <option  key={index}>{state.name}</option>
                 ))}

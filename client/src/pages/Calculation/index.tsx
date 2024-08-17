@@ -1,10 +1,8 @@
-import React from 'react'
 import Dropdown from "../../common/Dropdown/index"
 import DataPicker from "../../common/DataPicker/index"
 import Input from "../../common/Input/index"
 
-const index = ({changeState,state,states}) => {
-  console.log("CALCULATION PAGE",states)
+const index = ({cities,changeState,citiy}) => {
   return (
     <div className='p-3'>
       <div className='flex flex-col'>
@@ -16,7 +14,7 @@ const index = ({changeState,state,states}) => {
       <DataPicker/>
       </div>
       <div className='grid grid-cols-3 gap-3 my-5'>
-      <Dropdown title='Emission Source' selected='Select Source' changeState={changeState} state={state} states={states}/>
+      <Dropdown title='Emission Source' selected='Select Source' cities={cities} changeState={changeState} citiy={citiy}/>
     <Dropdown title='Unit' selected='Select Unit'/>
     <Input/>
       </div>

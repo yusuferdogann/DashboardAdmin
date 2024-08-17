@@ -14,9 +14,10 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
-import AccordionLayout from "./components/Accordion/layout"
+// import AccordionLayout from "./components/Accordion/layout"
+import AccordionLayout from "./components/Accordion/index"
 import Sumary from './pages/Sumary';
-
+import Deneme from "./pages/Authentication/Deneme2"
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
@@ -131,7 +132,7 @@ function App() {
             <>
               <PageTitle title="Calculation " />
               <AccordionLayout/>
-              {/* <Deneme2/> */}
+              {/* <Deneme/> */}
             </>
           }
         />
