@@ -45,7 +45,7 @@ const handleChange = (e) =>{
         const {success,message,error} = result;
         if (success) {
             handleSuccess(message)
-            setTimeout(()=>{navigate("/auth/signin")},1000)
+            setTimeout(()=>{navigate("/auth/login")},1000)
             
         }
         else if(error){

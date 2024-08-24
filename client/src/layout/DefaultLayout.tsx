@@ -6,18 +6,18 @@ import Loader from '../common/Loader';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const username = localStorage.getItem("user")
-  console.log(username)
+  // const username = localStorage.getItem("user")
+  // console.log(username)
 
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  useEffect(()=>{
-    if (!username) {
-      setTimeout(()=>{<Loader/>},10)
-        navigate("/auth/signin")
-    }
-  },[username])
+  // useEffect(()=>{
+  //   if (!username) {
+  //     setTimeout(()=>{<Loader/>},10)
+  //       navigate("/auth/signin")
+  //   }
+  // },[username])
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">

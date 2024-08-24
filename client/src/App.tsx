@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import PageTitle from './components/PageTitle';
-import SignIn from './pages/Authentication/SignIn';
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
@@ -17,140 +16,159 @@ import DefaultLayout from './layout/DefaultLayout';
 // import AccordionLayout from "./components/Accordion/layout"
 import AccordionLayout from "./components/Accordion/index"
 import Sumary from './pages/Sumary';
-import Deneme from "./pages/Authentication/Deneme2"
+import Register from './pages/Authentication/Register';
+import Login from './pages/Authentication/Login';
+import { userAuth } from './auth/userAuth';
+
+
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const { pathname } = useLocation();
+  const { token } = userAuth()
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+ 
 
-  return pathname === "/auth/signin" ? (
-    <SignIn />
-  ) : (
+  // useEffect(() => {
+  //   if (!token) {
+  //     navigate("/login")
+      
+  //   }
+  // }, [token, navigate])
+
+  return (
     <>
-    <DefaultLayout>
-      <Routes>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Dashboard " />
-              <ECommerce />
-            </>
-          }
-        />
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar " />
-              <Calendar />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <PageTitle title="Profile " />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements " />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout " />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables " />
-              <Tables />
-            </>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <PageTitle title="Settings " />
-              <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart " />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts " />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons " />
-              <Buttons />
-            </>
-          }
-        />
-         <Route
-          path="/calculation"
-          element={
-            <>
-              <PageTitle title="Calculation " />
-              <AccordionLayout/>
-              {/* <Deneme/> */}
-            </>
-          }
-        />
-         <Route
-          path="/sumary"
-          element={
-            <>
-              <PageTitle title="Sumary " />
-              <Sumary/>
-            </>
-          }
-        />
-      </Routes>
-     
-    </DefaultLayout>
-   
-  </>
-  );
+    {
+      (!token) ?
+      <Login/> :
+            <DefaultLayout>
+              <Routes>
+                <Route
+                  index
+                  element={
+                    <>
+                      <PageTitle title="Dashboard " />
+                      <ECommerce />
+                    </>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <>
+                      <PageTitle title="Register " />
+                      <Register />
+                    </>
+                  }
+                />
+
+                <Route
+                  path="/calendar"
+                  element={
+                    <>
+                      <PageTitle title="Calendar " />
+                      <Calendar />
+                    </>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <>
+                      <PageTitle title="Profile " />
+                      <Profile />
+                    </>
+                  }
+                />
+                <Route
+                  path="/forms/form-elements"
+                  element={
+                    <>
+                      <PageTitle title="Form Elements " />
+                      <FormElements />
+                    </>
+                  }
+                />
+                <Route
+                  path="/forms/form-layout"
+                  element={
+                    <>
+                      <PageTitle title="Form Layout " />
+                      <FormLayout />
+                    </>
+                  }
+                />
+                <Route
+                  path="/tables"
+                  element={
+                    <>
+                      <PageTitle title="Tables " />
+                      <Tables />
+                    </>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <>
+                      <PageTitle title="Settings " />
+                      <Settings />
+                    </>
+                  }
+                />
+                <Route
+                  path="/chart"
+                  element={
+                    <>
+                      <PageTitle title="Basic Chart " />
+                      <Chart />
+                    </>
+                  }
+                />
+                <Route
+                  path="/ui/alerts"
+                  element={
+                    <>
+                      <PageTitle title="Alerts " />
+                      <Alerts />
+                    </>
+                  }
+                />
+                <Route
+                  path="/ui/buttons"
+                  element={
+                    <>
+                      <PageTitle title="Buttons " />
+                      <Buttons />
+                    </>
+                  }
+                />
+                <Route
+                  path="/calculation"
+                  element={
+                    <>
+                      <PageTitle title="Calculation " />
+                      <AccordionLayout />
+                    </>
+                  }
+                />
+                <Route
+                  path="/sumary"
+                  element={
+                    <>
+                      <PageTitle title="Sumary " />
+                      <Sumary />
+                    </>
+                  }
+                />
+              </Routes>
+
+            </DefaultLayout>
+          
+                } 
+    </>
+
+  )
 }
 
 export default App;

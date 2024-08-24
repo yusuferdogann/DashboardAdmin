@@ -7,12 +7,12 @@ import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import "react-toastify/ReactToastify.css"
-
+import Userprovider from './auth/userAuth';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <Userprovider>
     <Router>
       <App />
     </Router>
-  </React.StrictMode>,
+  </Userprovider>,
 );

@@ -1,6 +1,8 @@
 import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, } from "@material-tailwind/react";
 import Table from "../../common/Table/index"
 import { useState } from "react";
+import{get} from "../../server/Apiendpoint"
+
 
 const TabsDefault = () => {
 
@@ -50,6 +52,18 @@ const TabsDefault = () => {
 
 // console.log("STATE",state)
 
+
+    const [users,setUsers] =useState([])
+  
+    const atis = async()=>{
+  
+      
+    
+          const loginuser = await get("/getdata")
+          console.log("getget",setUsers(loginuser.data))
+     }
+  
+  atis()
 
 
     return (
