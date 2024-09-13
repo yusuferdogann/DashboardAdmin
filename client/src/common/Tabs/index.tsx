@@ -60,7 +60,7 @@ const TabsDefault = () => {
       
     
           const loginuser = await get("/getdata")
-          console.log("getget",setUsers(loginuser.data))
+        //   console.log("getget",setUsers(loginuser.data))
      }
   
   atis()

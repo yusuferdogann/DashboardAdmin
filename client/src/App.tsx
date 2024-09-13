@@ -29,12 +29,12 @@ function App() {
 
  
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate("/login")
+  useEffect(() => {
+    if (!token) {
+      navigate("/login")
       
-  //   }
-  // }, [token, navigate])
+    }
+  }, [token, navigate])
 
   return (
     <>

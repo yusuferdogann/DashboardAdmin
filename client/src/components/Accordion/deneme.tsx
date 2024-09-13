@@ -1,130 +1,195 @@
-import React, { useState } from "react";
-import {Accordion,AccordionHeader,AccordionBody,} from "@material-tailwind/react";
- 
-const Icon=({ id, open })=> {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2}
-      stroke="currentColor"
-      className={`${id === open ? "rotate-180" : ""} h-5 w-5 transition-transform`}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-    </svg>
-  );
-}
- 
-const AccordionCustomIcon=()=> {
-  const Countries = [
-    {
-      id: 1,
-      name: "Scope-1",
-      states: [
-        {
-          name: "Stationary Combustion",
-          cities: ["Dogalgaz", "Komur", "LPG"]
-        },
-        {
-            name: "Mobile Combustion",
-            cities: ["tt", "gg", "vv"]
-          },
-          {
-            name: "Emision Combustion",
-            cities: ["Dogalgaz", "Komur", "LPG"]
-          },
-          {
-            name: "Stationary Combustion",
-            cities: ["Dogalgaz", "Komur", "LPG"]
-          },
-      ],
-    },
-    {
-      id: 2,
-      name: "Scope-2",
-      states: [
-        {
-          name: "Mobile Combustion Combustion",
-          cities: ["Dogalgaz", "Komur", "LPG"]
-        },
-      ],
-    },
-   
-  ];
-  const [open, setOpen] = React.useState(0);
-  const [data, setData] = useState(Countries);
-  const [country, setCountry] = useState([]);
+import { useState } from "react";
+import DataPicker from "../../common/DataPicker/index"
+
+
+
+const Deneme = () => {
+
+
+
   const [state,setState] = useState([])
-  const [citiy,setCitiy] = useState()
-  const [cities, setCities] = useState([])
-  const [states, setStates] = useState<Array<String>>([]);
- 
+  const [user,setUser] = useState({yakitturu:'',sofor:'',plaka:''})
 
-  const [scope,setScope] = useState();
-  const [scdata,setScdata] = useState();
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+   
+    });
+      }
 
-  
-  const changeCountry = (event) => {
-    setCountry(event.target.value);
-    setStates(Countries.find((ctr) => ctr.name === event.target.value).states);
-    // setData(states)
-  };
-
-  
-
-  const changeState=(event)=>{
-    setCities(states.find((state) => state.name === event.target.value).cities);
-
-  }
-  console.log("MAIN",states)
-
-  const handleOpen = (value) => setOpen(open === value ? 0 : value);
- 
+      const handleClick = ()=>{
+        setState([...state,{user}])
+      }
+      console.log("user",user)
+      console.log("state",state)
   return (
-    <div className="px-4">
-     <div className="flex flex-col my-4">
-     <span>Step 1</span>
-     <span>SCOPE & SUBCATEGORY SELECTION</span>
-     </div>
+    <div>
+      <h3 className="mb-6">Çalışanların taşınmasından kaynaklı emilsyonlar</h3>
+      <div className='grid grid-cols-2'>
+                <DataPicker />
+              </div>
+      <h4 className="mt-4 font-bold">Şahsi Araçlar</h4>
+    <div>
+    <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Dizel</option>
+           <option>LPG</option>
+           <option>Benzin</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+      </div>
+    <hr />
+      <h4 className="mt-4 font-bold">Servis Araçlar</h4>
+      <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
+          <select onChange={(e)=>handleChange(e)} value={state.yakitturu}  name='yakitturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Dizel</option>
+           <option>LPG</option>
+           <option>Benzin</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
+          <select onChange={(e)=>handleChange(e)} value={state.sofor}  name='sofor' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
+         <input onChange={(e)=>handleChange(e)} value={state.plaka}  name='plaka' type="text" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"/>
+        </div>
+      </div>
+      {/* ============================================== */}
+      <hr className='mt-3' />
+              <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                      <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
+                        Araç Ekle
+                      </caption>
+                      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">
+                            Yakıt Türü
+                          </th>
+                          <th scope="col" class="px-6 py-3">
+                            Şöför
+                          </th>
+                          <th scope="col" class="px-6 py-3">
+                            Plaka
+                          </th>
+                        </tr>
+                      </thead>
+                        {
+                          state.map((item)=>(
+                            <tbody >
+                            <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {item.user.yakitturu}
+                              </th>
+                              <td class="px-6 py-4">
+                              {item.user.sofor}
+                              </td>
+                              <td class="px-6 py-4">
+                              {item.user.plaka}
+                              </td>
+                             
+                              {/* <td class="px-6 py-4 text-right">
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                </td> */}
+                            </tr>
+                          </tbody>
+                          ))
+                        }
+                    </table> 
+              </div>
+      {/* =============================================== */}
+      <div className="flex justify-end mt-4">
+      <button onClick={(e)=>handleClick(e)} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ">Servis Araclari Ekle</button>
+      </div>
+    <hr />
+    <h4 className="mt-4 font-bold">Müşteri Ziyaretleri Sonucu Oluşan Emilsyonlar</h4>
+      <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Dizel</option>
+           <option>LPG</option>
+           <option>Benzin</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+      </div>
       <hr />
-      <Accordion open={open === 1} icon={<Icon id={1} open={open} onChange={changeCountry} value={country}/>}>
-        <AccordionHeader onClick={() => handleOpen(1)}>SCOPE-1</AccordionHeader>
-        <AccordionBody className='px-3'>
-        <select
-                className="form-control"
-                value={country}
-                onChange={changeCountry}
-                multiple={false}
-              >
-               <option>Select Scope</option>
-                {data.map((ctr,index) => (
-                  <option  key={index}>{ctr.name}</option>
-                ))}
-              </select>
-        </AccordionBody>
-      </Accordion>
-      <Accordion open={open === 2} icon={<Icon id={2} open={open} onChange={changeState} value={state}/>}>
-        <AccordionHeader onClick={() => handleOpen(2)}>
-          SCOPE-2
-        </AccordionHeader>
-        <AccordionBody>
-        {states.map((state,index) => (
-                  <button  key={index}>{state.name}</button>
-                ))}
-        </AccordionBody>
-      </Accordion>
-      <Accordion open={open === 3} icon={<Icon id={3} open={open}   onChange={changeState}  value={citiy}/>}>
-        <AccordionHeader onClick={() => handleOpen(3)}>
-          SCOPE-3
-        </AccordionHeader>
-        <AccordionBody>
-        {cities.map((citiy,index) => (
-                  <button  key={index}>{citiy}</button>
-                ))}
-        </AccordionBody>
-      </Accordion>
+      <h4 className="mt-4 font-bold">İş Seyahatleri</h4>
+      <div className='grid grid-cols-5 gap-3 my-5'>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Seyahat Turu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Ucak</option>
+           <option>Tren</option>
+           <option>Araba</option>
+           <option>Gemi</option>
+
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Kalkış Noktası</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Biniş İstasyonu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>İniş İstasyonu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Varış Noktası</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+      </div>
     </div>
-  );
+    </div>
+  )
 }
-export default AccordionCustomIcon
+
+
+export default Deneme;

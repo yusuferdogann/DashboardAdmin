@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Facility from "../Facility/index"
 import Accordion from "./index"
 import Calculation from '../../pages/Calculation/index'
+import Deneme from "./deneme"
 const layout = () => {
 
   const Countries = [
@@ -100,6 +101,8 @@ const layout = () => {
         <div className='grid grid-cols-3 gap-4'>
           <div className=" border border-slate-300 rounded-2xl bg-neutral-200"><Accordion changeCountry={changeCountry} changeState={changeState} citiy={citiy} open={open} cities={cities}  states={states}/></div>
           <div className="col-span-2 bg-neutral-200 rounded-2xl border-slate-300 border"><Calculation cities={cities} changeState={changeState} citiy={citiy}/></div>
+          <Deneme/>
+
         </div>
       </div>
     </div>
