@@ -8,7 +8,7 @@ const Settings = () => {
   const {token,user,Logout} = userAuth()
 
   const [data,setData] = useState({
-    name:user.username,
+    // name:user.username,
     position:'',
     companyName:'',
     cknNumber:'',
