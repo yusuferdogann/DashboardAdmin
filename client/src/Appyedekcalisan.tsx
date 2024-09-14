@@ -29,11 +29,18 @@ function App() {
 
  
 
- 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login")
+      
+    }
+  }, [token, navigate])
 
   return (
     <>
-   
+    {
+      (!token) ?
+      <Login/> :
             <DefaultLayout>
               <Routes>
                 <Route
@@ -158,7 +165,7 @@ function App() {
 
             </DefaultLayout>
           
-                
+                } 
     </>
 
   )
