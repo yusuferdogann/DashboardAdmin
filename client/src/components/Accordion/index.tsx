@@ -607,8 +607,8 @@ const AccordionCustomIcon = () => {
           <div className=" border border-slate-300 rounded-2xl bg-neutral-200">
             <div className="px-4">
               <div className="flex flex-col my-4">
-                <span>Step 1</span>
-                <span>SCOPE & SUBCATEGORY SELECTION</span>
+                <span className="font-bold">STEP 1</span>
+                {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
               </div>
               <hr />
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
@@ -620,7 +620,6 @@ const AccordionCustomIcon = () => {
                       value={state}
                       multiple={false}
                     >
-                      <option>Select souttrce</option>
                       {states.map((state, index) => (
                         <button onClick={changeState} id='Scope-1' key={index} className="my-3 bg-sky-300 p-2 rounded-md" style={{ display: "block", width: "100%" }}>{state.name}</button>
                       ))}
@@ -639,7 +638,7 @@ const AccordionCustomIcon = () => {
                       value={state}
                       multiple={false}
                     >
-                      <option>Select souttrce</option>
+                      {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
                         <button onClick={changeState} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md" style={{ display: "block", width: "100%" }}>{state.name}</button>
                       ))}
@@ -671,7 +670,7 @@ const AccordionCustomIcon = () => {
           <div className="col-span-2 bg-neutral-200 rounded-2xl border-slate-300 border">
             <div className='p-3'>
               <div className='flex flex-col'>
-                <span>Step 2 </span>
+                <span className="font-bold">STEP 2 </span>
                 {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
               </div>
               <hr className='my-4' />
@@ -686,10 +685,12 @@ const AccordionCustomIcon = () => {
                     <form >
                       <div className='grid grid-cols-4 gap-3 my-5'>
                         <div className="block w-full">
-                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Emission Source' : sub.name1}</label>
+                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
                           <select value={car.aracturu} name='aracturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
                             onChange={(event) => changeData(event)}>
                             {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
+                            <option>kaynak girin</option>
+
                             {cities?.map((citiy, index) => (
                               <option key={index}>{citiy}</option>
                             ))}
@@ -700,6 +701,7 @@ const AccordionCustomIcon = () => {
                           <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
                           <select value={car.yakitturu} name='yakitturu' id="units" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
                             onChange={(event) => changeData(event)}>
+                            <option>birim girin</option>
                             {units?.map((citiy, index) => (
                               <option key={index}>{citiy}</option>
                             ))}
@@ -717,13 +719,13 @@ const AccordionCustomIcon = () => {
                           </div> : null
                         }
                         <div>
-                          <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Amount' : sub.name4}</label>
+                          <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
                           <input
                             type="text"
                             value={car.miktar}
                             name='miktar'
                             className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Jdfohn"
+                            placeholder="miktar girin"
                             required
                             onChange={(event) => changeData(event)}
                           />

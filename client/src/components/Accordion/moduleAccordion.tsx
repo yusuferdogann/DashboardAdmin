@@ -120,8 +120,8 @@ const AccordionCustomIcon = () => {
     <div className=" border border-slate-300 rounded-2xl bg-neutral-200">
     <div className="px-4">
       <div className="flex flex-col my-4">
-        <span>Step 1</span>
-        <span>SCOPE & SUBCATEGORY SELECTION</span>
+        <span className="font-bold">Step 1</span>
+        {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
       </div>
       <hr />
      {

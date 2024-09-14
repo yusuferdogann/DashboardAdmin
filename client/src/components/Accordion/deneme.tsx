@@ -35,6 +35,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Yakıt türü seçin</option>
            <option>Dizel</option>
            <option>LPG</option>
            <option>Benzin</option>
@@ -43,6 +44,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Şöför seçin</option>
            <option>Yusuf</option>
            <option>Ahmet</option>
            <option>Mehmet</option>
@@ -55,6 +57,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
           <select onChange={(e)=>handleChange(e)} value={state.yakitturu}  name='yakitturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Yakıt türü seçin</option>
            <option>Dizel</option>
            <option>LPG</option>
            <option>Benzin</option>
@@ -63,6 +66,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
           <select onChange={(e)=>handleChange(e)} value={state.sofor}  name='sofor' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Şöför seçin</option>
            <option>Yusuf</option>
            <option>Ahmet</option>
            <option>Mehmet</option>
@@ -70,7 +74,7 @@ const Deneme = () => {
         </div>
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
-         <input onChange={(e)=>handleChange(e)} value={state.plaka}  name='plaka' type="text" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"/>
+         <input onChange={(e)=>handleChange(e)} value={state.plaka}  name='plaka' type="text" placeholder="Plaka girin" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"/>
         </div>
       </div>
       {/* ============================================== */}
@@ -126,6 +130,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Yakıt türü seçin</option>
            <option>Dizel</option>
            <option>LPG</option>
            <option>Benzin</option>
@@ -134,6 +139,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Sofor</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Şöför seçin</option>
            <option>Yusuf</option>
            <option>Ahmet</option>
            <option>Mehmet</option>
@@ -146,6 +152,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Seyahat Turu</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Seyahat türü seçin</option>
            <option>Ucak</option>
            <option>Tren</option>
            <option>Araba</option>
@@ -156,22 +163,7 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Kalkış Noktası</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
-           <option>Yusuf</option>
-           <option>Ahmet</option>
-           <option>Mehmet</option>
-          </select>
-        </div>
-        <div className="block w-full">
-          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Biniş İstasyonu</label>
-          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
-           <option>Yusuf</option>
-           <option>Ahmet</option>
-           <option>Mehmet</option>
-          </select>
-        </div>
-        <div className="block w-full">
-          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>İniş İstasyonu</label>
-          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Kalkış noktası seçin</option>
            <option>Yusuf</option>
            <option>Ahmet</option>
            <option>Mehmet</option>
@@ -180,11 +172,31 @@ const Deneme = () => {
         <div className="block w-full">
           <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Varış Noktası</label>
           <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Varış noktası seçin</option>
            <option>Yusuf</option>
            <option>Ahmet</option>
            <option>Mehmet</option>
           </select>
         </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Biniş İstasyonu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>Biniş istasyonu seçin</option>
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+        <div className="block w-full">
+          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>İniş İstasyonu</label>
+          <select  id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+          <option>İniş istasyonu seçin</option>
+           <option>Yusuf</option>
+           <option>Ahmet</option>
+           <option>Mehmet</option>
+          </select>
+        </div>
+      
       </div>
     </div>
     </div>

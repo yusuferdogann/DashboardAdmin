@@ -288,7 +288,7 @@ const AccordionCustomIcon = () => {
             <div className="px-4">
               <div className="flex flex-col my-4">
                 <span>Step 1</span>
-                <span>SCOPE & SUBCATEGORY SELECTION</span>
+                {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
               </div>
               <hr />
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
