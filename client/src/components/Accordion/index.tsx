@@ -31,21 +31,21 @@ const AccordionCustomIcon = () => {
       name: "Scope-1",
       states: [
         {
-          id:1,
+          id: 1,
           name: "SABIT YANMA",
           short: ['sabit'],
           cities: ["Doğal Gaz", "Fleoil 2", "Fleoil 6", "Gazyağı", "Sıvılaştırılmış Petrol Gazları (LPG)", "Antrasit Kömür", "Bitümlü Kömür", "Alt Bitümlü Kömür", "Linyit Kömürü", "Kok komuru", "Belediye Katı Atıkları", "Petrol Kökü", "Plastik", "Lastik", "Yaş Biokütle", "Turba", "Kuru Biokutle", "Ahşap ve Ahşap Kalıntıları", "Propan Gazı", "Çöp Gazı", "Biyodizel (%100),", "Etanol (%100)", "İşlenmiş Hayvansal Yağ", "Bitkisel Yağ"],
           units: ['kg', 'ton', 'lt']
         },
         {
-          id:2,
+          id: 2,
           name: "HAREKETLI YANMA",
           short: ['hareketli'],
           cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
           units: ['scope-1', 'ton', 'lt']
         },
         {
-          id:3,
+          id: 3,
           name: "DOGRUDAN SIZMA KACAK EMISYONU",
           short: ['dogrudan'],
           birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
@@ -122,17 +122,17 @@ const AccordionCustomIcon = () => {
   const [date, setDate] = useState({ startDate: '', endDate: '' })
   const [bigdata, setBigdata] = useState([])
   const [todos, setTodos] = useState([
-    { id: 1, title: '', subtitle:'', sabit: [],hareketli:[],dogrudan:[]},
-    { id: 2, title: '', subtitle:'', elektrik: []},
-    { id: 3, title: '', subtitle:'', upstream:[],downstrem:[]}
+    { id: 1, title: '', subtitle: '', sabit: ["sab"], hareketli: [ 'har' ], dogrudan: ['dog'] },
+    { id: 2, title: '', subtitle: '', elektrik: ['ele'] },
+    { id: 3, title: '', subtitle: '', upstream: ['gg'], downstrem: ['rr'] }
   ]);
   // const [todos, setTodos] = useState([{ id: 1, title: "", data: [] }]);
-  
+
   const [baslik, setBaslik] = useState()
   const [subtitle, setSubtitle] = useState([])
   const [short, setShort] = useState([])
-  const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: ''})
-  const [aracdata,setAracdata] = useState([])
+  const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
+  const [aracdata, setAracdata] = useState([])
 
   // function handleTitle(value,id){
   //   setTodos(...todos,
@@ -142,44 +142,24 @@ const AccordionCustomIcon = () => {
   // }
   function handleTitle(title) {
     setTodos(
-      todos.find((p) => p.id === 2)
-        ? todos.map((p) =>
-            p.id === 2
-              ? {
-                  id: 2,
-                  title: title,
-                  subtitle:'',
-                  sabit: [],
-                  hareketli:[],
-                  dogrudan:[]
-                }
-              : p
-          )
-        : todos
-    );
-    console.log(todos);
-  }
-  function handleSubTitle(sub){
-    setTodos(
       todos.find((p) => p.id === 1)
         ? todos.map((p) =>
-            p.id === 1
-              ? {
-                  id: 1,
-                  title:p.title,
-                  subtitle:sub,
-                  sabit: [],
-                  hareketli:[],
-                  dogrudan:[]
-                }
-              : p
-          )
+          p.id === 1
+            ? {
+              id: 1,
+              title: title,
+              subtitle: '',
+              sabit: p.sabit,
+              hareketli: p.hareketli,
+              dogrudan: p.dogrudan
+            }
+            : p
+        )
         : todos
     );
     console.log(todos);
   }
-
-  function handleSabit( car) {
+  function handleSubTitle(sub) {
     setTodos(
       todos.find((p) => p.id === 1)
         ? todos.map((p) =>
@@ -187,9 +167,29 @@ const AccordionCustomIcon = () => {
             ? {
               id: 1,
               title: p.title,
-              subtitle:p.subtitle,
-              hareketli:p.hareketli,
-              dogrudan:p.dogrudan,
+              subtitle: sub,
+              sabit: p.sabit,
+              hareketli: p.hareketli,
+              dogrudan: p.dogrudan
+            }
+            : p
+        )
+        : todos
+    );
+    console.log(todos);
+  }
+
+  function handleSabit(car) {
+    setTodos(
+      todos.find((p) => p.id === 1)
+        ? todos.map((p) =>
+          p.id === 1
+            ? {
+              id: 1,
+              title: p.title,
+              subtitle: p.subtitle,
+              hareketli: p.hareketli,
+              dogrudan: p.dogrudan,
               sabit: [...p.sabit, { id: 1, title: car }],
             }
             : p
@@ -200,7 +200,7 @@ const AccordionCustomIcon = () => {
     console.log(todos);
   }
 
-  function handleDogrudan( car) {
+  function handleDogrudan(car) {
     setTodos(
       todos.find((p) => p.id === 3)
         ? todos.map((p) =>
@@ -208,9 +208,9 @@ const AccordionCustomIcon = () => {
             ? {
               id: 3,
               title: p.title,
-              subtitle:p.subtitle,
-              hareketli:p.hareketli,
-              sabit:p.sabit,
+              subtitle: p.subtitle,
+              hareketli: p.hareketli,
+              sabit: p.sabit,
               dogrudan: [...p.dogrudan, { id: 1, title: car }],
             }
             : p
@@ -220,17 +220,17 @@ const AccordionCustomIcon = () => {
 
     console.log(todos);
   }
-  function handleHareketli( car) {
+  function handleHareketli(car) {
     setTodos(
-      todos.find((p) => p.id === 2)
+      todos.find((p) => p.id === 1)
         ? todos.map((p) =>
-          p.id === 2
+          p.id === 1
             ? {
               id: 1,
               title: p.title,
-              subtitle:p.subtitle,
-              dogrudan:p.dogrudan,
-              sabit:p.sabit,
+              subtitle: p.subtitle,
+              dogrudan: p.dogrudan,
+              sabit: p.sabit,
               hareketli: [...p.hareketli, { id: 1, title: car }],
             }
             : p
@@ -239,7 +239,7 @@ const AccordionCustomIcon = () => {
     );
 
   }
-  function handleSub( value1) {
+  function handleSub(value1) {
     setTodos(
       todos.find((p) => p.id === 1)
         ? todos.map((p) =>
@@ -256,6 +256,8 @@ const AccordionCustomIcon = () => {
 
     console.log(todos);
   }
+
+
   // {
   //   startDate:'',endDate:'',ulke:'',sehir:'',tesis:'',ilce:'',
   //   kapsam1:[{name:'sabit',veri:[]},{name:'hareketli',veri:[]},{name:'dogrudan',veri:[]}],
@@ -279,7 +281,7 @@ const AccordionCustomIcon = () => {
       setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
       // setShort(states.find((ctr) => ctr.short===ctr.short).short);
 
-      
+
       // handleTitle(event.target.value,1)
       handleTitle(event.target.value)
       //  console.log("first",todos) 
@@ -292,8 +294,8 @@ const AccordionCustomIcon = () => {
       //     return false
       //   }
       // })      
-      
-      console.log("todos",todos)
+
+      console.log("todos", todos)
       // console.log("baslik uptaded",todos)
       // const check = kapsamdetail.filter(({ kapsambasligi }) => kapsambasligi === 'KAPSAM 1');
       // let isKeyPresent = kapsamdetail.some(el => {
@@ -402,7 +404,7 @@ const AccordionCustomIcon = () => {
         setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
 
-       console.log("first",short)
+        console.log("first", short)
 
         // setSubtit(states.find((ctr) => console.log(ctr.short)).subtit);
 
@@ -475,21 +477,34 @@ const AccordionCustomIcon = () => {
   }
   const handleAdd = (e) => {
     // ===============================================================================
-    // const title = todos.find(obj => obj.title === 'Scope-1');
-    // const subtitle = todos.find(obj => obj.subtitle[0] === 'S' || 'H' || 'D');
-    // const inputveri = cities.length 
+    const title = todos.find(obj => obj.title === 'Scope-1');
+    const subtitle = todos.find(obj => obj.subtitle[0] === 'S' || 'H' || 'D');
+    const inputveri = cities.length
 
+    if (country === 'Scope-1') {
 
-    // if (inputveri === 24) {
-    //   handleSabit(car)
-    // }
-    // else if (inputveri === 9) {
-    //   handleHareketli(car)
+      if (inputveri === 24) {
 
-    // }
-    // else if (inputveri === 6) {
-    //   handleDogrudan(car)
+       handleSabit(car)
+    }
+    else if(inputveri ===9){
+      handleHareketli(car)
+    }
+  }
+    console.log("Scope-1", todos)
 
+    //  if (country==='Scope-2') {
+    //   if (inputveri === 9) {
+    //     handleHareketli(car)
+
+    //   }
+    //   console.log("scope-2",todos)
+    //  }
+
+    // if (country==='Scope-3') {
+    //   if (inputveri === 6) {
+    //     handleDogrudan(car)
+    //   }
     // }
     // else{return false}
     // console.log("RESULT",todos)
@@ -500,11 +515,11 @@ const AccordionCustomIcon = () => {
     //     [e.target.name]: e.target.value,
     //   });
 
-    
-    if (country==="Scope-3" && subtitle==='U') {
-        setAracdata([...aracdata,{car}])
-    }
-    console.log("arac",aracdata)
+
+    // if (country==="Scope-3" && subtitle==='U') {
+    //     setAracdata([...aracdata,{car}])
+    // }
+    // console.log("arac",todos)
 
 
   };
@@ -542,11 +557,11 @@ const AccordionCustomIcon = () => {
     setCar({
       ...car,
       [event.target.name]: event.target.value,
-   
+
     });
-    console.log("short",short)
+    console.log("short", short)
     console.log("GGGggg", car)
-    
+
 
     if (event.target.value === "Buzdolabi") {
       setDegis(true)
@@ -591,7 +606,7 @@ const AccordionCustomIcon = () => {
   //   });
   // }
 
-  const handleUpstream = ()=> {
+  const handleUpstream = () => {
 
   }
 
@@ -712,6 +727,8 @@ const AccordionCustomIcon = () => {
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
                             <select value={car.birim} name='birim' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
                               onChange={(event) => changeData(event)}>
+            <option>birim girin</option>
+
                               {birim?.map((citiy, index) => (
                                 <option key={index}>{citiy}</option>
                               ))}
@@ -765,33 +782,30 @@ const AccordionCustomIcon = () => {
             </th> */}
                         </tr>
                       </thead>
-                     {
-                      aracdata.map((arac,index)=>(
-                      
-                         <tbody key={index}>
-                       <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                           {arac.car.aracturu}
-                         </th>
-                         <td class="px-6 py-4">
-                           {arac.car.yakitturu}
-                         </td>
-                         <td class="px-6 py-4">
-                           {arac.car.birim}
-                         </td>
-                         <td class="px-6 py-4">
-                           {arac.car.miktar}
-                         </td>
-                         {/* <td class="px-6 py-4 text-right">
+                      {
+                        aracdata.map((arac, index) => (
+
+                          <tbody key={index}>
+                            <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {arac.car.aracturu}
+                              </th>
+                              <td class="px-6 py-4">
+                                {arac.car.yakitturu}
+                              </td>
+                              <td class="px-6 py-4">
+                                {arac.car.birim}
+                              </td>
+                              <td class="px-6 py-4">
+                                {arac.car.miktar}
+                              </td>
+                              {/* <td class="px-6 py-4 text-right">
                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
            </td> */}
-                       </tr>
-
-
-                     </tbody>
-                        
-                      ))
-                     }
+                            </tr>
+                          </tbody>
+                        ))
+                      }
                     </table> : null
                 }
               </div>
