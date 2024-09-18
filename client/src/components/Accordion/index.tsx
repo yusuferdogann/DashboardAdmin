@@ -35,14 +35,14 @@ const AccordionCustomIcon = () => {
           name: "SABIT YANMA",
           short: ['sabit'],
           cities: ["Doğal Gaz", "Fleoil 2", "Fleoil 6", "Gazyağı", "Sıvılaştırılmış Petrol Gazları (LPG)", "Antrasit Kömür", "Bitümlü Kömür", "Alt Bitümlü Kömür", "Linyit Kömürü", "Kok komuru", "Belediye Katı Atıkları", "Petrol Kökü", "Plastik", "Lastik", "Yaş Biokütle", "Turba", "Kuru Biokutle", "Ahşap ve Ahşap Kalıntıları", "Propan Gazı", "Çöp Gazı", "Biyodizel (%100),", "Etanol (%100)", "İşlenmiş Hayvansal Yağ", "Bitkisel Yağ"],
-          units: ['kg', 'ton', 'lt']
+          units: ['kg', 'ton', 'lt', 'm3']
         },
         {
           id: 2,
           name: "HAREKETLI YANMA",
           short: ['hareketli'],
           cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
-          units: ['scope-1', 'ton', 'lt']
+          units: ['scope-1', 'ton', 'lt', 'm3']
         },
         {
           id: 3,
@@ -50,7 +50,7 @@ const AccordionCustomIcon = () => {
           short: ['dogrudan'],
           birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
           cities: ["Su Sebili", "Buzdolabi", "Chiller", "Klima", "Yangın Söndürme Tüpü", "Endüstriyel Soğutucu"],
-          units: ['kg', 'ton', 'lt']
+          units: ['kg', 'ton', 'lt', 'm3']
         },
 
       ],
@@ -74,7 +74,7 @@ const AccordionCustomIcon = () => {
           name: "Upstream Nakliye (aracın firmaya ait olması durumunda)",
           cities: ["Minibüs", "Otobüs", "Pazarlama", "Nakliye"],
           units: ['dizel', 'lpg'],
-          birim: ['lt', 'ton']
+          birim: ['lt', 'ton', 'm3']
 
         },
         {
@@ -82,7 +82,7 @@ const AccordionCustomIcon = () => {
           cities: ["Personel işe gidiş-geliş", "Müşteri ziyaretli kaynaklı emilsyonlar", "İş seyahat kaynaklı emilsyonlar"],
           option: ["otobus icin yakit tuketimi", "otelde kisi sayisi", "taksi ile mi arac kiralama mi"],
           units: ['dizel', 'lpg'],
-          birim: ['lt', 'ton']
+          birim: ['lt', 'ton', 'm3']
 
         },
 
@@ -122,7 +122,7 @@ const AccordionCustomIcon = () => {
   const [date, setDate] = useState({ startDate: '', endDate: '' })
   const [bigdata, setBigdata] = useState([])
   const [todos, setTodos] = useState([
-    { id: 1, title: '', subtitle: '', sabit: ["sab"], hareketli: [ 'har' ], dogrudan: ['dog'] },
+    { id: 1, title: '', subtitle: '', sabit: ["sab"], hareketli: ['har'], dogrudan: ['dog'] },
     { id: 2, title: '', subtitle: '', elektrik: ['ele'] },
     { id: 3, title: '', subtitle: '', upstream: ['gg'], downstrem: ['rr'] }
   ]);
@@ -133,7 +133,8 @@ const AccordionCustomIcon = () => {
   const [short, setShort] = useState([])
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
   const [aracdata, setAracdata] = useState([])
-
+  const [baslikvalue, setBaslikvalue] = useState('')
+  const [load,setLoad] = useState(false)
   // function handleTitle(value,id){
   //   setTodos(...todos,
   //     todos.find((gg)=>gg.id===id)
@@ -278,6 +279,8 @@ const AccordionCustomIcon = () => {
 
     if (event.target.value === 'Scope-1') {
       setBaslik(event.target.value)
+      setBaslikvalue('TESİSTE ISINMA VE ÜRETİM AMACIYLA KULLANILAN ENERJİ TÜRLERİ')
+      console.log("baslik", baslikvalue)
       setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
       // setShort(states.find((ctr) => ctr.short===ctr.short).short);
 
@@ -353,6 +356,8 @@ const AccordionCustomIcon = () => {
       setDegis(false)
       setVer(false)
       handleTitle(event.target.value)
+      setBaslikvalue('TESIS BUNYESINDE KAYITLI ARACLARIN KULLADIGI YAKITLAR')
+      console.log("baslik", baslikvalue)
 
       setStates(Countries.find((ctr) => ctr.name === "Scope-2").states);
 
@@ -360,6 +365,8 @@ const AccordionCustomIcon = () => {
     }
     else if (event.target.value === 'Scope-3') {
       handleOpen(3)
+      setBaslikvalue('TESISINIZDE KULLANILAN SOGUTUCU,YANGIN TUPLERI(KARBON ESASLI)')
+      console.log("baslik", baslikvalue)
       setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
       setBirim(states.find((state) => state).birim);
       // setBirim([...alldata, { "birim": event.target.value }])
@@ -377,6 +384,8 @@ const AccordionCustomIcon = () => {
         setVer(false)
         setGg(true)
         setDegis(true)
+        setBaslikvalue('TESISE AIT ARAC EMILSYONLARI')
+
         setCities(states.find((state) => state.name === event.target.textContent).cities);
         setUnits(states.find((state) => state.name === event.target.textContent).units);
         setBirim(states.find((state) => state.name === event.target.textContent).birim);
@@ -384,6 +393,7 @@ const AccordionCustomIcon = () => {
 
       }
       else if (event.target.textContent[0] === "D") {
+        setBaslikvalue('SERVIS PAZARLAMA VE MUSTERI ZIYARETI KAPSAMINDAKI EMILSONLAR')
 
         setDegis(false)
         setVer(true)
@@ -485,12 +495,12 @@ const AccordionCustomIcon = () => {
 
       if (inputveri === 24) {
 
-       handleSabit(car)
+        handleSabit(car)
+      }
+      else if (inputveri === 9) {
+        handleHareketli(car)
+      }
     }
-    else if(inputveri ===9){
-      handleHareketli(car)
-    }
-  }
     console.log("Scope-1", todos)
 
     //  if (country==='Scope-2') {
@@ -559,28 +569,29 @@ const AccordionCustomIcon = () => {
       [event.target.name]: event.target.value,
 
     });
-    console.log("short", short)
-    console.log("GGGggg", car)
 
 
-    if (event.target.value === "Buzdolabi") {
-      setDegis(true)
-      setSub({ name1: 'Cihaz Adı', name2: 'Birim', name3: 'Gaz Cinsi', name4: 'Miktar' })
-      setCities(states.find((state) => state.name === event.target.textContent).cities);
-      setUnits(states.find((state) => state.name === event.target.textContent).units);
-      setBirim(states.find((state) => state.name === event.target.textContent).birim);
-    }
-    else if (event.target.value === "Minibüs" || "Otobüs" || "Pazarlama" || "Nakliye") {
-      setAlldata([...alldata, { amount: event.target.value }])
 
-
-    }
-    else {
-
-
+    if (event.target.value === "Yangın Söndürme Tüpü") {
+      console.log("yangin")
       setDegis(false)
       setGg(false)
       setVer(false)
+      setSub({ name1: 'Cihaz Adı', name2: 'Birim', name3: 'Gaz Cinsi', name4: 'Miktar' })
+      // setCities(states.find((state) => state.name === event.target.textContent).cities);
+      // setUnits(states.find((state) => state.name === event.target.textContent).units);
+      // setBirim(states.find((state) => state.name === event.target.textContent).birim);
+    }
+    // else if (event.target.value === "Minibüs" || "Otobüs" || "Pazarlama" || "Nakliye") {
+    //   setAlldata([...alldata, { amount: event.target.value }])
+
+
+    // }
+
+    else {
+      setDegis(true)
+      // setGg(true)
+      // setVer(true)
     }
   }
 
@@ -609,7 +620,20 @@ const AccordionCustomIcon = () => {
   const handleUpstream = () => {
 
   }
+  const Loading = () => {
+    console.log("selam")
+   setTimeout(()=>{
+      setLoad(true)
+      setTimeout(()=>{
+        setLoad(false)
+  
+        
+      },500)
+      
+    },500)
+    
 
+  }
 
   return (
 
@@ -685,14 +709,14 @@ const AccordionCustomIcon = () => {
           <div className="col-span-2 bg-neutral-200 rounded-2xl border-slate-300 border">
             <div className='p-3'>
               <div className='flex flex-col'>
-                <span className="font-bold">STEP 2 </span>
+                <span className="font-bold">{baslikvalue ? baslikvalue : ""} </span>
                 {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
               </div>
               <hr className='my-4' />
               {
                 ver ? <Deneme /> :
                   <div className="start">
-                    <div className='grid grid-cols-2'>
+                    <div className=''>
                       <DataPicker deneme={getData} />
                     </div>
 
@@ -723,11 +747,11 @@ const AccordionCustomIcon = () => {
                           </select>
                         </div>
                         {
-                          degis ? <div className="block w-full">
+                          degis === true ? <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
                             <select value={car.birim} name='birim' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
                               onChange={(event) => changeData(event)}>
-            <option>birim girin</option>
+                              <option>birim girin</option>
 
                               {birim?.map((citiy, index) => (
                                 <option key={index}>{citiy}</option>
@@ -811,17 +835,27 @@ const AccordionCustomIcon = () => {
               </div>
 
               <div className='flex justify-end mt-4'>
-                <button
+                <button onClick={()=>Loading()}  type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                 {
+                  load ?  <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+                </svg> : null
+                 }
+                  {load ? 'Kaydediliyor' :"Kaydet"}
+                </button>
+                {/* <button
                   onClick={(e) => handleAdd(e)}
                   type="button"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Ekle" : "Kaydet"}</button>
-                {
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Ekle" : "Kaydet"}
+                  </button> */}
+                {/* {
                   gg ? <button
                     onClick={(e) => handleSubmit(e)}
                     type="button"
                     className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Kaydet" : "Kaydet"}</button>
                     : null
-                }
+                } */}
               </div>
             </div>
           </div>

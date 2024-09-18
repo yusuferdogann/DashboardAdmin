@@ -140,18 +140,7 @@ props.facilityData(send)
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <span className="mb-2 font-bold">Tesis</span>
-                        <div className=" w-50 me-5">
-                            <select onChange={(e)=>handleChange3(e,3)} id="countries" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
-                                <option selected>Tesis Seçin</option>
-                                <option value="Okul">Okul</option>
-                                <option value="Fabrika">Fabrika</option>
-                                <option value="Ofis">Ofis</option>
-                                <option value="Atölye">Atölye</option>
-                            </select>
-                        </div>
-                    </div>
+                  
                     <div>
                         <span className="mb-2 font-bold">İlçe</span>
                         <div className=" w-50 me-5">
@@ -166,6 +155,24 @@ props.facilityData(send)
                                 }                               
                             </select>
                         </div>
+                    </div>
+                    {/* <div>
+                        <span className="mb-2 font-bold">Tesis</span>
+                        <div className=" w-50 me-5">
+                            <select onChange={(e)=>handleChange3(e,3)} id="countries" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
+                                <option selected>Tesis Seçin</option>
+                                <option value="Okul">Okul</option>
+                                <option value="Fabrika">Fabrika</option>
+                                <option value="Ofis">Ofis</option>
+                                <option value="Atölye">Atölye</option>
+                            </select>
+                        </div>
+                    </div> */}
+                    <div>
+                    <span className="mb-2 block font-bold">Tesis</span>
+                    <div className=" w-50 me-5">
+                        <input type="text" placeholder="Tesis girin" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 "/>
+                    </div>
                     </div>
                 </div>
             </div>
