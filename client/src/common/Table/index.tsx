@@ -4,7 +4,7 @@ const index = (props:String) => {
     <div>
         
 
-<div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-20">
+<div className="relative overflow-x-auto table-backshadow sm:rounded-lg mt-20">
     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -12,16 +12,16 @@ const index = (props:String) => {
                     {props.state}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    SOURCE
+                    KAYNAK
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    UNIT
+                    BİRİM
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    AMOUNT
+                    MİKTAR
                 </th>
                 <th scope="col" className="px-6 py-3">
-                    Action
+                    DÜZENLE
                 </th>
             </tr>
         </thead>
