@@ -60,6 +60,7 @@ const AccordionCustomIcon = () => {
       name: "Scope-2",
       states: [
         {
+          id:1,
           name: "Satın Alınan Enerji",
           cities: ["elektrik"],
           units: ['megaWatt', 'kWawt']
@@ -71,6 +72,7 @@ const AccordionCustomIcon = () => {
       name: "Scope-3",
       states: [
         {
+          id:1,
           name: "Upstream Nakliye (aracın firmaya ait olması durumunda)",
           cities: ["Minibüs", "Otobüs", "Pazarlama", "Nakliye"],
           units: ['dizel', 'lpg'],
@@ -78,6 +80,7 @@ const AccordionCustomIcon = () => {
 
         },
         {
+          id:2,
           name: "Downstream Nakliye hizmetin dışardan satın alınması durumunda)",
           cities: ["Personel işe gidiş-geliş", "Müşteri ziyaretli kaynaklı emilsyonlar", "İş seyahat kaynaklı emilsyonlar"],
           option: ["otobus icin yakit tuketimi", "otelde kisi sayisi", "taksi ile mi arac kiralama mi"],
@@ -98,7 +101,13 @@ const AccordionCustomIcon = () => {
 
   ]
 
-
+  const styles = {
+    popup: {
+        borderRadius: "10px",
+        background:"red"
+    }
+  }
+  
 
 
   const [units, setUnits] = useState([]);
@@ -127,7 +136,7 @@ const AccordionCustomIcon = () => {
     { id: 3, title: '', subtitle: '', upstream: ['gg'], downstrem: ['rr'] }
   ]);
   // const [todos, setTodos] = useState([{ id: 1, title: "", data: [] }]);
-
+  const [vida,setVida] = useState(false)
   const [baslik, setBaslik] = useState()
   const [subtitle, setSubtitle] = useState([])
   const [short, setShort] = useState([])
@@ -377,9 +386,20 @@ const AccordionCustomIcon = () => {
 
 
   const changeState = (event, index) => {
+      console.log("indxxxxxxx",index)
 
+    
     if (event.target.id === "Scope-3") {
       setSubtitle(event.target.textContent[0])
+      console.log("stateeee",states)
+      states.map((first)=>{
+        if (first.id===index && event.target.id==="Scope-3") {
+         setVida(first.id)
+         console.log("vidaaaa",vida)
+        }
+       
+      })
+      
       if (event.target.textContent[0] === "U") {
         setVer(false)
         setGg(true)
@@ -402,6 +422,14 @@ const AccordionCustomIcon = () => {
       }
     }
     else if (event.target.id === "Scope-2") {
+      states.map((first)=>{
+        if (first.id===index && event.target.id==="Scope-2") {
+         setVida(first.id)
+         console.log("vidaaaa",vida)
+        }
+       
+      })
+      
       setCities(states.find((state) => state.name === event.target.textContent).cities);
       setUnits(states.find((state) => state.name === event.target.textContent).units);
       setBirim(states.find((state) => state.name === event.target.textContent).birim);
@@ -414,8 +442,14 @@ const AccordionCustomIcon = () => {
         setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
 
-        console.log("first", short)
-
+        states.map((first)=>{
+          if (first.id===index && event.target.id==="Scope-1") {
+           setVida(first.id)
+           console.log("vidaaaa",vida)
+          }
+         
+        })
+        
         // setSubtit(states.find((ctr) => console.log(ctr.short)).subtit);
 
         handleSubTitle(event.target.textContent)
@@ -651,7 +685,11 @@ const AccordionCustomIcon = () => {
               </div>
               <hr />
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                <AccordionHeader onClick={changeCountry} value='Scope-1'>KAPSAM 1</AccordionHeader>
+                <div className="flex">
+              {open===1 ?   <div  style={{background:'blue',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> : null}
+                <AccordionHeader onClick={changeCountry} value='Scope-1' style={open===1?{paddingLeft:'20px'}: null}>KAPSAM 1</AccordionHeader>
+                </div>
+
                 <AccordionBody className='px-3' value={state}>
                   {
                     <div
@@ -660,16 +698,23 @@ const AccordionCustomIcon = () => {
                       multiple={false}
                     >
                       {states.map((state, index) => (
-                        <button onClick={changeState} id='Scope-1' key={index} className="my-3 bg-sky-300 p-2 rounded-md" style={{ display: "block", width: "100%" }}>{state.name}</button>
+                        <button  onClick={(event)=>changeState(event,index+1)} id='Scope-1' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
+                        style={ vida===index+1 && event?.target.id==="Scope-1"? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"} }>{state.name}
+                        </button>
                       ))}
                     </div>
                   }
                 </AccordionBody>
               </Accordion>
+
               <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
-                <AccordionHeader onClick={changeCountry} value='Scope-2'>
+
+               <div className="flex">
+                  {open===2 ? <div  style={{background:'green',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> : null}
+               <AccordionHeader onClick={changeCountry} value='Scope-2' style={open===2?{paddingLeft:'20px'}: null}>
                   KAPSAM 2
                 </AccordionHeader>
+               </div>
                 <AccordionBody>
                   {
                     <div
@@ -679,16 +724,22 @@ const AccordionCustomIcon = () => {
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={changeState} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md" style={{ display: "block", width: "100%" }}>{state.name}</button>
+                        <button onClick={(event)=>changeState(event,index+1)} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
+                        style={ vida===index+1 && event?.target.id==='Scope-2' ? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}} >{state.name}</button>
                       ))}
                     </div>
                   }
                 </AccordionBody>
               </Accordion>
+
               <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
-                <AccordionHeader onClick={changeCountry} value='Scope-3'>
+               <div className="flex">
+                  {open ===3 ? <div  style={{background:'purple',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> :null}
+               <AccordionHeader onClick={changeCountry} value='Scope-3' style={open===3?{paddingLeft:'20px'}: null}>
                   KAPSAM 3
                 </AccordionHeader>
+               </div>
+
                 <AccordionBody>
                   {
                     <div
@@ -698,7 +749,9 @@ const AccordionCustomIcon = () => {
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md" style={{ display: "block", width: "100%" }}>{state.name}</button>
+                        <button onClick={(event)=>changeState(event,index+1)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
+                        style={ vida===index+1 && event?.target.id==='Scope-3' ? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}}
+                        >{state.name}</button>
                       ))}
                     </div>
                   }
