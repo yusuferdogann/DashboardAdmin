@@ -29,7 +29,12 @@
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
   }
 }
-
+.title-dynamily{
+  font-family: 'Satoshi';
+    font-size: larger;
+    font-weight: 600;
+    padding: 10px;
+}
 
 .table-backshadow{
   box-shadow:   0 4px 6px -1px rgb(0 0 0 / 0.1), 2px 2px 4px 2px rgb(0 0 0 / 0.1)  !important;

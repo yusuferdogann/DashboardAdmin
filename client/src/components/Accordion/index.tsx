@@ -136,7 +136,6 @@ const AccordionCustomIcon = () => {
     { id: 3, title: '', subtitle: '', upstream: ['gg'], downstrem: ['rr'] }
   ]);
   // const [todos, setTodos] = useState([{ id: 1, title: "", data: [] }]);
-  const [vida,setVida] = useState(false)
   const [baslik, setBaslik] = useState()
   const [subtitle, setSubtitle] = useState([])
   const [short, setShort] = useState([])
@@ -144,6 +143,17 @@ const AccordionCustomIcon = () => {
   const [aracdata, setAracdata] = useState([])
   const [baslikvalue, setBaslikvalue] = useState('')
   const [load,setLoad] = useState(false)
+  const [id,setId] = useState()
+  const [scope1,setScope1] = useState("")
+  const [scope2,setScope2] = useState("")
+  const [scope3,setScope3] = useState("")
+  const [baslik1,setBaslik1] = useState("")
+  const [baslik2,setBaslik2] = useState("")
+  const [datasub,setDatasub] = useState('')
+
+
+
+
   // function handleTitle(value,id){
   //   setTodos(...todos,
   //     todos.find((gg)=>gg.id===id)
@@ -186,7 +196,6 @@ const AccordionCustomIcon = () => {
         )
         : todos
     );
-    console.log(todos);
   }
 
   function handleSabit(car) {
@@ -207,7 +216,6 @@ const AccordionCustomIcon = () => {
         : todos
     );
 
-    console.log(todos);
   }
 
   function handleDogrudan(car) {
@@ -228,7 +236,6 @@ const AccordionCustomIcon = () => {
         : todos
     );
 
-    console.log(todos);
   }
   function handleHareketli(car) {
     setTodos(
@@ -282,14 +289,15 @@ const AccordionCustomIcon = () => {
 
 
   const changeCountry = (event) => {
-
+    setScope1(false)
+    setId(false)
     setCountry(event.target.value);
     setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
 
     if (event.target.value === 'Scope-1') {
-      setBaslik(event.target.value)
+      
+      setBaslik1(event.target.value)
       setBaslikvalue('TESİSTE ISINMA VE ÜRETİM AMACIYLA KULLANILAN ENERJİ TÜRLERİ')
-      console.log("baslik", baslikvalue)
       setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
       // setShort(states.find((ctr) => ctr.short===ctr.short).short);
 
@@ -360,22 +368,27 @@ const AccordionCustomIcon = () => {
 
     }
     else if (event.target.value === 'Scope-2') {
+      setScope2(false)
+      setId(false)
+      setBaslik2('')
       handleOpen(2)
       setGg(false)
       setDegis(false)
       setVer(false)
       handleTitle(event.target.value)
-      setBaslikvalue('TESIS BUNYESINDE KAYITLI ARACLARIN KULLADIGI YAKITLAR')
-      console.log("baslik", baslikvalue)
+      setBaslikvalue('TESİS BÜNYESİNDE KAYITLI ARAÇLARIN KULLADIĞI YAKITLAR')
+      console.log("bassssss2", baslik)
 
       setStates(Countries.find((ctr) => ctr.name === "Scope-2").states);
 
 
     }
     else if (event.target.value === 'Scope-3') {
+      console.log("opennnn",open)
       handleOpen(3)
-      setBaslikvalue('TESISINIZDE KULLANILAN SOGUTUCU,YANGIN TUPLERI(KARBON ESASLI)')
-      console.log("baslik", baslikvalue)
+      setBaslik(event.target.value)
+      setBaslikvalue('TESİSİNİZDE KULLANILAN SOĞUTUCU YANGIN TÜPLERİ(KARBON ESASLI)')
+      console.log("bassss3", baslik)
       setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
       setBirim(states.find((state) => state).birim);
       // setBirim([...alldata, { "birim": event.target.value }])
@@ -386,16 +399,16 @@ const AccordionCustomIcon = () => {
 
 
   const changeState = (event, index) => {
-      console.log("indxxxxxxx",index)
 
     
     if (event.target.id === "Scope-3") {
       setSubtitle(event.target.textContent[0])
-      console.log("stateeee",states)
       states.map((first)=>{
         if (first.id===index && event.target.id==="Scope-3") {
-         setVida(first.id)
-         console.log("vidaaaa",vida)
+         setScope3(first.name)
+         setId(first.id)
+         console.log("scopeson3",scope3)
+         console.log("scopetext3",event.target.textContent)
         }
        
       })
@@ -424,8 +437,12 @@ const AccordionCustomIcon = () => {
     else if (event.target.id === "Scope-2") {
       states.map((first)=>{
         if (first.id===index && event.target.id==="Scope-2") {
-         setVida(first.id)
-         console.log("vidaaaa",vida)
+          setScope2(first.name)
+          setBaslik2(event.target.id)
+          setDatasub(first.name)
+          setId(first.id)
+       console.log("scopeson2",scope2)
+       console.log("scopetxt2",event.target.textContent)
         }
        
       })
@@ -437,19 +454,22 @@ const AccordionCustomIcon = () => {
 
     }
     else if (event.target.id === "Scope-1") {
-      if (event.target.textContent[0] === "S" || "H" || "D") {
 
+      if (event.target.textContent[0] === "S" || "H" || "D") {
+       
         setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
 
         states.map((first)=>{
           if (first.id===index && event.target.id==="Scope-1") {
-           setVida(first.id)
-           console.log("vidaaaa",vida)
+            setScope1(first.name)
+            setDatasub(first.name)
+            setBaslik1(event.target.id)
+            setId(first.id)
           }
          
         })
-        
+        console.log("datasub",datasub)
         // setSubtit(states.find((ctr) => console.log(ctr.short)).subtit);
 
         handleSubTitle(event.target.textContent)
@@ -582,8 +602,7 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
-  const changeData = (event) => {
-
+  const changeData = (event,index) => {
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
 
@@ -596,7 +615,7 @@ const AccordionCustomIcon = () => {
     //   }
     // }));   
     // console.log("sub",todos)
-
+   
 
     setCar({
       ...car,
@@ -607,26 +626,24 @@ const AccordionCustomIcon = () => {
 
 
     if (event.target.value === "Yangın Söndürme Tüpü") {
-      console.log("yangin")
       setDegis(false)
       setGg(false)
       setVer(false)
-      setSub({ name1: 'Cihaz Adı', name2: 'Birim', name3: 'Gaz Cinsi', name4: 'Miktar' })
       // setCities(states.find((state) => state.name === event.target.textContent).cities);
       // setUnits(states.find((state) => state.name === event.target.textContent).units);
       // setBirim(states.find((state) => state.name === event.target.textContent).birim);
     }
     // else if (event.target.value === "Minibüs" || "Otobüs" || "Pazarlama" || "Nakliye") {
     //   setAlldata([...alldata, { amount: event.target.value }])
-
-
     // }
 
-    else {
+    else if(datasub==="DOGRUDAN SIZMA KACAK EMISYONU" && event.target.value !== "Yangın Söndürme Tüpü") {
       setDegis(true)
+      setSub({ name1: 'Cihaz Adı', name2: 'Birim', name3: 'Gaz Cinsi', name4: 'Miktar' })
       // setGg(true)
       // setVer(true)
     }
+    else{null}
   }
 
   const getData = (value1) => {
@@ -675,12 +692,12 @@ const AccordionCustomIcon = () => {
 
     <div >
       <Facility facilityData={getUlke} />
-      <div className='border border-slate-300 rounded-2xl  p-5 '>
+      <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
         <div className='grid grid-cols-3 gap-4'>
-          <div className=" border border-slate-300 rounded-2xl bg-neutral-200">
+          <div className=" border border-slate-300 ">
             <div className="px-4">
               <div className="flex flex-col my-4">
-                <span className="font-bold">STEP 1</span>
+                <span className="title-dynamily">KAPSAM BAŞLIKLARI</span>
                 {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
               </div>
               <hr />
@@ -698,8 +715,8 @@ const AccordionCustomIcon = () => {
                       multiple={false}
                     >
                       {states.map((state, index) => (
-                        <button  onClick={(event)=>changeState(event,index+1)} id='Scope-1' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={ vida===index+1 && event?.target.id==="Scope-1"? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"} }>{state.name}
+                        <button  onClick={(event)=>changeState(event,index+1)} id='Scope-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
+                        style={  scope1===scope1 &&  id===index+1 && baslik1==='Scope-1' ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"} }>{state.name}
                         </button>
                       ))}
                     </div>
@@ -725,7 +742,7 @@ const AccordionCustomIcon = () => {
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
                         <button onClick={(event)=>changeState(event,index+1)} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={ vida===index+1 && event?.target.id==='Scope-2' ? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}} >{state.name}</button>
+                        style={ scope2===scope2  && baslik2==='Scope-2' ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}} >{state.name}</button>
                       ))}
                     </div>
                   }
@@ -750,7 +767,7 @@ const AccordionCustomIcon = () => {
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
                         <button onClick={(event)=>changeState(event,index+1)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={ vida===index+1 && event?.target.id==='Scope-3' ? {background:'#5bfd45',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}}
+                        style={  id===index+1 && baslik === "Scope-3" ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}}
                         >{state.name}</button>
                       ))}
                     </div>
@@ -759,13 +776,13 @@ const AccordionCustomIcon = () => {
               </Accordion>
             </div>
           </div>
-          <div className="col-span-2 bg-neutral-200 rounded-2xl border-slate-300 border">
+          <div className="col-span-2 border-slate-300 border">
             <div className='p-3'>
               <div className='flex flex-col'>
-                <span className="font-bold">{baslikvalue ? baslikvalue : ""} </span>
+                <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
                 {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
               </div>
-              <hr className='my-4' />
+              <hr className='my-4 ' />
               {
                 ver ? <Deneme /> :
                   <div className="start">

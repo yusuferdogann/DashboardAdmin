@@ -97,7 +97,7 @@ const layout = () => {
 
     <div >
       <Facility />
-      <div className='border border-slate-300 rounded-2xl  p-5 '>
+      <div className='border border-slate-300   p-5 '>
         <div className='grid grid-cols-3 gap-4'>
           <div className=" border border-slate-300 rounded-2xl bg-neutral-200"><Accordion changeCountry={changeCountry} changeState={changeState} citiy={citiy} open={open} cities={cities}  states={states}/></div>
           <div className="col-span-2 bg-neutral-200 rounded-2xl border-slate-300 border"><Calculation cities={cities} changeState={changeState} citiy={citiy}/></div>

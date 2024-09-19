@@ -87,11 +87,10 @@ const index = (props) => {
 const handleChange3 = (e,vv)=>{
     setFacility({value5:e.target.value,value6:3})
     setSend([...send,{"tesis":e.target.value}])
-
-    
-
-    
-
+}
+const handleChange7 = (e)=>{
+    setSweet({[e.target.name]: e.target.value,value8:4})
+    console.log("sweet",sweet.value7.length)
 }
 const handleChange4 = (e,vv)=>{
     setSweet({value7:e.target.value,value8:4})
@@ -105,14 +104,14 @@ const handleChange4 = (e,vv)=>{
 // console.log("senddddd",send)
 props.facilityData(send)
     return (
-        <div className='flex justify-between gap-2 p-4 border border-slate-200 rounded-2xl bg-sky-100 mb-6 '>
+        <div className='flex justify-between gap-2 p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  mb-12 '>
             <div>
                 {/* <h6 className="mb-4">Tesis Ayarları</h6> */}
                 <div className="flex items-end " >
                     <div>
-                        <span className="mb-2 font-bold">Ulke</span>
+                        <span className="mb-2 font-bold">Ülke</span>
                         <div className=" w-50 me-5">
-                            <select onClick={(e)=>handleChange1(e,1)}  className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
+                            <select onClick={(e)=>handleChange1(e,1)}  className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
                                 <option selected>Ülke Seçin</option>
                                 {
                                     cityName?.map((city,index)=>(
@@ -127,7 +126,7 @@ props.facilityData(send)
                     <div>
                         <span className="mb-2 font-bold">Şehir</span>
                         <div className=" w-50 me-5">
-                            <select onClick={(e)=>handleChange2(e,1)} id={save} className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
+                            <select onClick={(e)=>handleChange2(e,1)} id={save} className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
                                 <option selected>Şehir Seçin</option>
                                {
                                  sehir?.map((bb,index)=>(
@@ -144,7 +143,7 @@ props.facilityData(send)
                     <div>
                         <span className="mb-2 font-bold">İlçe</span>
                         <div className=" w-50 me-5">
-                            <select onClick={(e)=>handleChange4(e,4)} id="countries" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
+                            <select onClick={(e)=>handleChange4(e,4)} id="countries" className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
                                 <option selected>İlçe Seçin</option>
                                 {
                                     nana?.map((vv)=>(
@@ -171,35 +170,35 @@ props.facilityData(send)
                     <div>
                     <span className="mb-2 block font-bold">Tesis</span>
                     <div className=" w-50 me-5">
-                        <input type="text" placeholder="Tesis girin" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 "/>
+                        <input onChange={(e)=>handleChange7(e)} value={sweet.value7}  name='value7' type="text" placeholder="Tesis girin" className="w-full rounded border h-8 border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary "/>
                     </div>
                     </div>
                 </div>
             </div>
             <div className='flex justify-end  w-50' >
                 <div className="grid justify-end w-50" >
-                    <div className=' px-5  justify-end w-40'>
+                    <div className=' px-5  justify-end w-50'>
                         <div className="flex justify-between">
                             <span className="text-normal  justify-end"><i  style={{ color: open.value2 === 1 ? "#3de846" : "black" }} className="fa-solid fa-flag" ></i></span>
                             <span className="text-normal font-bold"    >{open.value1 ? vardi : "-----"}</span>
                         </div>
                     </div>
-                    <div className=' px-5  justify-end w-40'>
+                    <div className=' px-5  justify-end w-50'>
                         <div className="flex justify-between">
                             <span className="text-normal  justify-start"><i style={{ color: city.value4 === 2 ? "#3de846" : "black" }}   className="fas fa-globe-europe"  ></i></span>
                             <span className="text-normal font-bold">{city.value3 ? city.value3 : "-----"}</span>
                         </div>
                     </div>
-                    <div className=' px-5  justify-end w-40'>
+                    <div className=' px-5  justify-end w-50'>
                         <div className="flex justify-between">
                             <span className="text-normal  justify-start"><i style={{ color: facility.value6 === 3 ? "#3de846" : "black" }}  className="fas fa-map-marker-alt" ></i></span>
                             <span className="text-normal font-bold">{facility.value5 ? facility.value5 : "-----"}</span>
                         </div>
                     </div>
-                    <div className=' px-5  justify-end w-40'>
+                    <div className=' px-5  justify-end w-50' >
                         <div className="flex justify-between">
                             <span className="text-normal  justify-end"><i style={{ color: sweet.value8 === 4 ? "#3de846" : "black" }} className="fas fa-industry" ></i></span>
-                            <span className="text-normal font-bold">{sweet.value7 ? sweet.value7 : "-----"}</span>
+                            <span className="text-normal font-bold" >{sweet.value7 ? sweet.value7 : "-----"}</span>
                         </div>
                     </div>
                 </div>

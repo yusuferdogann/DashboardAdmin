@@ -115,7 +115,7 @@ const AccordionCustomIcon = () => {
 
 <div >
 <Facility />
-<div className='border border-slate-300 rounded-2xl  p-5 '>
+<div className='border border-slate-300 rounded-2xl  p-5 bg-white'>
   <div className='grid grid-cols-3 gap-4'>
     <div className=" border border-slate-300 rounded-2xl bg-neutral-200">
     <div className="px-4">
