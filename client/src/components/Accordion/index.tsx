@@ -4,6 +4,7 @@ import DataPicker from "../../common/DataPicker/index"
 import { useEffect, useState } from "react";
 import { post } from "../../server/Apiendpoint"
 import Deneme from "./deneme"
+import Videokayit from '../../../src/images/video/animation-video.mp4'
 
 
 
@@ -60,7 +61,7 @@ const AccordionCustomIcon = () => {
       name: "Scope-2",
       states: [
         {
-          id:1,
+          id: 1,
           name: "Satın Alınan Enerji",
           cities: ["elektrik"],
           units: ['megaWatt', 'kWawt']
@@ -72,7 +73,7 @@ const AccordionCustomIcon = () => {
       name: "Scope-3",
       states: [
         {
-          id:1,
+          id: 1,
           name: "Upstream Nakliye (aracın firmaya ait olması durumunda)",
           cities: ["Minibüs", "Otobüs", "Pazarlama", "Nakliye"],
           units: ['dizel', 'lpg'],
@@ -80,7 +81,7 @@ const AccordionCustomIcon = () => {
 
         },
         {
-          id:2,
+          id: 2,
           name: "Downstream Nakliye hizmetin dışardan satın alınması durumunda)",
           cities: ["Personel işe gidiş-geliş", "Müşteri ziyaretli kaynaklı emilsyonlar", "İş seyahat kaynaklı emilsyonlar"],
           option: ["otobus icin yakit tuketimi", "otelde kisi sayisi", "taksi ile mi arac kiralama mi"],
@@ -103,11 +104,11 @@ const AccordionCustomIcon = () => {
 
   const styles = {
     popup: {
-        borderRadius: "10px",
-        background:"red"
+      borderRadius: "10px",
+      background: "red"
     }
   }
-  
+
 
 
   const [units, setUnits] = useState([]);
@@ -142,15 +143,15 @@ const AccordionCustomIcon = () => {
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
   const [aracdata, setAracdata] = useState([])
   const [baslikvalue, setBaslikvalue] = useState('')
-  const [load,setLoad] = useState(false)
-  const [id,setId] = useState()
-  const [scope1,setScope1] = useState("")
-  const [scope2,setScope2] = useState("")
-  const [scope3,setScope3] = useState("")
-  const [baslik1,setBaslik1] = useState("")
-  const [baslik2,setBaslik2] = useState("")
-  const [datasub,setDatasub] = useState('')
-
+  const [load, setLoad] = useState(false)
+  const [id, setId] = useState()
+  const [scope1, setScope1] = useState("")
+  const [scope2, setScope2] = useState("")
+  const [scope3, setScope3] = useState("")
+  const [baslik1, setBaslik1] = useState("")
+  const [baslik2, setBaslik2] = useState("")
+  const [datasub, setDatasub] = useState('')
+  const [videopen,setVideopen] = useState(false)
 
 
 
@@ -295,7 +296,7 @@ const AccordionCustomIcon = () => {
     setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
 
     if (event.target.value === 'Scope-1') {
-      
+      setVideopen(true)
       setBaslik1(event.target.value)
       setBaslikvalue('TESİSTE ISINMA VE ÜRETİM AMACIYLA KULLANILAN ENERJİ TÜRLERİ')
       setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
@@ -384,7 +385,7 @@ const AccordionCustomIcon = () => {
 
     }
     else if (event.target.value === 'Scope-3') {
-      console.log("opennnn",open)
+      console.log("opennnn", open)
       handleOpen(3)
       setBaslik(event.target.value)
       setBaslikvalue('TESİSİNİZDE KULLANILAN SOĞUTUCU YANGIN TÜPLERİ(KARBON ESASLI)')
@@ -400,19 +401,19 @@ const AccordionCustomIcon = () => {
 
   const changeState = (event, index) => {
 
-    
+
     if (event.target.id === "Scope-3") {
       setSubtitle(event.target.textContent[0])
-      states.map((first)=>{
-        if (first.id===index && event.target.id==="Scope-3") {
-         setScope3(first.name)
-         setId(first.id)
-         console.log("scopeson3",scope3)
-         console.log("scopetext3",event.target.textContent)
+      states.map((first) => {
+        if (first.id === index && event.target.id === "Scope-3") {
+          setScope3(first.name)
+          setId(first.id)
+          console.log("scopeson3", scope3)
+          console.log("scopetext3", event.target.textContent)
         }
-       
+
       })
-      
+
       if (event.target.textContent[0] === "U") {
         setVer(false)
         setGg(true)
@@ -435,18 +436,18 @@ const AccordionCustomIcon = () => {
       }
     }
     else if (event.target.id === "Scope-2") {
-      states.map((first)=>{
-        if (first.id===index && event.target.id==="Scope-2") {
+      states.map((first) => {
+        if (first.id === index && event.target.id === "Scope-2") {
           setScope2(first.name)
           setBaslik2(event.target.id)
           setDatasub(first.name)
           setId(first.id)
-       console.log("scopeson2",scope2)
-       console.log("scopetxt2",event.target.textContent)
+          console.log("scopeson2", scope2)
+          console.log("scopetxt2", event.target.textContent)
         }
-       
+
       })
-      
+
       setCities(states.find((state) => state.name === event.target.textContent).cities);
       setUnits(states.find((state) => state.name === event.target.textContent).units);
       setBirim(states.find((state) => state.name === event.target.textContent).birim);
@@ -456,20 +457,20 @@ const AccordionCustomIcon = () => {
     else if (event.target.id === "Scope-1") {
 
       if (event.target.textContent[0] === "S" || "H" || "D") {
-       
+
         setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
 
-        states.map((first)=>{
-          if (first.id===index && event.target.id==="Scope-1") {
+        states.map((first) => {
+          if (first.id === index && event.target.id === "Scope-1") {
             setScope1(first.name)
             setDatasub(first.name)
             setBaslik1(event.target.id)
             setId(first.id)
           }
-         
+
         })
-        console.log("datasub",datasub)
+        console.log("datasub", datasub)
         // setSubtit(states.find((ctr) => console.log(ctr.short)).subtit);
 
         handleSubTitle(event.target.textContent)
@@ -602,7 +603,7 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
-  const changeData = (event,index) => {
+  const changeData = (event, index) => {
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
 
@@ -615,7 +616,7 @@ const AccordionCustomIcon = () => {
     //   }
     // }));   
     // console.log("sub",todos)
-   
+
 
     setCar({
       ...car,
@@ -637,13 +638,13 @@ const AccordionCustomIcon = () => {
     //   setAlldata([...alldata, { amount: event.target.value }])
     // }
 
-    else if(datasub==="DOGRUDAN SIZMA KACAK EMISYONU" && event.target.value !== "Yangın Söndürme Tüpü") {
+    else if (datasub === "DOGRUDAN SIZMA KACAK EMISYONU" && event.target.value !== "Yangın Söndürme Tüpü") {
       setDegis(true)
       setSub({ name1: 'Cihaz Adı', name2: 'Birim', name3: 'Gaz Cinsi', name4: 'Miktar' })
       // setGg(true)
       // setVer(true)
     }
-    else{null}
+    else { null }
   }
 
   const getData = (value1) => {
@@ -673,16 +674,16 @@ const AccordionCustomIcon = () => {
   }
   const Loading = () => {
     console.log("selam")
-   setTimeout(()=>{
+    setTimeout(() => {
       setLoad(true)
-      setTimeout(()=>{
+      setTimeout(() => {
         setLoad(false)
-  
-        
-      },500)
-      
-    },500)
-    
+
+
+      }, 500)
+
+    }, 500)
+
 
   }
 
@@ -703,8 +704,8 @@ const AccordionCustomIcon = () => {
               <hr />
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                 <div className="flex">
-              {open===1 ?   <div  style={{background:'blue',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> : null}
-                <AccordionHeader onClick={changeCountry} value='Scope-1' style={open===1?{paddingLeft:'20px'}: null}>KAPSAM 1</AccordionHeader>
+                  {open === 1 ? <div style={{ background: 'blue', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
+                  <AccordionHeader onClick={changeCountry} value='Scope-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
                 </div>
 
                 <AccordionBody className='px-3' value={state}>
@@ -715,8 +716,8 @@ const AccordionCustomIcon = () => {
                       multiple={false}
                     >
                       {states.map((state, index) => (
-                        <button  onClick={(event)=>changeState(event,index+1)} id='Scope-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={  scope1===scope1 &&  id===index+1 && baslik1==='Scope-1' ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"} }>{state.name}
+                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={scope1 === scope1 && id === index + 1 && baslik1 === 'Scope-1' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}>{state.name}
                         </button>
                       ))}
                     </div>
@@ -726,12 +727,12 @@ const AccordionCustomIcon = () => {
 
               <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
 
-               <div className="flex">
-                  {open===2 ? <div  style={{background:'green',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> : null}
-               <AccordionHeader onClick={changeCountry} value='Scope-2' style={open===2?{paddingLeft:'20px'}: null}>
-                  KAPSAM 2
-                </AccordionHeader>
-               </div>
+                <div className="flex">
+                  {open === 2 ? <div style={{ background: 'green', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
+                  <AccordionHeader onClick={changeCountry} value='Scope-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
+                    KAPSAM 2
+                  </AccordionHeader>
+                </div>
                 <AccordionBody>
                   {
                     <div
@@ -741,8 +742,8 @@ const AccordionCustomIcon = () => {
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event)=>changeState(event,index+1)} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={ scope2===scope2  && baslik2==='Scope-2' ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}} >{state.name}</button>
+                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={scope2 === scope2 && baslik2 === 'Scope-2' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }} >{state.name}</button>
                       ))}
                     </div>
                   }
@@ -750,12 +751,12 @@ const AccordionCustomIcon = () => {
               </Accordion>
 
               <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
-               <div className="flex">
-                  {open ===3 ? <div  style={{background:'purple',width:'3%',borderRadius:'0px 10px 10px 0px'}}></div> :null}
-               <AccordionHeader onClick={changeCountry} value='Scope-3' style={open===3?{paddingLeft:'20px'}: null}>
-                  KAPSAM 3
-                </AccordionHeader>
-               </div>
+                <div className="flex">
+                  {open === 3 ? <div style={{ background: 'purple', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
+                  <AccordionHeader onClick={changeCountry} value='Scope-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
+                    KAPSAM 3
+                  </AccordionHeader>
+                </div>
 
                 <AccordionBody>
                   {
@@ -766,8 +767,8 @@ const AccordionCustomIcon = () => {
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event)=>changeState(event,index+1)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md" 
-                        style={  id===index+1 && baslik === "Scope-3" ? {background:'#5bfd4575',display: "block", width: "100%",color:'black',fontSize:'large',fontWeight:'500'} : {display: "block", width: "100%"}}
+                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={id === index + 1 && baslik === "Scope-3" ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}
                         >{state.name}</button>
                       ))}
                     </div>
@@ -776,159 +777,171 @@ const AccordionCustomIcon = () => {
               </Accordion>
             </div>
           </div>
-          <div className="col-span-2 border-slate-300 border">
-            <div className='p-3'>
-              <div className='flex flex-col'>
-                <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
-                {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
-              </div>
-              <hr className='my-4 ' />
-              {
-                ver ? <Deneme /> :
-                  <div className="start">
-                    <div className=''>
-                      <DataPicker deneme={getData} />
-                    </div>
 
-                    {/* form start */}
-                    <form >
-                      <div className='grid grid-cols-4 gap-3 my-5'>
-                        <div className="block w-full">
-                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                          <select value={car.aracturu} name='aracturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                            onChange={(event) => changeData(event)}>
-                            {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
-                            <option>kaynak girin</option>
-
-                            {cities?.map((citiy, index) => (
-                              <option key={index}>{citiy}</option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div className="block w-full">
-                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                          <select value={car.yakitturu} name='yakitturu' id="units" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                            onChange={(event) => changeData(event)}>
-                            <option>birim girin</option>
-                            {units?.map((citiy, index) => (
-                              <option key={index}>{citiy}</option>
-                            ))}
-                          </select>
-                        </div>
-                        {
-                          degis === true ? <div className="block w-full">
-                            <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                            <select value={car.birim} name='birim' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                              onChange={(event) => changeData(event)}>
-                              <option>birim girin</option>
-
-                              {birim?.map((citiy, index) => (
-                                <option key={index}>{citiy}</option>
-                              ))}
-                            </select>
-                          </div> : null
-                        }
-                        <div>
-                          <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
-                          <input
-                            type="text"
-                            value={car.miktar}
-                            name='miktar'
-                            className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="miktar girin"
-                            required
-                            onChange={(event) => changeData(event)}
-                          />
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-              }
-              {/* form end */}
-              <hr className='mt-3' />
-              <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-
-                {
-                  gg ?
-
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
-                        Araç Ekle
-                        {/* <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
-                      </caption>
-                      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">
-                            Araç Türü
-                          </th>
-                          <th scope="col" class="px-6 py-3">
-                            Yakıt Türü
-                          </th>
-                          <th scope="col" class="px-6 py-3">
-                            Birim
-                          </th>
-                          <th scope="col" class="px-6 py-3">
-                            Miktar
-                          </th>
-                          {/* <th scope="col" class="px-6 py-3">
-                <span class="sr-only">Edit</span>
-            </th> */}
-                        </tr>
-                      </thead>
-                      {
-                        aracdata.map((arac, index) => (
-
-                          <tbody key={index}>
-                            <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {arac.car.aracturu}
-                              </th>
-                              <td class="px-6 py-4">
-                                {arac.car.yakitturu}
-                              </td>
-                              <td class="px-6 py-4">
-                                {arac.car.birim}
-                              </td>
-                              <td class="px-6 py-4">
-                                {arac.car.miktar}
-                              </td>
-                              {/* <td class="px-6 py-4 text-right">
-               <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-           </td> */}
-                            </tr>
-                          </tbody>
-                        ))
-                      }
-                    </table> : null
-                }
-              </div>
-
-              <div className='flex justify-end mt-4'>
-                <button onClick={()=>Loading()}  type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
-                 {
-                  load ?  <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
-                  <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
-                </svg> : null
-                 }
-                  {load ? 'Kaydediliyor' :"Kaydet"}
-                </button>
-                {/* <button
-                  onClick={(e) => handleAdd(e)}
-                  type="button"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Ekle" : "Kaydet"}
-                  </button> */}
-                {/* {
-                  gg ? <button
-                    onClick={(e) => handleSubmit(e)}
-                    type="button"
-                    className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Kaydet" : "Kaydet"}</button>
-                    : null
-                } */}
-              </div>
+          {/* beefore area start*/}
+          <div className="col-span-2 backdrop" style={videopen ? {display:'none'} : {display:'block'}}>
+            <video width="auto" height="500" autoPlay={true} loop muted>
+              <source src={Videokayit} type="video/mp4" />
+            </video>
+            <div className="footprint flex"><span className="video-title">LÜTFEN KAYIT İÇİN KAPSAMLARDAN BİRİNİ SEÇEREK İLERLEYİN</span>
             </div>
           </div>
+          {/* before area finish */}
+         {
+          videopen ?  <div className="col-span-2 border-slate-300 border">
+          <div className='p-3'>
+            <div className='flex flex-col'>
+              <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
+              {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
+            </div>
+            <hr className='my-4 ' />
+            {
+              ver ? <Deneme /> :
+                <div className="start">
+                  <div className=''>
+                    <DataPicker deneme={getData} />
+                  </div>
+
+                  {/* form start */}
+                  <form >
+                    <div className='grid grid-cols-4 gap-3 my-5'>
+                      <div className="block w-full">
+                        <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
+                        <select value={car.aracturu} name='aracturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
+                          onChange={(event) => changeData(event)}>
+                          {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
+                          <option>kaynak girin</option>
+
+                          {cities?.map((citiy, index) => (
+                            <option key={index}>{citiy}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="block w-full">
+                        <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
+                        <select value={car.yakitturu} name='yakitturu' id="units" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
+                          onChange={(event) => changeData(event)}>
+                          <option>birim girin</option>
+                          {units?.map((citiy, index) => (
+                            <option key={index}>{citiy}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {
+                        degis === true ? <div className="block w-full">
+                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
+                          <select value={car.birim} name='birim' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
+                            onChange={(event) => changeData(event)}>
+                            <option>birim girin</option>
+
+                            {birim?.map((citiy, index) => (
+                              <option key={index}>{citiy}</option>
+                            ))}
+                          </select>
+                        </div> : null
+                      }
+                      <div>
+                        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
+                        <input
+                          type="text"
+                          value={car.miktar}
+                          name='miktar'
+                          className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="miktar girin"
+                          required
+                          onChange={(event) => changeData(event)}
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            }
+            {/* form end */}
+            <hr className='mt-3' />
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+
+              {
+                gg ?
+
+                  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
+                      Araç Ekle
+                      {/* <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
+                    </caption>
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th scope="col" class="px-6 py-3">
+                          Araç Türü
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Yakıt Türü
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Birim
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                          Miktar
+                        </th>
+                        {/* <th scope="col" class="px-6 py-3">
+              <span class="sr-only">Edit</span>
+          </th> */}
+                      </tr>
+                    </thead>
+                    {
+                      aracdata.map((arac, index) => (
+
+                        <tbody key={index}>
+                          <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                              {arac.car.aracturu}
+                            </th>
+                            <td class="px-6 py-4">
+                              {arac.car.yakitturu}
+                            </td>
+                            <td class="px-6 py-4">
+                              {arac.car.birim}
+                            </td>
+                            <td class="px-6 py-4">
+                              {arac.car.miktar}
+                            </td>
+                            {/* <td class="px-6 py-4 text-right">
+             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+         </td> */}
+                          </tr>
+                        </tbody>
+                      ))
+                    }
+                  </table> : null
+              }
+            </div>
+
+            <div className='flex justify-end mt-4'>
+              <button onClick={() => Loading()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                {
+                  load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+                  </svg> : null
+                }
+                {load ? 'Kaydediliyor' : "Kaydet"}
+              </button>
+              {/* <button
+                onClick={(e) => handleAdd(e)}
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Ekle" : "Kaydet"}
+                </button> */}
+              {/* {
+                gg ? <button
+                  onClick={(e) => handleSubmit(e)}
+                  type="button"
+                  className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Kaydet" : "Kaydet"}</button>
+                  : null
+              } */}
+            </div>
+          </div>
+        </div> : null
+         }
         </div>
       </div>
       {/* <Deneme/> */}
