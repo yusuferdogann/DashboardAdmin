@@ -19,7 +19,7 @@ const handleChange = ()=>{
     }));
 } 
 const loginUser = async ()=>{
-    let url="http://localhost:5000/auth/login"
+    let url="https://dashboard-admin-ns4k.vercel.app/login"
     const response = await axios.post(url,data)
     console.log("response",response)
 

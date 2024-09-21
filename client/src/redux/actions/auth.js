@@ -25,7 +25,7 @@ export const registerAction = (authData) => async(dispatch)=>{
 
 export const loginAction = (authData) => async (dispatch) => {
   try {
-    const { data } = await axios.post("http://localhost:5000/login", authData);
+    const { data } = await axios.post("https://dashboard-admin-ns4k.vercel.app/login", authData);
     dispatch({ type: "LOGIN", payload: data });
     window.location = "/";
   } catch (error) {
