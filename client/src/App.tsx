@@ -23,25 +23,16 @@ import Facility from './pages/Facility';
 
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { token } = userAuth()
-  const navigate = useNavigate()
+  
 
 
  
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login")
-      
-    }
-  }, [token, navigate])
 
   return (
     <>
     {
-      (!token) ?
-      <Login/> :
+      
             <DefaultLayout>
               <Routes>
                 <Route
