@@ -19,6 +19,7 @@ import Sumary from './pages/Sumary';
 import Register from './pages/Authentication/Register';
 import Login from './pages/Authentication/Login';
 import { userAuth } from './auth/userAuth';
+import Facility from './pages/Facility';
 
 
 function App() {
@@ -45,6 +46,15 @@ function App() {
               <Routes>
                 <Route
                   index
+                  element={
+                    <>
+                      <PageTitle title="Dashboard " />
+                      <Facility />
+                    </>
+                  }
+                />
+                 <Route
+                  path='/dashboard'
                   element={
                     <>
                       <PageTitle title="Dashboard " />
