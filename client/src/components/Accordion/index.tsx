@@ -102,13 +102,7 @@ const AccordionCustomIcon = () => {
 
   ]
 
-  const styles = {
-    popup: {
-      borderRadius: "10px",
-      background: "red"
-    }
-  }
-
+ 
 
 
   const [units, setUnits] = useState([]);
@@ -151,8 +145,11 @@ const AccordionCustomIcon = () => {
   const [baslik1, setBaslik1] = useState("")
   const [baslik2, setBaslik2] = useState("")
   const [datasub, setDatasub] = useState('')
-  const [videopen,setVideopen] = useState(false)
-
+  const [videopen, setVideopen] = useState(false)
+  const [control1,setControl1] = useState('')
+  const [control2,setControl2] = useState('')
+  const [control3,setControl3] = useState('')
+  const [control4,setControl4] = useState('')
 
 
   // function handleTitle(value,id){
@@ -676,17 +673,48 @@ const AccordionCustomIcon = () => {
     console.log("selam")
     setTimeout(() => {
       setLoad(true)
+      if (country === "Scope-3" && subtitle === 'U') {
+        if(car.aracturu ===''){
+          setControl1(styles.input.error)
+        }
+        else if(car.yakitturu==='' || car.birim==='birim girin'){
+          setControl2(styles.input.error)
+
+        }
+        else if(car.birim==='' || car.birim==='kaynak girin'){
+          setControl3(styles.input.error)
+
+        }
+        else if(car.miktar===''){
+          setControl4(styles.input.error)
+
+        }
+        else{
+          setControl1(false)
+          setAracdata([...aracdata, { car }])
+
+        }
+      }
+      console.log("arac", car)
       setTimeout(() => {
         setLoad(false)
-
-
       }, 500)
 
     }, 500)
 
 
   }
+  const styles = {
+    input: {
+      normal: 'bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+      error:'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
+    },
+    select:{
+      normal:'h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none',
+      error:'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-1 px-4 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
 
+    }
+  }
   return (
 
 
@@ -779,7 +807,7 @@ const AccordionCustomIcon = () => {
           </div>
 
           {/* beefore area start*/}
-          <div className="col-span-2 backdrop" style={videopen ? {display:'none'} : {display:'block'}}>
+          <div className="col-span-2 backdrop" style={videopen ? { display: 'none' } : { display: 'block' }}>
             <video width="auto" height="500" autoPlay={true} loop muted>
               <source src={Videokayit} type="video/mp4" />
             </video>
@@ -787,161 +815,172 @@ const AccordionCustomIcon = () => {
             </div>
           </div>
           {/* before area finish */}
-         {
-          videopen ?  <div className="col-span-2 border-slate-300 border">
-          <div className='p-3'>
-            <div className='flex flex-col'>
-              <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
-              {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
-            </div>
-            <hr className='my-4 ' />
-            {
-              ver ? <Deneme /> :
-                <div className="start">
-                  <div className=''>
-                    <DataPicker deneme={getData} />
-                  </div>
-
-                  {/* form start */}
-                  <form >
-                    <div className='grid grid-cols-4 gap-3 my-5'>
-                      <div className="block w-full">
-                        <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                        <select value={car.aracturu} name='aracturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                          onChange={(event) => changeData(event)}>
-                          {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
-                          <option>kaynak girin</option>
-
-                          {cities?.map((citiy, index) => (
-                            <option key={index}>{citiy}</option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="block w-full">
-                        <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                        <select value={car.yakitturu} name='yakitturu' id="units" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                          onChange={(event) => changeData(event)}>
-                          <option>birim girin</option>
-                          {units?.map((citiy, index) => (
-                            <option key={index}>{citiy}</option>
-                          ))}
-                        </select>
-                      </div>
-                      {
-                        degis === true ? <div className="block w-full">
-                          <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                          <select value={car.birim} name='birim' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
-                            onChange={(event) => changeData(event)}>
-                            <option>birim girin</option>
-
-                            {birim?.map((citiy, index) => (
-                              <option key={index}>{citiy}</option>
-                            ))}
-                          </select>
-                        </div> : null
-                      }
-                      <div>
-                        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
-                        <input
-                          type="text"
-                          value={car.miktar}
-                          name='miktar'
-                          className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="miktar girin"
-                          required
-                          onChange={(event) => changeData(event)}
-                        />
-                      </div>
-                    </div>
-                  </form>
+          {
+            videopen ? <div className="col-span-2 border-slate-300 border">
+              <div className='p-3'>
+                <div className='flex flex-col'>
+                  <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
+                  {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
                 </div>
-            }
-            {/* form end */}
-            <hr className='mt-3' />
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                <hr className='my-4 ' />
+                {
+                  ver ? <Deneme /> :
+                    <div className="start">
+                      <div className=''>
+                        <DataPicker deneme={getData} />
+                      </div>
 
-              {
-                gg ?
+                      {/* form start */}
+                      <form >
+                        <div className='grid grid-cols-4 gap-3 my-5'>
+                          <div className="block w-full">
+                            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
+                            <select value={car.aracturu} name='aracturu' id="cities" className={control1 ? styles.select.error : styles.select.normal}
+                              onChange={(event) => changeData(event)}>
+                              {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
+                              <option>kaynak girin</option>
 
-                  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
-                      Araç Ekle
-                      {/* <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
-                    </caption>
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th scope="col" class="px-6 py-3">
-                          Araç Türü
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                          Yakıt Türü
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                          Birim
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                          Miktar
-                        </th>
-                        {/* <th scope="col" class="px-6 py-3">
+                              {cities?.map((citiy, index) => (
+                                <option key={index}>{citiy}</option>
+                              ))}
+                            </select>
+                            {control1 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+
+                          </div>
+
+                          <div className="block w-full">
+                            <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
+                            <select value={car.yakitturu} name='yakitturu' id="units" className={control2 ? styles.select.error : styles.select.normal}
+                              onChange={(event) => changeData(event)}>
+                              <option>yakıt turu girin</option>
+                              {units?.map((citiy, index) => (
+                                <option key={index}>{citiy}</option>
+                              ))}
+                            </select>
+                            {control2 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+
+                          </div>
+                          {
+                            degis === true ? <div className="block w-full">
+                              <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
+                              <select value={car.birim} name='birim' id="cities" className={control3 ? styles.select.error : styles.select.normal}
+                                onChange={(event) => changeData(event)}>
+                                <option>birim girin</option>
+
+                                {birim?.map((citiy, index) => (
+                                  <option key={index}>{citiy}</option>
+                                ))}
+                              </select>
+                              {control3 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+
+
+                            </div> : null
+                          }
+                          <div>
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
+                            <input
+                              type="text"
+                              value={car.miktar}
+                              name='miktar'
+                              className={control4 ? styles.input.error : styles.input.normal}
+                              placeholder="miktar girin"
+                              required
+                              onChange={(event) => changeData(event)}
+                            />
+                                                        {control4 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+
+
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                }
+                {/* form end */}
+                <hr className='mt-3' />
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+
+                  {
+                    gg ?
+
+                      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
+                          Araç Ekle
+                          {/* <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
+                        </caption>
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                            <th scope="col" class="px-6 py-3">
+                              Araç Türü
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                              Yakıt Türü
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                              Birim
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                              Miktar
+                            </th>
+                            {/* <th scope="col" class="px-6 py-3">
               <span class="sr-only">Edit</span>
           </th> */}
-                      </tr>
-                    </thead>
-                    {
-                      aracdata.map((arac, index) => (
+                          </tr>
+                        </thead>
+                      
+                        {
+                          aracdata.map((arac, index) => (
 
-                        <tbody key={index}>
-                          <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              {arac.car.aracturu}
-                            </th>
-                            <td class="px-6 py-4">
-                              {arac.car.yakitturu}
-                            </td>
-                            <td class="px-6 py-4">
-                              {arac.car.birim}
-                            </td>
-                            <td class="px-6 py-4">
-                              {arac.car.miktar}
-                            </td>
-                            {/* <td class="px-6 py-4 text-right">
+                            <tbody key={index}>
+                              <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                  {arac.car.aracturu}
+                                </th>
+                                <td class="px-6 py-4">
+                                  {arac.car.yakitturu}
+                                </td>
+                                <td class="px-6 py-4">
+                                  {arac.car.birim}
+                                </td>
+                                <td class="px-6 py-4">
+                                  {arac.car.miktar}
+                                </td>
+                                {/* <td class="px-6 py-4 text-right">
              <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
          </td> */}
-                          </tr>
-                        </tbody>
-                      ))
-                    }
-                  </table> : null
-              }
-            </div>
+                              </tr>
+                            </tbody>
+                          ))
+                        }
+                      </table> : null
+                  }
+                </div>
 
-            <div className='flex justify-end mt-4'>
-              <button onClick={() => Loading()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
-                {
-                  load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
-                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
-                  </svg> : null
-                }
-                {load ? 'Kaydediliyor' : "Kaydet"}
-              </button>
-              {/* <button
+                <div className='flex justify-end mt-4'>
+                  <button onClick={() => Loading()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                    {
+                      load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor" />
+                      </svg> : null
+                    }
+                    {load ? 'Kaydediliyor' : "Kaydet"}
+                  </button>
+                  {/* <button
                 onClick={(e) => handleAdd(e)}
                 type="button"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Ekle" : "Kaydet"}
                 </button> */}
-              {/* {
+                  {/* {
                 gg ? <button
                   onClick={(e) => handleSubmit(e)}
                   type="button"
                   className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">{degis ? "Kaydet" : "Kaydet"}</button>
                   : null
               } */}
-            </div>
-          </div>
-        </div> : null
-         }
+                </div>
+              </div>
+            </div> : null
+          }
         </div>
       </div>
       {/* <Deneme/> */}
