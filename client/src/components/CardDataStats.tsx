@@ -1,3 +1,4 @@
+import zIndex from '@mui/material/styles/zIndex';
 import React, { ReactNode } from 'react';
 
 interface CardDataStatsProps {
@@ -7,6 +8,14 @@ interface CardDataStatsProps {
   levelUp?: boolean;
   levelDown?: boolean;
   children: ReactNode;
+  backgroundColor:String;
+  boxShadow:String,
+  backdropFilter:String,
+  color:String,
+  background:String,
+  padding:String,
+  borderRadius:String,
+  marginBottom:String
 }
 
 const CardDataStats: React.FC<CardDataStatsProps> = ({
@@ -16,19 +25,26 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
   levelUp,
   levelDown,
   children,
+  color,
+  backdropFilter,
+  backgroundColor,
+  boxShadow,
+  background,
+  padding,
+  marginBottom,
+  borderRadius
 }) => {
   return (
-    <div className="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border flex justify-between items-center border-stroke bg-white py-6 px-5.5 shadow-default dark:border-strokedark dark:bg-boxdark" style={{backdropFilter,backgroundColor,boxShadow}}>
       <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
         {children}
       </div>
-
-      <div className="mt-4 flex items-end justify-between">
+      <div className="mt-1 flex items-end justify-between" >
         <div>
-          <h4 className="text-title-md font-bold text-black dark:text-white">
+          <h4 className="text-title-md font-bold" style={{color,marginBottom}}>
             {total}
           </h4>
-          <span className="text-sm font-medium">{title}</span>
+          <span className="text-normal font-medium" style={{background,padding,borderRadius,color}}>{title}</span>
         </div>
 
         <span
@@ -40,13 +56,15 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
 
           {levelUp && (
             <svg
+            
               className="fill-meta-3"
               width="10"
               height="11"
               viewBox="0 0 10 11"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="https://cdn.prod.website-files.com/5e1d248fa12b0ac621835ebb/5e1d653b5caa275d1f4cc575_icon-7.svg"
             >
+              
               <path
                 d="M4.35716 2.47737L0.908974 5.82987L5.0443e-07 4.94612L5 0.0848689L10 4.94612L9.09103 5.82987L5.64284 2.47737L5.64284 10.0849L4.35716 10.0849L4.35716 2.47737Z"
                 fill=""
