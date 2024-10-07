@@ -57,6 +57,9 @@
   position: relative;
   
 }
+.rcsd.rcsd-dropdown{
+  width: 250px !important;
+}
 .video-title{
   display: flex;
   justify-content: center;
