@@ -149,9 +149,9 @@ const ChartOne: React.FC = () => {
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
         <div className="flex w-full flex-wrap gap-3 sm:gap-5">
           <div className="flex w-full">
-            <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
-            </span>
+            {/* <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
+              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#00a0fe]"></span>
+            </span> */}
             <div className="w-full">
               <p className="font-semibold text-black dark:text-white" >Aylara Göre Karbon Emisyonu Dağılımı</p>
               <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>

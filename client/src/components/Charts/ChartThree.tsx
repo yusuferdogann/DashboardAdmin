@@ -12,7 +12,7 @@ const options: ApexOptions = {
     type: 'donut',
   },
   colors: ['#00ff8e', '#00ffb3', '#00ffea', '#00a0fe'],
-  labels: ['Desktop', 'Tablet', 'Mobile', 'Unknown'],
+  labels: ['Şişli Şube', 'Etimeskut Şube', 'Mamak Şube', 'Gölbaşı Şube'],
   legend: {
     show: false,
     position: 'bottom',
@@ -121,7 +121,7 @@ const ChartThree: React.FC = () => {
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ff8e]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Şişli Şube </span>
               <span> 65% </span>
@@ -130,7 +130,7 @@ const ChartThree: React.FC = () => {
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ffb3]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Etimeskut Şube </span>
               <span> 34% </span>
@@ -139,19 +139,19 @@ const ChartThree: React.FC = () => {
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ffea]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Mamak Şube </span>
-              <span> 45% </span>
+              <span> 12% </span>
             </p>
           </div>
         </div>
         <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#0FADCF]"></span>
+            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00a0fe]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> Gölbaşı Şube </span>
-              <span> 12% </span>
+              <span> 56% </span>
             </p>
           </div>
         </div>

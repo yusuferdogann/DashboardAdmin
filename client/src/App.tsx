@@ -36,7 +36,7 @@ function App() {
             <DefaultLayout>
               <Routes>
                 <Route
-                  index
+                  path="/facility"
                   element={
                     <>
                       <PageTitle title="Dashboard " />
