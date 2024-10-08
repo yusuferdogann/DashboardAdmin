@@ -19,33 +19,32 @@ import Sumary from './pages/Sumary';
 import Register from './pages/Authentication/Register';
 import Login from './pages/Authentication/Login';
 import { userAuth } from './auth/userAuth';
-import Facility from './pages/Facility';
 
 
 function App() {
-  
+  const [loading, setLoading] = useState<boolean>(true);
+  const { token } = userAuth()
+  const navigate = useNavigate()
 
 
  
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/login")
+      
+    }
+  }, [token, navigate])
 
   return (
     <>
     {
-      
+      (!token) ?
+      <Login/> :
             <DefaultLayout>
               <Routes>
                 <Route
-                  path="/facility"
-                  element={
-                    <>
-                      <PageTitle title="Dashboard " />
-                      <Facility />
-                    </>
-                  }
-                />
-                 <Route
-                  path="/dashboard"
+                  index
                   element={
                     <>
                       <PageTitle title="Dashboard " />
