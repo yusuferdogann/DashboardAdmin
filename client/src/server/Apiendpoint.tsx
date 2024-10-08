@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const instance = axios.create({
-    baseURL:'https://dashboard-admin-new.vercel.app'
+    baseURL:'https://dashboard-admin-lovat.vercel.app'
 })
 
 
