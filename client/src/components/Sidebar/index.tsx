@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/new-logo-new.png';
+import { Tooltip, Button } from "@material-tailwind/react";
+import zIndex from '@mui/material/styles/zIndex';
+import Image from "../../images/logo/sidebarlogodd.jpg"
+
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -14,12 +18,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
-
+  const fileUploadRef = useRef();
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
 
+  const [avatarURL,setAvatarURL] = useState('')
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -55,18 +60,46 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
+  const handleImageUpload = (event) =>{
+    event.preventDefault();
+    fileUploadRef.current.click();
+  }
+
+  const uploadImageDisplay = ()=>{
+    const uploadFile = fileUploadRef.current.files[0];
+    const cachedURL = URL.createObjectURL(uploadFile);
+    setAvatarURL(cachedURL)
+  }
+
+
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/">
-          <img style={{borderRadius:"20px"}} src={Logo} alt="Logo" />
-        </NavLink>
+      <div className="flex items-center justify-between relative logoblock" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:avatarURL ? "" : '2px dashed white',height:"140px"}}>
+      
+          
+         
+       
+        <form id='form' encType='multipart/form-data' action="">
+        <div className='absolute top-0 right-0 z-999  text-bodydark1 duration-300 ease-in-out hover:bg-white dark:hover:bg-white bg-[#d3d3d3] dark:bg-meta-4 logohover' style={{padding:"10px",borderRadius:'50%',margin:".75rem"}}>
+         <button type='submit' onClick={handleImageUpload}> <i style={{fontSize:'35x',color:"black"}} className="fa-regular fa-image"></i></button>
+        </div>
+        <input type="file"  id='file' ref={fileUploadRef} onChange={uploadImageDisplay} hidden/>
+        </form>
+         <div className='relative' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
+         <img className='z-99' style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"240px"}} src={avatarURL} alt=""/>
+         <div className='absolute top-0'>
+         <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0"}}>
+          <button className='flex justify-center items-center relative z-3320' style={{height:'140px',width:'240px',borderRadius:'20px'}}>{avatarURL ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
+        </Tooltip>
+         </div>
+         </div>
+      
 
         <button
           ref={trigger}
@@ -119,9 +152,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  
-
-<svg
+                        <svg
                           className="fill-current"
                           width="18"
                           height="18"
@@ -878,6 +909,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Auth Pages --> */}
             </ul>
           </div>
+          
         </nav>
         {/* <!-- Sidebar Menu --> */}
       </div>

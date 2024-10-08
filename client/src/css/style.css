@@ -57,6 +57,18 @@
   position: relative;
   
 }
+.logohover{
+  display: none;
+  -webkit-transition: all .2s ease-out;
+	-webkit-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+.logoblock:hover .logohover{
+
+
+  display: block;
+  
+}
 .rcsd.rcsd-dropdown{
   width: 250px !important;
 }

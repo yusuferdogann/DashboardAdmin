@@ -144,7 +144,7 @@ const index = (props) => {
                                 clearable
                                 searchable
                                 value={country}
-                                placeHolder='selam'
+                                placeHolder='Ülke girin'
                                 priority={['TR']}
                                 native='false'
                                 onChange={handleSetCountry}
@@ -158,6 +158,7 @@ const index = (props) => {
 
                             <StateDropdown
                                 clearable
+                                placeHolder='Şehir girin'
                                 searchable
                                 country={country}
                                 value={state}
@@ -173,6 +174,7 @@ const index = (props) => {
                                 className='w-40'
                                 clearable
                                 searchable
+                                placeHolder='İlçe girin'
                                 // allowFreeFormText
                                 country={country}
                                 state={state}
@@ -195,9 +197,9 @@ const index = (props) => {
                         </div>
                     </div> */}
                     <div>
-                        <span className="mb-2 block font-bold">Tesis</span>
+                        <span className="mb-0 block font-bold">Tesis</span>
                         <div className=" w-50 me-5">
-                            <input  onChange={(e) => handleChange7(e)} value={sweet} maxLength={31}   name='value7' type="text" placeholder="Tesis girin" className="w-full rounded border h-8 border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary " />
+                            <input  onChange={(e) => handleChange7(e)} value={sweet} maxLength={31}   name='value7' type="text" placeholder="Tesis girin" className="w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  " />
                             <small className="mt-2 text-sm text-red-600 dark:text-red-500">{sweet?.length === 31 ? "Max karakter sayısına ulaştınız" : ''}</small>
                         </div>
                     </div>
