@@ -7,6 +7,7 @@ import Deneme from "./deneme"
 import Videokayit from '../../../src/images/video/animation-video.mp4'
 // import Language from "../Facility/languagetest"
 import { Tooltip, Button } from "@material-tailwind/react";
+import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 
 
 
@@ -722,7 +723,8 @@ const AccordionCustomIcon = () => {
 
 
     <div >
-      
+      <Breadcrumb pageName="Hesaplama" />
+
       <Facility facilityData={getUlke} />
       {/* <Language/> */}
       <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>

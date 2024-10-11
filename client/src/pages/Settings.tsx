@@ -1,28 +1,33 @@
 import { Input } from '@material-tailwind/react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import userThree from '../images/user/user-03.png';
+import userThree from '../images/user/profile.webp';
 import { useState } from 'react';
 import { userAuth } from '../auth/userAuth';
+import { post } from "../server/Apiendpoint"
+import { handleSuccess } from '../common/utils/helpers';
+
 
 const Settings = () => {
-  const {token,user,Logout} = userAuth()
+  const {setUser,user} = userAuth()
 
   const [data,setData] = useState({
     // name:user.username,
-    position:'',
-    companyName:'',
-    cknNumber:'',
-    companyNumber:'',
-    companyMail:'',
-    companyWebsite:'',
-    facilityArea:'',
-    facilityClosedArea:'',
-    facilityOpenedArea:'',
-    facilityEmployeeNumber:'',
-    facilityTotalArea:''
+    companyName:user.company_info[0].company_name,
+    cknNumber:user.company_info[0].cknNumber,
+    companyNumber:user.company_info[0].companyNumber,
+    companyMail:user.company_info[0].companyMail,
+    companyWebsite:user.company_info[0].companyWebsite,
+    productArea:user.company_info[0].productArea,
+    closeArea:user.company_info[0].closeArea,
+    openArea:user.company_info[0].openArea,
+    workerCount:user.company_info[0].workerCount,
+    totalArea:user.company_info[0].totalArea,
+
+
+
+  
   })
-
-
+  console.log("dfdff",user)
   const changeSave = (e)=>{
     e.preventDefault()
    setData({
@@ -33,6 +38,27 @@ const Settings = () => {
 
   }
   
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log("VLUE",value)
+    try {
+      const loginuser = await post("/settings", data)
+      const response = loginuser.data
+
+      if (response.success) {
+
+        handleSuccess(response.message)
+        setUser(response.data.user)
+
+      }
+    } catch (error) {
+      console.log(error)
+
+    }
+  };
+
+
+
 
   return (
     // <>
@@ -343,7 +369,7 @@ const Settings = () => {
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-12">
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               {/* Profil bilgileri */}
               <div >
@@ -353,12 +379,12 @@ const Settings = () => {
                   </h3>
                 </div>
                 <div className="mb-4 flex items-center gap-3 px-7 py-2">
-                  <div className="h-14 w-14 rounded-full">
-                    <img src={userThree} alt="User" />
+                  <div className="h-14 w-14 rounded-full" >
+                    <img src={userThree} alt="User"  style={{borderRadius:"50%"}}/>
                   </div>
                   <div>
-                    <span className="mb-1.5 text-black dark:text-white">
-                      Yusuf ERDOĞAN
+                    <span className="font-bold text-black  mb-1.5 text-black dark:text-white">
+                      {user.username}
                     </span>
                     <span className="flex gap-2.5">
                       Genel Mudur
@@ -371,7 +397,6 @@ const Settings = () => {
 
               
               <div className="p-7 flex  " >
-              
                <div className="sirketbilgileri basis-1/2 " >
                <div className="border-b w-125 border-stroke py-4  dark:border-strokedark">
                 <h3 className="font-bold text-black dark:text-white">
@@ -437,7 +462,7 @@ const Settings = () => {
                         name="cknNumber"
                         id="fullName"
                         value={data.cknNumber}
-                        onChange={changeSave}
+                      
                       />
                     </div>
                   </div>
@@ -455,7 +480,8 @@ const Settings = () => {
                       name="companyNumber"
                       id="phoneNumber"
                       value={data.companyNumber}
-                      onChange={changeSave}
+
+                     
                     />
                   </div>
 
@@ -498,8 +524,9 @@ const Settings = () => {
                         type="email"
                         name="companyMail"
                         id="emailAddress"
-                        onChange={changeSave}
                         value={data.companyMail}
+
+                        
                       />
                     </div>
                   </div>
@@ -542,8 +569,9 @@ const Settings = () => {
                         type="text"
                         id="emailAddress"
                         name='companyWebsite'
-                        onChange={changeSave}
                         value={data.companyWebsite}
+
+                       
                       />
                     </div>
                   </div>
@@ -597,8 +625,9 @@ const Settings = () => {
                         type="text"
                         name="facilityArea"
                         id="emailAddress"
-                        onChange={changeSave}
-                        value={data.facilityArea}
+                        value={data.productArea}
+
+                       
                       />
                     </div>
                   </div>
@@ -641,8 +670,9 @@ const Settings = () => {
                         type="text"
                         name="facilityClosedArea"
                         id="emailAddress"
-                        onChange={changeSave}
-                        value={data.facilityClosedArea}
+                        value={data.closeArea}
+
+                       
                         
                       />
                     </div>
@@ -685,8 +715,9 @@ const Settings = () => {
                         type="text"
                         name="facilityOpenedArea"
                         id="emailAddress"
-                        onChange={changeSave}
-                        value={data.facilityOpenedArea}
+                        value={data.openArea}
+
+                       
                         
                       />
                     </div>
@@ -729,8 +760,9 @@ const Settings = () => {
                         type="text"
                         name="facilityEmployeeNumber"
                         id="emailAddress"
-                        onChange={changeSave}
-                        value={data.facilityEmployeeNumber}
+                        value={data.workerCount}
+
+                      
                         
                       />
                     </div>
@@ -773,8 +805,9 @@ const Settings = () => {
                         type="text"
                         name="facilityTotalArea"
                         id="emailAddress"
-                        onChange={changeSave}
-                        value={data.facilityTotalArea}
+                        value={data.totalArea}
+
+                       
                       />
                     </div>
                   </div>

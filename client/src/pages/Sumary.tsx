@@ -1,4 +1,5 @@
 import Tabs from "../common/Tabs/index"
+import Breadcrumb from "../components/Breadcrumbs/Breadcrumb"
 import{get} from "../server/Apiendpoint"
 import { useEffect, useState } from "react"
 
@@ -18,9 +19,14 @@ const Sumary = () => {
 atis()
 
   return (
-    <div>
-        <Tabs/>
-    </div>
+   <>
+    <Breadcrumb pageName="Özet" />
+
+<div>
+  
+    <Tabs/>
+</div>
+   </>
   )
 }
 

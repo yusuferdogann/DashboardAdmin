@@ -19,6 +19,7 @@ import Sumary from './pages/Sumary';
 import Register from './pages/Authentication/Register';
 import Login from './pages/Authentication/Login';
 import { userAuth } from './auth/userAuth';
+import Facility from './pages/Facility';
 
 
 function App() {
@@ -29,22 +30,58 @@ function App() {
 
  
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/login")
-      
-    }
-  }, [token, navigate])
+ 
 
   return (
     <>
     {
       (!token) ?
-      <Login/> :
+      
+        <Routes>
+          
+                  <Route
+                  path="/register"
+                  element={
+                    <>
+                      <PageTitle title="Kayıt Ol " />
+                      <Register />
+                    </>
+                  }
+                />
+                 <Route
+                  path="/login"
+                  element={
+                    <>
+                      <PageTitle title="Giriş Yap " />
+                      <Login />
+                    </>
+                  }
+                />
+                 <Route
+                  path="/"
+                  element={
+                    <>
+                      <PageTitle title="Giriş Yap " />
+                      <Login />
+                    </>
+                  }
+                />
+                
+        </Routes>
+      :
             <DefaultLayout>
               <Routes>
                 <Route
                   index
+                  element={
+                    <>
+                      <PageTitle title="Dashboard " />
+                      <ECommerce />
+                    </>
+                  }
+                />
+                <Route
+                  path='dashboard'
                   element={
                     <>
                       <PageTitle title="Dashboard " />
@@ -58,6 +95,15 @@ function App() {
                     <>
                       <PageTitle title="Register " />
                       <Register />
+                    </>
+                  }
+                />
+                 <Route
+                  path="/facility"
+                  element={
+                    <>
+                      <PageTitle title="Register " />
+                      <Facility />
                     </>
                   }
                 />
@@ -164,8 +210,7 @@ function App() {
               </Routes>
 
             </DefaultLayout>
-          
-                } 
+    } 
     </>
 
   )

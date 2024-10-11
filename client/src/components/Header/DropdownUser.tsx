@@ -1,13 +1,29 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
-import UserOne from '../../images/user/user-01.png';
+import UserOne from '../../images/user/profile.webp';
 import { userAuth } from '../../auth/userAuth';
+import Login from '../../pages/Authentication/Login';
+import { handleSuccess } from '../../common/utils/helpers';
+import { ToastContainer } from 'react-toastify';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const {token,user,Logout} = userAuth()
+  const navigate = useNavigate();
 
+
+  const handleLogout = () =>{
+setTimeout(()=>{
+  handleSuccess('cikis')
+
+},500)
+    setTimeout(()=>{
+      navigate('/login')
+      window.localStorage.clear();
+      window.location.reload()
+    },2000)
+  }
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -19,13 +35,13 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             {user && <span>{user.username}</span>}
           </span>
-          <span className="block text-xs">FrontEnd Developer</span>
+          {/* <span className="block text-xs">FrontEnd Developer</span> */}
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span className="h-12 w-12 rounded-full" style={{border:"1px solid #e8e8e8",overflow:"hidden"}}>
+          <img src={UserOne} alt="User"  />
         </span>
-
+        {/* #e8e8e8 */}
         <svg
           className="hidden fill-current sm:block"
           width="12"
@@ -49,7 +65,7 @@ const DropdownUser = () => {
           className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
         >
           <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
-            <li>
+            {/* <li>
               <Link
                 to="/profile"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -73,10 +89,10 @@ const DropdownUser = () => {
                 </svg>
                 Şirket Profili
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
-                to="#"
+                to="/settings"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
               >
                 <svg
@@ -95,7 +111,7 @@ const DropdownUser = () => {
                 Şirket Bilgileri
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to="/settings"
                 className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -119,11 +135,11 @@ const DropdownUser = () => {
                 </svg>
                 Hesap Ayarları
               </Link>
-            </li>
+            </li> */}
           </ul>
-          <li>
-          <Link to='/auth/login'> 
-          <button onClick={Logout}  className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <li style={{listStyleType: "none"}}>
+           
+          <button onClick={()=>handleLogout()}  className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"
@@ -143,8 +159,9 @@ const DropdownUser = () => {
             </svg>
             Çıkış Yap
           </button>
-          </Link>
+        
           </li>
+          <ToastContainer/>
         </div>
       )}
       {/* <!-- Dropdown End --> */}
