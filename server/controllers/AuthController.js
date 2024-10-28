@@ -1,125 +1,117 @@
-// const bcrypt = require("bcryptjs")
-// const jwt= require('jsonwebtoken');
-// const UserModel = require("../models/User")
+const Usermodels = require("../models/User");
+const Data = require("../models/data");
+const express = require("express");
+const CustomError = require("../helpers/error/CustomError");
+const asyncErrorWrapper = require("express-async-handler");
+const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
+const {
+  validateUserInput,
+  comparePassword,
+} = require("../helpers/input/inputHelpers");
+
+const register = asyncErrorWrapper(async (req, res, next) => {
+  const { username, email, password } = req.body;
+
+  const user = await Usermodels.create({
+    username,
+    email,
+    password,
+  });
+
+  //   vide 250 4.15 silindi yerine sendJwtToClient yapasi olsutruldu
+
+  //   const token =   user.genereteJwtFromUser();
+  //   console.log(token)
+  //   res.status(200).json({
+  //     success: true,
+  //     data: user,
+  //   });
+
+  sendJwtToClient(user, res);
+});
+
+const login = asyncErrorWrapper(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!validateUserInput(email, password)) {
+    return next(new CustomError("Please check your inputs", 400));
+  }
+
+  const user = await Usermodels.findOne({ email }).select("+password");
+
+  if (!comparePassword(password, user.password)) {
+    return next(new CustomError("Pelease check your credentials", 400));
+  }
+
+  // Ders 253 te 13.06 kaldiriyor onun yerine alttaki sendJwtToClinent functionu ekliyor
+  // res.status(200)
+  // .json({
+  //   success:true
+  // })
+
+  sendJwtToClient(user, res);
+});
+const logout = asyncErrorWrapper(async (req, res, next) => {
+  const { NODE_ENV } = process.env;
+  return res
+    .status(200)
+    .cookie({
+      httpOnly: true,
+      expires: new Date(Date.now()),
+      secure: NODE_ENV === "development" ? false : true,
+    })
+    .json({
+      success: true,
+      message: "Logout Successfull",
+    });
+});
+const addFacility = async (req, res) => {
+  //   console.log(token)
+};
+
+const imageUpload = asyncErrorWrapper(async (req, res, next) => {
+
+ const user =  await Usermodels.findByIdAndUpdate(req.user.id,{
+    "company_logo" : req.saveProfileImage
+  },{
+    new:true,
+    runValidators:true
+  })
+  res.status(200).json({
+    success: true,
+    message: "Image upload successfull",
+    data:user
+  });
+});
 
 
-// const signup = async(req,res)=>{
-//     try {
-//         const {name,email,password} = req.body;
-//         const user = await UserModel.findOne({email})
-//         if (user) {
-//             return res.status(409)
-//             .json({message:'User is already exist you can login',success:false})
-            
-//         }
-//         const userModel = new UserModel({name,email,password})
-//         userModel.password = await bcrypt.hash(password,10);
-//         await userModel.save();
-//         res.status(201)
-//         .json({
-//             message:"Signup successfully",
-//             success:true
-//         })
+const addData = asyncErrorWrapper(async(req,res,next)=>{
+    const data = req.body;
+    const savedData = await Data.create({
+      ...data,
+      user:req.user.id
+    })
+    res.status(200)
+    .json({
+      success:true,
+      message:'add data operation is successfull',
+      data:savedData
+    })
+})
 
-//     } catch (err) {
-//         res.status(500)
-//         .json({
-//             message:"Internal server error1",
-//             success:false
-//         })
-//     }
-// }
+const getUser = (req, res, next) => {
+  //   throw new Error()
+  res.json({
+    success: true,
+    data: {
+      id: req.user.id,
+      name: req.user.name,
+      password: req.user.password,
+    },
+  });
 
-
-// const login = async(req,res)=>{
-//     try {
-//         const {email,password} = req.body;
-//         const user = await UserModel.findOne({email})
-//         const errorMsg = "Auth failled email or password is wrong"
-//         if (!user) {
-//             return res.status(403)
-//             .json({message:errorMsg,success:false})
-            
-//         }
-//         const isPassEqual = await bcrypt.compare(password,user.password);
-        
-//         if (!isPassEqual) {
-//             return res.status(403)
-//             .json({message:errorMsg,success:false})
-//         }
-//         const jwtToken = jwt.sign(
-//             {email:user.email,_id:user._id},
-//             process.env.JWT_SECRET,
-//             {expiresIn:'24h'}
-//         )
-//         res.status(200)
-//         .json({
-//             message:"Login successfully",
-//             success:true,
-//             jwtToken,
-//             email,
-//             name:user.name
-//         })
-
-//     } catch (err) {
-//         res.status(204)
-//         .json({
-//             status:"success",
-//             data:[],
-//             message:"Internal server error1",
-//             success:false
-//         })
-//     }
-// }
-
-// module.exports = {
-//     signup,
-//     login
-// }
-const Usermodels = require('../models/User')
-const bcrypt=require('bcryptjs')
-const jwt = require('jsonwebtoken')
-
-const register= async(req,res)=>{
-
-    try {
-        const {email,username,password} = req.body
-    const exituser = await Usermodels.findOne({email})
-
-    if(exituser){
-        return res.status(400).json({message:"User already exists with this email"})
-    }
-
-    const hasePassword = await bcrypt.hash(password,10)
-    const newUser = new Usermodels({email,username,password:hasePassword})
-    await newUser.save()
-    res.status(200).json({success:true,message:"User registered succesfull",user:newUser})
-    // console.log(newUser)
-        
-    } catch (error) {
-        console.log(error)
-    }
-
-}
-
-const login= async(req,res)=>{
-    try {
-        const {email,password}= req.body
-    // console.log("login api")
-    const user =await Usermodels.findOne({email})
-    if (!user) {
-     return  res.status(400).json({success:false,message:"user not found"})
-    }
-    const ispasswordValid = await bcrypt.compare(password,user.password)
-    if(!ispasswordValid){
-        return  res.status(400).json({success:false,message:"Invalid password"})
-
-    }
-    const token = jwt.sign({iserId:user._id,email:user.email},process.env.JWT_SCRET,{expiresIn:"3d"})
-    res.status(200).json({success:true,message:"Login success",data:{user,token}})
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-module.exports={register,login}
+ 
+  // return next(new CustomError("BIR HATA OUSTUR",400))
+  //   return next(new CustomError("BIR HATA OUSTU"));
+};
+module.exports = { register, login, addFacility, getUser, logout,imageUpload,addData};

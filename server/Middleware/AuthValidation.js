@@ -1,4 +1,9 @@
 const Joi = require("joi");
+const router = require("../routes/ProductRouter");
+var httpContext = require('express-http-context');
+const database = require("../config/database");
+
+
 
 const signupValidation = (req, res, next) => {
   const schema = Joi.object({
@@ -27,7 +32,18 @@ const loginValidation = (req, res, next) => {
   next();
 };
 
+
+function getUserInfo(title, content, callback) {
+  // var user = httpContext.get('user');
+  // database.insert({ title, content }, callback);
+  // console.log(user)
+  console.log("test",req.session.user)
+
+}
+
+
 module.exports = {
   signupValidation,
   loginValidation,
+  getUserInfo
 };
