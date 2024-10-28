@@ -2,7 +2,10 @@ import axios from "axios"
 
 const instance = axios.create({
     // baseURL:'https://dashboard-admin-lovat.vercel.app'
-    baseURL:'https://dashboard-admin-lovat.vercel.app/api'
+    // baseURL:'https://dashboard-admin-lovat.vercel.app/api' son guncel api
+
+    baseURL:'http://localhost:3000/api'
+
 
 })
 

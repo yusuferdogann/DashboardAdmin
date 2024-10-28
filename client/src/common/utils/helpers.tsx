@@ -12,3 +12,12 @@ export const handleError = (msg:String)=>{
         position:"top-right"
     })
 }
+
+
+export const handleErrorForFacility = (msg:String)=>{
+    toast.warning(msg,{
+        position: "top-right",
+        autoClose: 10000,
+
+    })
+}

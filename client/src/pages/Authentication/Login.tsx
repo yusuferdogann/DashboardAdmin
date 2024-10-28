@@ -6,9 +6,13 @@ import { handleSuccess } from '../../common/utils/helpers';
 import { Link, useNavigate } from 'react-router-dom';
 import { userAuth } from '../../auth/userAuth';
 import Register from "./Register"
+import { useCookies } from 'react-cookie'
+
 
 const Login: React.FC = () => {
   const { setToken, setUser } = userAuth();
+  const [cookies, setCookie] = useCookies(['token'])
+
   const navigate = useNavigate();
 
 
@@ -29,9 +33,14 @@ const Login: React.FC = () => {
       
       const loginuser = await post("/login", value)
       const response = loginuser.data
+      console.log(response)
+      localStorage.setItem("access_token", JSON.stringify(response.access_token))
       
-      localStorage.setItem("token", JSON.stringify(response.data.token))
-      localStorage.setItem("user", JSON.stringify(response.data.user))
+      localStorage.setItem("username", JSON.stringify(response.data.username))
+      let expires = new Date()
+     expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+     setCookie('token', response.token, { path: '/',  expires})
+     console.log("cook amk",cookies)      
 
       setToken(response.data.token)
       setUser(response.data.user)

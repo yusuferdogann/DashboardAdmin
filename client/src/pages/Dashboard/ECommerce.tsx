@@ -9,13 +9,14 @@ import TableOne from '../../components/Tables/TableOne';
 import Image1 from "../../images/logo/co2_4038678.png"
 import Image2 from "../../images/logo/gas_3327542.png"
 import Image3 from "../../images/logo/tesla-coil_9888644.png"
+import Slider from "../../common/Slider"
 
 
 
 const ECommerce: React.FC = () => {
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
          title="22 ton "
           total="KAPSAM 1"
@@ -33,12 +34,12 @@ const ECommerce: React.FC = () => {
         // rate="4.35%" 
         // levelUp
         >
-                   <img src={Image2} alt="" />
+        <img src={Image2} alt="" />
 
         </CardDataStats>
         <CardDataStats  
          title="134 m3"
-         total="KASAM 3"
+         total="KAPSAM 3"
          color='black'
 
           // rate="2.59%"  
@@ -85,8 +86,11 @@ const ECommerce: React.FC = () => {
           </svg> */}
         </CardDataStats>
       </div>
+        <div className='mt-10'>
+        <Slider/>
 
-      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6  2xl:mt-7.5 2xl:gap-7.5">
+        </div>
+      <div className=" grid grid-cols-12 gap-4 md:gap-6  2xl:gap-7.5">
         <ChartOne />
         <ChartTwo />
         <ChartThree />
@@ -99,6 +103,7 @@ const ECommerce: React.FC = () => {
         </div>
         {/* <ChatCard /> */}
       </div>
+
     </>
   );
 };

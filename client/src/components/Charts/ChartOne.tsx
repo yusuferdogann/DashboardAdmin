@@ -8,7 +8,7 @@ const options: ApexOptions = {
     position: 'top',
     horizontalAlign: 'left',
   },
-  colors: ['#00ff8e', '#00a0fe'],
+  colors: ['#00ff8e', '#00a0fe','#9ea4e7'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     height: 335,
@@ -70,7 +70,7 @@ const options: ApexOptions = {
   markers: {
     size: 4,
     colors: '#fff',
-    strokeColors: ['#3056D3', '#80CAEE'],
+    strokeColors: ['#3056D3', '#80CAEE','#9ea4e7'],
     strokeWidth: 3,
     strokeOpacity: 0.9,
     strokeDashArray: 0,
@@ -83,7 +83,7 @@ const options: ApexOptions = {
   },
   xaxis: {
     type: 'category',
-    categories: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+    categories: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
     
     axisBorder: {
       show: false,
@@ -114,13 +114,16 @@ const ChartOne: React.FC = () => {
   const [state, setState] = useState<ChartOneState>({
     series: [
       {
-        name: 'Product One',
+        name: 'Kapsam 1',
         data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
       },
-
       {
-        name: 'Product Two',
+        name: 'Kapsam 2',
         data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+      },
+      {
+        name: 'Kapsam 3',
+        data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
       },
     ],
   });

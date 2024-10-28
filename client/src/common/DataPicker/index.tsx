@@ -40,7 +40,7 @@ const index = (props) => {
 
   return (
     <div className="grid grid-cols-1 w-200 " >
-      <div className="flex flex-col mb-4">
+      <div className="flex flex-col my-4">
         {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
         <div>
         { change===false ? <i class="fa-solid fa-triangle-exclamation text-2xl" style={{color:"#d46c6c"}}></i> : null}

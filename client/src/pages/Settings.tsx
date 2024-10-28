@@ -27,7 +27,6 @@ const Settings = () => {
 
   
   })
-  console.log("dfdff",user)
   const changeSave = (e)=>{
     e.preventDefault()
    setData({
@@ -35,7 +34,6 @@ const Settings = () => {
       [e.target.name]: e.target.value,
     });
     console.log("result",data)
-
   }
   
   const handleSubmit = async (e) => {
@@ -384,7 +382,7 @@ const Settings = () => {
                   </div>
                   <div>
                     <span className="font-bold text-black  mb-1.5 text-black dark:text-white">
-                      {user.username}
+                      {user?.username}
                     </span>
                     <span className="flex gap-2.5">
                       Genel Mudur
@@ -457,6 +455,7 @@ const Settings = () => {
                     <div className="relative">
                       
                       <input
+                      onChange={changeSave}
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="cknNumber"
@@ -475,6 +474,7 @@ const Settings = () => {
                       Şirket Numarası
                     </label>
                     <input
+                    onChange={changeSave}
                       className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="text"
                       name="companyNumber"
@@ -525,7 +525,7 @@ const Settings = () => {
                         name="companyMail"
                         id="emailAddress"
                         value={data.companyMail}
-
+                        onChange={changeSave}
                         
                       />
                     </div>
@@ -570,7 +570,7 @@ const Settings = () => {
                         id="emailAddress"
                         name='companyWebsite'
                         value={data.companyWebsite}
-
+                        onChange={changeSave}
                        
                       />
                     </div>
@@ -621,12 +621,13 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
+                                              onChange={changeSave}
+
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="facilityArea"
+                        name="productArea"
                         id="emailAddress"
                         value={data.productArea}
-
                        
                       />
                     </div>
@@ -668,9 +669,10 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="facilityClosedArea"
+                        name="closeArea"
                         id="emailAddress"
                         value={data.closeArea}
+                        onChange={changeSave}
 
                        
                         
@@ -713,10 +715,10 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="facilityOpenedArea"
+                        name="openArea"
                         id="emailAddress"
                         value={data.openArea}
-
+                        onChange={changeSave}
                        
                         
                       />
@@ -758,10 +760,10 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="facilityEmployeeNumber"
+                        name="workerCount"
                         id="emailAddress"
                         value={data.workerCount}
-
+                        onChange={changeSave}
                       
                         
                       />
@@ -801,12 +803,12 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
+                        onChange={changeSave}
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="facilityTotalArea"
+                        name="totalArea"
                         id="emailAddress"
                         value={data.totalArea}
-
                        
                       />
                     </div>

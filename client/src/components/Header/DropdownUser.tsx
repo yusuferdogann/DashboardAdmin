@@ -15,7 +15,7 @@ const DropdownUser = () => {
 
   const handleLogout = () =>{
 setTimeout(()=>{
-  handleSuccess('cikis')
+  handleSuccess('Çıkış işlemi başarılı')
 
 },500)
     setTimeout(()=>{

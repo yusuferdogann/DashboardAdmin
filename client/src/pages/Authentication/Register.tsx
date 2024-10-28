@@ -5,6 +5,9 @@ import Logo from '../../images/logo/logo.svg';
 import { post } from "../../server/Apiendpoint";
 import { ToastContainer } from 'react-toastify';
 import { handleSuccess } from '../../common/utils/helpers';
+import { userAuth } from '../../auth/userAuth';
+
+ 
 // import toast from "react-hot-toast"
 
 
@@ -12,27 +15,9 @@ import { handleSuccess } from '../../common/utils/helpers';
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
-    const [value, setValue] = useState({
-        email: '',
-        company_info:[ 
-        {
-            company_name:"CARBONISTAN",
-            cknNumber:"555333444",
-            companyNumber:"(332) 111 11 11",
-            companyMail:"info@carbonistan.com",
-            companyWebsite:"www.yusuferdogan.com.tr",
-            productArea:"10.000m2",
-            closeArea:"5.000m2",
-            openArea:"5.000m2",
-            workerCount:"220",
-            totalArea:"11.500m2"
-        },
-        ],
-        facility:[],
-        password: '',
-        username: ''
-       
-    });
+    const {setValue,value} = userAuth()
+
+   
     console.log("vavava",value)
     const handleChange = (e) => {
         setValue({

@@ -3,11 +3,21 @@ import Facility from "../Facility/index"
 import DataPicker from "../../common/DataPicker/index"
 import { useEffect, useState } from "react";
 import { post } from "../../server/Apiendpoint"
-import Deneme from "./deneme"
+import PersonalCar from "../Calculatıon/PersonalCar"
+import ServiceCar from "../Calculatıon/ServiceCar"
+import EmployeeCar from "../Calculatıon/EmployeeCar"
+import TravelCar from "../Calculatıon/TravelCar"
 import Videokayit from '../../../src/images/video/animation-video.mp4'
 // import Language from "../Facility/languagetest"
 import { Tooltip, Button } from "@material-tailwind/react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
+import { userAuth } from '../../auth/userAuth';
+import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, } from "@material-tailwind/react";
+import { handleErrorForFacility } from '../../common/utils/helpers'
+import { ToastContainer } from 'react-toastify'
+import PdfView from "../Pdf/PdfView";
+import { PDFViewer } from '@react-pdf/renderer';
+
 
 
 
@@ -27,7 +37,20 @@ const Icon = ({ id, open }) => {
 }
 
 const AccordionCustomIcon = () => {
+  const [veri, setVeri] = useState()
+  const [veri2,setVeri2] = useState([])
+  const styles = {
+    input: {
+      normal: 'bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+      error: 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
+    },
+    select: {
+      normal: 'h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none',
+      error: 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-1 px-4 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
 
+    }
+  }
+  const [statescope3, setStateScope3] = useState('personal')
 
   const Countries = [
     {
@@ -104,14 +127,33 @@ const AccordionCustomIcon = () => {
     }
 
   ]
+  const Data = [
+    {
+        label: "Şahsi Araçlar",
+        value: "personal",
+    },
+    {
+        label: "Servis Araçlar",
+        value: "service",
+    },
+    {
+        label: "Müşteri Ziyaretleri",
+        value: "employee"
+    },
+    {
+      label: "İş Seyahatleri",
+      value: "business"
+  },
+  
 
- 
+];
 
+  const { facilitySend } = userAuth();
 
   const [units, setUnits] = useState([]);
   const [country, setCountry] = useState([]);
   const [state, setState] = useState([])
-  const [citiy, setCitiy] = useState()
+  const [citiy, setCitiy] = useState('')
   const [cities, setCities] = useState([])
   const [birim, setBirim] = useState([])
   const [states, setStates] = useState([]);
@@ -133,14 +175,61 @@ const AccordionCustomIcon = () => {
     { id: 2, title: '', subtitle: '', elektrik: ['ele'] },
     { id: 3, title: '', subtitle: '', upstream: ['gg'], downstrem: ['rr'] }
   ]);
+
+  var currentdate = new Date(); 
+  var datetime =    currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() + " - "  
+                  + currentdate.getHours() + ":"  
+                  + currentdate.getMinutes() 
+  // console.log("date-time",datetime)
+  const [savedData, setSavedData] = useState(
+    { 
+      id: 1,
+      tarih:datetime,
+      title: '', 
+      subtitle: '', 
+      kaynak: '', 
+      birim: '', 
+      miktar: '',
+      ulke:facilitySend?.country,
+      sehir:facilitySend?.city,
+      ilce:facilitySend?.town,
+      tesis:facilitySend?.name
+     }
+  );
+  // TR Format date - time=======================================
+  // const options = {
+  //   year: 'numeric',
+  //   month: 'long',
+  //   day: 'numeric'
+  // };
+  // const date_input = new Date()
+  // const formatter = ms => new Date( ms )
+  //   .toLocaleDateString("tr-TR", options )
+  //   .replace( / /g, '-' );
+    
+  // const invalid_str = formatter( date_input );
+  // console.log( invalid_str );
+  
+  // const valid_str = formatter( parseInt( date_input, 10));
+  // console.log( valid_str );
+  // =============================================================
+
+
   // const [todos, setTodos] = useState([{ id: 1, title: "", data: [] }]);
   const [baslik, setBaslik] = useState()
   const [subtitle, setSubtitle] = useState([])
   const [short, setShort] = useState([])
+  const [loadingData, setLoadingData] = useState({ kaynak: '', birim: '', miktar: '' })
+
+
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
+
   const [aracdata, setAracdata] = useState([])
   const [baslikvalue, setBaslikvalue] = useState('')
   const [load, setLoad] = useState(false)
+  const [textControl,setTextControl] = useState(false)
   const [id, setId] = useState()
   const [scope1, setScope1] = useState("")
   const [scope2, setScope2] = useState("")
@@ -149,10 +238,10 @@ const AccordionCustomIcon = () => {
   const [baslik2, setBaslik2] = useState("")
   const [datasub, setDatasub] = useState('')
   const [videopen, setVideopen] = useState(false)
-  const [control1,setControl1] = useState('')
-  const [control2,setControl2] = useState('')
-  const [control3,setControl3] = useState('')
-  const [control4,setControl4] = useState('')
+  const [control1, setControl1] = useState(false)
+  const [control2, setControl2] = useState(false)
+  const [control3, setControl3] = useState(false)
+  const [control4, setControl4] = useState(false)
 
 
   // function handleTitle(value,id){
@@ -161,6 +250,69 @@ const AccordionCustomIcon = () => {
   //      ? gg.title === value : todos
   //   )
   // }
+  // backendden donus =======================
+  // bi sonraki gun backende gonderilecek blgi revize edildi data yapisi degistirildi
+  const backendSendDataT = (data) => {
+    setSavedData(
+      savedData.find((p) => p.id === 1)
+        ? savedData.map((p) =>
+          p.id === 1
+            ? {
+              id: 1,
+              title: data,
+              subtitle: p.data,
+              data:p.data
+            }
+            : p
+        )
+        : savedData
+    );
+  }
+  const backendSendDataS = (data) => {
+    setSavedData(
+      savedData.find((p) => p.id === 1)
+        ? savedData.map((p) =>
+          p.id === 1
+            ? {
+              id: 1,
+              title: p.title,
+              subtitle: data,
+              data:p.data
+            }
+            : p
+        )
+        : savedData
+    );
+  }
+  const backendSendDataD = (veri) => {
+    setSavedData(
+      savedData.find((p) => p.id === 1)
+        ? savedData.map((p) =>
+          p.id === 1
+            ? {
+              id: 1,
+              title: p.title,
+              subtitle: p.subtitle,
+              data: [...p.data,{ kaynak: veri.kaynak, birim: veri.birim,miktar:veri.miktar}],
+
+            }
+            : p
+        )
+        : savedData
+    );
+  }
+  // console.log("saved-SUB",savedData)
+  // ========================================
+  
+  // ===============REVIZE DATA==============
+
+
+
+  // ========================================
+
+
+
+
   function handleTitle(title) {
     setTodos(
       todos.find((p) => p.id === 1)
@@ -178,7 +330,7 @@ const AccordionCustomIcon = () => {
         )
         : todos
     );
-    console.log(todos);
+    // console.log(todos);
   }
   function handleSubTitle(sub) {
     setTodos(
@@ -197,6 +349,7 @@ const AccordionCustomIcon = () => {
         )
         : todos
     );
+    // console.log("sub-title",todos)
   }
 
   function handleSabit(car) {
@@ -272,9 +425,8 @@ const AccordionCustomIcon = () => {
         : todos
     );
 
-    console.log(todos);
+    // console.log(todos);
   }
-
 
   // {
   //   startDate:'',endDate:'',ulke:'',sehir:'',tesis:'',ilce:'',
@@ -283,11 +435,8 @@ const AccordionCustomIcon = () => {
   //   kapsam3:[{name:'upstream',veri:[]},{name:'downstream',veri:[]}]
   // }
 
-
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
   const today = new Date();
-
-
 
   const changeCountry = (event) => {
     setScope1(false)
@@ -296,7 +445,14 @@ const AccordionCustomIcon = () => {
     setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
 
     if (event.target.value === 'Scope-1') {
-      setVideopen(true)
+      if(facilitySend?.country === undefined || facilitySend?.country === ""){
+        setVideopen(false)
+
+        return handleErrorForFacility("Lütfen kayıt yapmadan önce Tesisler sekmesinden tesis seçin veya yeni bir tesis ekleyin")
+      }
+      else{
+        setVideopen(true)
+      }
       setBaslik1(event.target.value)
       setBaslikvalue('TESİSTE ISINMA VE ÜRETİM AMACIYLA KULLANILAN ENERJİ TÜRLERİ')
       setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
@@ -305,6 +461,10 @@ const AccordionCustomIcon = () => {
 
       // handleTitle(event.target.value,1)
       handleTitle(event.target.value)
+      setSavedData({...savedData,"title":event.target.value})
+      //setKapsamdetail([...kapsamdetail,{"kapsambasligi":event.target.textContent}])
+
+      console.log("saved-data",savedData)
       //  console.log("first",todos) 
       // todos.filter((item)=>{
       //   if (item.id===1) {
@@ -316,7 +476,7 @@ const AccordionCustomIcon = () => {
       //   }
       // })      
 
-      console.log("todos", todos)
+      // console.log("todos", todos)
       // console.log("baslik uptaded",todos)
       // const check = kapsamdetail.filter(({ kapsambasligi }) => kapsambasligi === 'KAPSAM 1');
       // let isKeyPresent = kapsamdetail.some(el => {
@@ -376,28 +536,47 @@ const AccordionCustomIcon = () => {
       setGg(false)
       setDegis(false)
       setVer(false)
+      if(facilitySend?.country === undefined || facilitySend?.country === ""){
+        setVideopen(false)
+        handleOpen(false)
+        return handleErrorForFacility("Lütfen kayıt yapmadan önce Tesisler sekmesinden tesis seçin veya yeni bir tesis ekleyin")
+      }
+      else{
+        setVideopen(true)
+        handleOpen(2)
+      }
       handleTitle(event.target.value)
       setBaslikvalue('TESİS BÜNYESİNDE KAYITLI ARAÇLARIN KULLADIĞI YAKITLAR')
-      console.log("bassssss2", baslik)
+      // console.log("bassssss2", baslik)
 
       setStates(Countries.find((ctr) => ctr.name === "Scope-2").states);
 
 
     }
     else if (event.target.value === 'Scope-3') {
-      console.log("opennnn", open)
-      handleOpen(3)
+      // console.log("opennnn", open)
       setBaslik(event.target.value)
+      if(facilitySend?.country === undefined || facilitySend?.country === ""){
+        setVideopen(false)
+        setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
+        setBirim(states.find((state) => state).birim);
+        handleOpen(false)
+        return handleErrorForFacility("Lütfen kayıt yapmadan önce Tesisler sekmesinden tesis seçin veya yeni bir tesis ekleyin")
+      }
+      else{
+        handleOpen(3)
+        setVideopen(true)
+        setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
+        setBirim(states.find((state) => state).birim);
+      }
       setBaslikvalue('TESİSİNİZDE KULLANILAN SOĞUTUCU YANGIN TÜPLERİ(KARBON ESASLI)')
-      console.log("bassss3", baslik)
-      setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
-      setBirim(states.find((state) => state).birim);
+      // console.log("bassss3", baslik)
+     
       // setBirim([...alldata, { "birim": event.target.value }])
       // setBirim(states.find((state) => state).birim);
     }
 
   };
-
 
   const changeState = (event, index) => {
 
@@ -408,8 +587,8 @@ const AccordionCustomIcon = () => {
         if (first.id === index && event.target.id === "Scope-3") {
           setScope3(first.name)
           setId(first.id)
-          console.log("scopeson3", scope3)
-          console.log("scopetext3", event.target.textContent)
+          // console.log("scopeson3", scope3)
+          // console.log("scopetext3", event.target.textContent)
         }
 
       })
@@ -442,8 +621,8 @@ const AccordionCustomIcon = () => {
           setBaslik2(event.target.id)
           setDatasub(first.name)
           setId(first.id)
-          console.log("scopeson2", scope2)
-          console.log("scopetxt2", event.target.textContent)
+          // console.log("scopeson2", scope2)
+          // console.log("scopetxt2", event.target.textContent)
         }
 
       })
@@ -455,25 +634,27 @@ const AccordionCustomIcon = () => {
 
     }
     else if (event.target.id === "Scope-1") {
-
       if (event.target.textContent[0] === "S" || "H" || "D") {
 
         setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
-
+        setSavedData({...savedData,subtitle:event.target.textContent})
+        console.log("saved-data-subtitle",savedData)
         states.map((first) => {
           if (first.id === index && event.target.id === "Scope-1") {
             setScope1(first.name)
             setDatasub(first.name)
             setBaslik1(event.target.id)
             setId(first.id)
+
           }
 
         })
-        console.log("datasub", datasub)
+        // console.log("datasub", datasub)
         // setSubtit(states.find((ctr) => console.log(ctr.short)).subtit);
 
         handleSubTitle(event.target.textContent)
+
         // console.log("cities",cities)
         // let exists = Object.values(kapsamdetail).includes("kapsamalt");
         // let obj = kapsamdetail.find(o => o.kapsamalt === 'SABIT YANMA');
@@ -540,23 +721,27 @@ const AccordionCustomIcon = () => {
       setAlldata([...alldata, { "subtitle": event.target.textContent }])
     }
   }
+
   const handleAdd = (e) => {
     // ===============================================================================
     const title = todos.find(obj => obj.title === 'Scope-1');
     const subtitle = todos.find(obj => obj.subtitle[0] === 'S' || 'H' || 'D');
     const inputveri = cities.length
 
+    
+
     if (country === 'Scope-1') {
 
       if (inputveri === 24) {
 
         handleSabit(car)
+       
       }
       else if (inputveri === 9) {
         handleHareketli(car)
       }
     }
-    console.log("Scope-1", todos)
+    // console.log("Scope-1", todos)
 
     //  if (country==='Scope-2') {
     //   if (inputveri === 9) {
@@ -588,6 +773,7 @@ const AccordionCustomIcon = () => {
 
 
   };
+
   const handleSubmit = async (e) => {
 
     setAlldata([...alldata, sakla3])
@@ -603,10 +789,65 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
+  const getData = (value1) => {
+    setBigdata([...bigdata, { "StartDate": value1 }])
+
+    // console.log("dateeeee",date)
+    // setBigdata(startDate:date.startDate)
+    console.log("bigbig", value1)
+    console.log("DENEME", bigdata)
+
+
+  }
+
+  
+
+  // const handleSave = () => {
+  //   setCar({
+  //     ...car,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // }
+
+  const handleUpstream = () => {
+
+  }
+
+  const Loading = () => {
+    console.log("kaynak--------",savedData.kaynak)
+
+    if(savedData.kaynak === ''){
+      setControl1(true)
+    }
+    else if(savedData.birim === ''){
+      setControl2(true)
+    }
+    else if(savedData.miktar === ''){
+      setControl3(true)
+
+    }
+
+
+    setTimeout(() => {
+      setLoad(true)       
+      setTimeout(() => {
+        setLoad(false)
+      }, 500)
+
+    }, 500)
+
+    setTextControl(true)
+
+  }
   const changeData = (event, index) => {
+    setTextControl(false)
+    setControl1(false)
+    setControl2(false)
+      setControl3(false)
+      setControl4(false)
+
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
-
 
     // setSubtitle(event.target.textContent)
     // console.log("subtitle", subtitle)
@@ -618,12 +859,17 @@ const AccordionCustomIcon = () => {
     // console.log("sub",todos)
 
 
-    setCar({
-      ...car,
-      [event.target.name]: event.target.value,
+    // setCar({
+    //   ...car,
+    //   [event.target.name]: event.target.value,
 
+    // });
+    setSavedData({
+      ...savedData,
+      [event.target.name]: event.target.value,
     });
 
+    console.log("taking-data",savedData)
 
 
     if (event.target.value === "Yangın Söndürme Tüpü") {
@@ -646,86 +892,32 @@ const AccordionCustomIcon = () => {
     }
     else { null }
   }
-
-  const getData = (value1) => {
-    setBigdata([...bigdata, { "StartDate": value1 }])
-
-    // console.log("dateeeee",date)
-    // setBigdata(startDate:date.startDate)
-    console.log("bigbig", value1)
-    console.log("DENEME", bigdata)
-
-
-  }
-  const getUlke = (valuee) => {
-    // setBigdata([...bigdata,{valuee}])
-    // console.log("bigbigbig",valuee)
-  }
-
-  // const handleSave = () => {
-  //   setCar({
-  //     ...car,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // }
-
-  const handleUpstream = () => {
-
-  }
-  const Loading = () => {
-    console.log("selam")
-    setTimeout(() => {
-      setLoad(true)
-      if (country === "Scope-3" && subtitle === 'U') {
-        if(car.aracturu ===''){
-          setControl1(styles.input.error)
-        }
-        else if(car.yakitturu==='' || car.birim==='birim girin'){
-          setControl2(styles.input.error)
-
-        }
-        else if(car.birim==='' || car.birim==='kaynak girin'){
-          setControl3(styles.input.error)
-
-        }
-        else if(car.miktar===''){
-          setControl4(styles.input.error)
-
-        }
-        else{
-          setControl1(false)
-          setAracdata([...aracdata, { car }])
-
-        }
-      }
-      console.log("arac", car)
-      setTimeout(() => {
-        setLoad(false)
-      }, 500)
-
-    }, 500)
+  
+  const saveValue = (event: String | any, label: String | any) => {
+    setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
+    setStateScope3(label)
+    console.log("labelll",label)
+   
+}
 
 
-  }
-  const styles = {
-    input: {
-      normal: 'bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
-      error:'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
-    },
-    select:{
-      normal:'h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none',
-      error:'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-1 px-4 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
+  
+  // Facility Sayfasndan gelen veri
+  // console.log("coming-data",facilitySend)
+ 
+  console.log("taking-data-latest",savedData)
 
-    }
-  }
   return (
 
 
 
     <div >
-      <Breadcrumb pageName="Hesaplama" />
+          
 
-      <Facility facilityData={getUlke} />
+      <Breadcrumb pageName="Hesaplama" />
+      <Facility  />
+    
+      
       {/* <Language/> */}
       <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
         <div className='grid grid-cols-3 gap-4'>
@@ -830,7 +1022,32 @@ const AccordionCustomIcon = () => {
                 </div>
                 <hr className='my-4 ' />
                 {
-                  ver ? <Deneme /> :
+                  ver ? <div>
+                     <Tabs value='personal'>
+                        <TabsHeader className="table-backshadow ">
+
+                      {
+                        Data.map(({label,value})=>(
+                          <Tab className="text-normal  uppercase font-bold dark:bg-gray-200 dark:text-gray-200 hover:bg-[#6a6a6a1c] duration-300  ease-in-out" 
+                          key={value} 
+                          value={value} 
+                          onClick={(event) => saveValue(event, value)}
+                          >
+                            {label}
+                          </Tab>
+                        ))}
+                        </TabsHeader>
+                        <DataPicker/>
+                        <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar/></div>
+                        <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar/></div>
+                        <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar/></div>
+                        <div style={{display:statescope3 === 'business' ? 'block' : 'none'}}><TravelCar/></div>
+
+
+                  </Tabs> 
+                  
+                  </div>
+                  :
                     <div className="start">
                       <div className=''>
                         <DataPicker deneme={getData} />
@@ -841,13 +1058,14 @@ const AccordionCustomIcon = () => {
                         <div className='grid grid-cols-4 gap-3 my-5'>
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                            <select value={car.aracturu} name='aracturu' id="cities" className={control1 ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={control1 ? styles.select.error : styles.select.normal}
+                              onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
                               <option>kaynak girin</option>
 
                               {cities?.map((citiy, index) => (
-                                <option key={index}>{citiy}</option>
+                                <option key={index}>{textControl ? 'kaynak girin' : citiy}</option>
                               ))}
                             </select>
                             {control1 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
@@ -856,11 +1074,12 @@ const AccordionCustomIcon = () => {
 
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                            <select value={car.yakitturu} name='yakitturu' id="units" className={control2 ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={control2 ? styles.select.error : styles.select.normal}
+                              onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
-                              <option>yakıt turu girin</option>
+                              <option>Birim girin</option>
                               {units?.map((citiy, index) => (
-                                <option key={index}>{citiy}</option>
+                                <option key={index}>{textControl ? 'Birim girin' : citiy}</option>
                               ))}
                             </select>
                             {control2 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
@@ -869,9 +1088,9 @@ const AccordionCustomIcon = () => {
                           {
                             degis === true ? <div className="block w-full">
                               <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                              <select value={car.birim} name='birim' id="cities" className={control3 ? styles.select.error : styles.select.normal}
+                              <select value={baslik1 || baslik2 ? "" : car.yakitturu} name='yakitturu' id="cities" className={control3 ? styles.select.error : styles.select.normal}
                                 onChange={(event) => changeData(event)}>
-                                <option>birim girin</option>
+                                <option>yakit turu girin</option>
 
                                 {birim?.map((citiy, index) => (
                                   <option key={index}>{citiy}</option>
@@ -886,14 +1105,14 @@ const AccordionCustomIcon = () => {
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
                             <input
                               type="text"
-                              value={car.miktar}
+                              value={baslik1 || baslik2 ? savedData.miktar : car.miktar}
                               name='miktar'
                               className={control4 ? styles.input.error : styles.input.normal}
                               placeholder="miktar girin"
                               required
                               onChange={(event) => changeData(event)}
                             />
-                                                        {control4 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                            {control4 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
 
 
                           </div>
@@ -932,7 +1151,7 @@ const AccordionCustomIcon = () => {
           </th> */}
                           </tr>
                         </thead>
-                      
+
                         {
                           aracdata.map((arac, index) => (
 
@@ -990,7 +1209,7 @@ const AccordionCustomIcon = () => {
         </div>
       </div>
       {/* <Deneme/> */}
-
+  <ToastContainer/>
     </div>
   );
 }

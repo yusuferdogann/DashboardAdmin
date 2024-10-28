@@ -25,7 +25,7 @@ const Deneme = () => {
   console.log("state", state)
   return (
     <div>
-      <h3 className="mb-6">Çalışanların taşınmasından kaynaklı emilsyonlar</h3>
+      {/* <h3 className="mb-6">Çalışanların taşınmasından kaynaklı emilsyonlar</h3> */}
       <div className='grid grid-cols-1'>
         <DataPicker />
       </div>
@@ -260,23 +260,15 @@ const Deneme = () => {
               <option>Mehmet</option>
             </select>
           </div>
-          <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Biniş İstasyonu</label>
-            <select id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
-              <option>Biniş istasyonu seçin</option>
-              <option>Yusuf</option>
-              <option>Ahmet</option>
-              <option>Mehmet</option>
-            </select>
-          </div>
-          <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>İniş İstasyonu</label>
-            <select id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
-              <option>İniş istasyonu seçin</option>
-              <option>Yusuf</option>
-              <option>Ahmet</option>
-              <option>Mehmet</option>
-            </select>
+            <div className="block w-full">
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yolcu Sayısı</label>
+            <input
+              type="text"
+              name='miktar'
+              className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Yolcu sayısı girin"
+              required
+            />
           </div>
 
         </div>

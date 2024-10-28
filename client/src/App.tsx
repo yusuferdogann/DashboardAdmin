@@ -20,6 +20,7 @@ import Register from './pages/Authentication/Register';
 import Login from './pages/Authentication/Login';
 import { userAuth } from './auth/userAuth';
 import Facility from './pages/Facility';
+import Reports from './pages/Reports';
 
 
 function App() {
@@ -104,6 +105,15 @@ function App() {
                     <>
                       <PageTitle title="Register " />
                       <Facility />
+                    </>
+                  }
+                />
+                <Route
+                  path="/get-report"
+                  element={
+                    <>
+                      <PageTitle title="Roparlar " />
+                      <Reports />
                     </>
                   }
                 />

@@ -1,17 +1,14 @@
 import { colors, styled } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Country, State, City } from 'country-state-city';
-import {
-    CountryDropdown,
-    StateDropdown,
-    CityDropdown,
-    LanguageDropdown,
-    PhoneInput,
-} from "react-country-state-dropdown";
+import { userAuth } from '../../auth/userAuth';
+
 
 const index = (props) => {
 
     const [data, setData] = useState("")
+    const { value,setFacilitSend,facilitySend } = userAuth();
+
     // const [city, setCity] = useState({ value3: '', value4: '' })
     const [facility, setFacility] = useState({ value5: '', value6: '' })
     const [sweet, setSweet] = useState('')
@@ -30,9 +27,9 @@ const index = (props) => {
     const [dropcity, setDropCity] = useState(null);
     const [language, setLanguage] = useState(null);
 
-    const handleSetCountry = (e, value) => setCountry(value);
-    const handleSetState = (e, value) => setState(value);
-    const handleSetCity = (e, value) => setDropCity(value);
+    // const handleSetCountry = (e, value) => setCountry(value);
+    // const handleSetState = (e, value) => setState(value);
+    // const handleSetCity = (e, value) => setDropCity(value);
 
 
 
@@ -113,13 +110,8 @@ const index = (props) => {
              }
        else{
         setSweet(e.target.value)
-       }
-           
-       
-        
+       }   
     }
-
-   
     const handleChange4 = (e) => {
         // setSweet(e.target.value)
         // console.log(sweet.length)
@@ -131,12 +123,14 @@ const index = (props) => {
         // console.log("hhhhh",y)
     }
     // console.log("senddddd",send)
-    props.facilityData(send)
+    // props.facilityData(send)
+    // console.log("send-data",send)
+    // console.log("calculation-ust",facilitySend?.name)
     return (
         <div className='flex justify-between gap-2 p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  mb-12 '>
             <div>
                 {/* <h6 className="mb-4">Tesis Ayarları</h6> */}
-                <div className="flex items-start" >
+                {/* <div className="flex items-start" >
                     <div>
                         <span className="mb-2 font-bold">Ülke</span>
                         <div className="me-5">
@@ -184,7 +178,7 @@ const index = (props) => {
 
                         </div>
                     </div>
-                    {/* <div>
+                    <div>
                         <span className="mb-2 font-bold">Tesis</span>
                         <div className=" w-50 me-5">
                             <select onChange={(e)=>handleChange3(e,3)} id="countries" className="h-11 border border-gray-300 text-gray-600 text-base rounded-lg  mt-1 w-full py-2.5 px-4 ">
@@ -195,7 +189,7 @@ const index = (props) => {
                                 <option value="Atölye">Atölye</option>
                             </select>
                         </div>
-                    </div> */}
+                    </div>
                     <div>
                         <span className="mb-0 block font-bold">Tesis</span>
                         <div className=" w-50 me-5">
@@ -203,33 +197,32 @@ const index = (props) => {
                             <small className="mt-2 text-sm text-red-600 dark:text-red-500">{sweet?.length === 31 ? "Max karakter sayısına ulaştınız" : ''}</small>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className='flex justify-end  w-50' >
                 <div className="grid justify-end w-50" >
                     <div className=' px-5  justify-end w-100' >
                         <div className="flex justify-between">
-                            <span className="text-normal font-bold text-end w-100 me-5">{country?.native ? country?.native : "-----"}</span>
-                            <span className="text-normal  justify-end"><i style={{ color: country?.name ? "#3de846" : "black" }} className="fa-solid fa-flag" ></i></span>
-
+                            <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.country ? facilitySend?.country : country?.native ? country?.native : "-----"}</span>
+                            <span className="text-normal  justify-end"><i style={{ color:facilitySend?.country ? "#3de846" : country?.name ? "#3de846" : "black" }} className="fa-solid fa-flag" ></i></span>
                         </div>
                     </div>
                     <div className=' px-5  justify-end w-100'>
                         <div className="flex justify-between">
-                        <span className="text-normal font-bold text-end w-100 me-5">{dropcity?.name ? dropcity?.name : "-----"}</span>
-                            <span className="text-normal  justify-end"><i style={{ color: dropcity  ? "#3de846" : "black" }} className="fas fa-globe-europe"  ></i></span>
+                        <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.city ? facilitySend?.city : dropcity?.name ? dropcity?.name : "-----"}</span>
+                            <span className="text-normal  justify-end"><i style={{ color:facilitySend?.city? "#3de846" : dropcity  ? "#3de846" : "black" }} className="fas fa-globe-europe"  ></i></span>
                         </div>
                     </div>
                     <div className=' px-5  justify-end w-100'>
                         <div className="flex justify-between">
-                        <span className="text-normal font-bold text-end w-100 me-5">{state?.name ? state?.name : "-----"}</span>
-                            <span className="text-normal  justify-end"><i style={{ color: state?.name ? "#3de846" : "black" }} className="fas fa-map-marker-alt" ></i></span>
+                        <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.town? facilitySend?.town : state?.name ? state?.name : "-----"}</span>
+                            <span className="text-normal  justify-end"><i style={{ color:facilitySend?.town ? "#3de846" : state?.name ? "#3de846" : "black" }} className="fas fa-map-marker-alt" ></i></span>
                         </div>
                     </div>
                     <div className=' px-5  justify-end w-100'>
                         <div className="flex justify-between">
-                            <span className="text-normal font-bold text-end w-100 me-5">{sweet ? sweet : "-----"}</span>
-                            <span className="text-normal  justify-end" ><i style={{ color: sweet   ? "#3de846" : "black" }} className="fas fa-industry" ></i></span>
+                            <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.name ? facilitySend?.name : sweet ? sweet : "-----"}</span>
+                            <span className="text-normal  justify-end" ><i style={{ color:facilitySend?.town ? '#3de846' : sweet   ? "#3de846" : "black" }} className="fas fa-industry" ></i></span>
 
                         </div>
                     </div>
