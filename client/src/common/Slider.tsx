@@ -4,35 +4,38 @@ const MultiCardCarousel: React.FC = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const cards = [
     {
-      name:'ANKARA SUBE',
+      name:'ASELSAN ANKARA SUBE',
       image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
-      title: 'Card 1',
+      title: '1200',
       description: '12500m2',
+      totalCo2:'2.500/ton'
     },
     {
-      name:'KONYA SUBE',
+      name:'ASELSAN KONYA SUBE',
       image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
-      title: 'Card 2',
+      title: '460',
       description: '12323m2',
+      totalCo2:'1.500/ton'
     },
     {
       name:'ANTALYA SUBE',
       image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
       title: 'Card 3',
       description: '12323m2',
+      totalCo2:'2000/ton'
     },
-    {
-      name:'NIGDE SUBE',
-      image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
-      title: 'Card 4',
-      description: '12323m2',
-    },
-    {
-      name:'SEYDISEHIR SUBE',
-      image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
-      title: 'Card 5',
-      description: '12323m2',
-    },
+    // {
+    //   name:'NIGDE SUBE',
+    //   image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
+    //   title: 'Card 4',
+    //   description: '12323m2',
+    // },
+    // {
+    //   name:'SEYDISEHIR SUBE',
+    //   image: 'https://cdn.pixabay.com/photo/2023/12/15/22/37/mountains-8451480_1280.jpg',
+    //   title: 'Card 5',
+    //   description: '12323m2',
+    // },
   ];
 
   const handleNext = () => {
@@ -52,7 +55,7 @@ if(currentIndex>cards.length-3) {
       <div className=" ">
         <div className="relative">
           <div className="flex  grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
-            {cards.slice(currentIndex, currentIndex + 3).map((card, index) => (
+            {cards.slice(currentIndex, currentIndex + 2).map((card, index) => (
                                      <div>
                             {/* group relative flex items-center gap-2.5 rounded-sm
                         py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out
@@ -68,6 +71,9 @@ if(currentIndex>cards.length-3) {
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
                                         <div className='flex justify-between'><span className='font-normal'>Toplu Kapalı Alan:</span><span className='font-semibold'>{card.description}</span></div>
+                                    </p>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
+                                        <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-semibold'>{card.totalCo2}</span></div>
                                     </p>
                                 </div>
                             </a>

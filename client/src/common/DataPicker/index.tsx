@@ -11,17 +11,17 @@ const index = (props) => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [hidden,setHidden] = useState(false)
-
+  const [initialValues,setInitialValues] = useState({value:'0'})
+  props.deneme(initialValues.value)
 
   const [data, setData] = useState({
     startDate: null,
     endDate: null
   });
-  const [change,setChange] = useState(false)
+
   const handleChange = (newValue) => {
-    setData(newValue)
-    setStartDate(newValue)
-    props.deneme(newValue)
+    // setData(newValue)
+    // setStartDate(newValue)
     console.log("newwww", newValue)
 
   }
@@ -32,10 +32,10 @@ const index = (props) => {
       background: "red"
     }
   }
-  const changeControl = (event)=>{
-    console.log(event.target.value,"valuuuuu")
-    setChange(Number(event.target.value))
-  }
+
+
+
+
 
 
   return (
@@ -47,8 +47,8 @@ const index = (props) => {
         <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
         </div>
         <div className="mt-7">
-          <select className='py-1 px-4 border' onChange={(event)=>changeControl(event)}>
-            <option>Lütfen kayıt için dönem/ay seçin</option>
+          <select className={props.isSubmit ? props.error : props.success } onChange={(event)=>changeControl(event)}>
+            <option  name='situation' value={props.data}>Lütfen kayıt için dönem/ay seçin</option>
             <option value='4'>Dönem olarak kayıt</option>
             <option value='5'>Ay olarak kayıt</option>
           </select>

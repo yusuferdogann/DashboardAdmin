@@ -1,0 +1,22 @@
+[
+    {
+        "iata": "UTK",
+        "lon": "169.86667",
+        "iso": "MH",
+        "status": 1,
+        "name": "Utirik Airport",
+        "continent": "OC",
+        "type": "airport",
+        "lat": "11.233333",
+        "size": "small"
+    },
+    {
+        "iata": "FIV",
+        "iso": "US",
+        "status": 1,
+        "name": "Five Finger CG Heliport",
+        "continent": "NA",
+        "type": "heliport",
+        "size": null
+    }
+]

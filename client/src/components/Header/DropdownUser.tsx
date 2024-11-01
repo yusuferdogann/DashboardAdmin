@@ -12,7 +12,7 @@ const DropdownUser = () => {
   const {token,user,Logout} = userAuth()
   const navigate = useNavigate();
 
-
+console.log("DROPDOWN---------------",user)
   const handleLogout = () =>{
 setTimeout(()=>{
   handleSuccess('Çıkış işlemi başarılı')
@@ -33,7 +33,7 @@ setTimeout(()=>{
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {user && <span>{user.username}</span>}
+            {user && <span>{user}</span>}
           </span>
           {/* <span className="block text-xs">FrontEnd Developer</span> */}
         </span>

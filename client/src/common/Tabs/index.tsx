@@ -91,16 +91,24 @@ const TabsDefault = () => {
     }
     const [change,setChange] = useState(false)
     const [checksubtitle,setCheckSubtitle] = useState(false)
+    const [getData,setGetData] = useState({donem:'',ay:''})
+
 
 
     const changeControl = (event)=>{
-        console.log(event.target.value,"valuuuuu")
+        // console.log(event.target.value,"valuuuuu")
+        const {name,value} = event.target;
+
         setChange(Number(event.target.value))
+
+
+        console.log("getVALUE",getData)
+
+
       }
 
-      console.log("changeee",change)
 
-      const getSubtitle = ()=>{
+      const getSubtitle = (event)=>{
         setCheckSubtitle(true)
       }
     // console.log("state",state)
@@ -176,16 +184,17 @@ const TabsDefault = () => {
                         }
                 </div>
             </div>
-        <div>
-            <div>selam<i className="fa-solid fa-triangle-exclamation text-2xl" style={{ color: "#d46c6c" }}></i> </div>
-            <div>selam<i className="fa-solid fa-triangle-exclamation text-2xl" style={{ color: "#d46c6c" }}></i> </div>
+        {/* <div>
+           <h6 className="font-bold mb-5">Kayit Turu</h6>
+           <div className="flex"><p value={getData.donem} name='donem'>selam</p><i className="fa-solid fa-triangle-exclamation text-2xl" style={{ color: "#d46c6c" }}></i> </div>
+           <div className="flex"><p value={getData.ay} name='ay'>selam</p><i className="fa-solid fa-triangle-exclamation text-2xl" style={{ color: "#d46c6c" }}></i> </div>
 
-        </div>
+        </div> */}
       </div>
             <Tabs value="html" className='p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                 <TabsHeader className=" mt-5" style={{ fontWeight: '800' }}>
                     {Data.map(({ label, value }) => (
-                        <Tab className="text-normal  uppercase font-bold dark:bg-gray-200 dark:text-gray-200 hover:bg-[#6a6a6a1c] duration-300  ease-in-out" key={value} value={value} onClick={(event) => saveValue(event, label)}>
+                        <Tab className="text-normal  uppercase font-bold dark:bg-gray-100 dark:text-gray-100 hover:bg-[#6a6a6a1c] duration-300  ease-in-out" key={value} value={value} onClick={(event) => saveValue(event, label)}>
                             {label}
                         </Tab>
                     ))}

@@ -12,11 +12,11 @@ import Videokayit from '../../../src/images/video/animation-video.mp4'
 import { Tooltip, Button } from "@material-tailwind/react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import { userAuth } from '../../auth/userAuth';
-import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, } from "@material-tailwind/react";
+import { Tabs, TabsHeader,  Tab,  } from "@material-tailwind/react";
 import { handleErrorForFacility } from '../../common/utils/helpers'
 import { ToastContainer } from 'react-toastify'
-import PdfView from "../Pdf/PdfView";
-import { PDFViewer } from '@react-pdf/renderer';
+
+
 
 
 
@@ -169,7 +169,6 @@ const AccordionCustomIcon = () => {
   const [degis, setDegis] = useState(false)
   const [gg, setGg] = useState(false)
   const [date, setDate] = useState({ startDate: '', endDate: '' })
-  const [bigdata, setBigdata] = useState([])
   const [todos, setTodos] = useState([
     { id: 1, title: '', subtitle: '', sabit: ["sab"], hareketli: ['har'], dogrudan: ['dog'] },
     { id: 2, title: '', subtitle: '', elektrik: ['ele'] },
@@ -183,6 +182,8 @@ const AccordionCustomIcon = () => {
                   + currentdate.getHours() + ":"  
                   + currentdate.getMinutes() 
   // console.log("date-time",datetime)
+  const [control4, setControl4] = useState(false)
+
   const [savedData, setSavedData] = useState(
     { 
       id: 1,
@@ -195,9 +196,23 @@ const AccordionCustomIcon = () => {
       ulke:facilitySend?.country,
       sehir:facilitySend?.city,
       ilce:facilitySend?.town,
-      tesis:facilitySend?.name
+      tesis:facilitySend?.name,
+      situation:''
      }
   );
+
+  const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,situation:savedData.situation}
+  const [formValues,setFormValues] = useState(initialValues);
+  const [formErrors,setFormErrors] = useState({});
+  const [isSubmit,setIsSubmit] = useState(false)
+  const [listData,setListData] = useState([])
+  const [addList,setAddList] = useState({kaynak:'',birim:'',situation:'',miktar:''})
+  const [aracdata, setAracdata] = useState([])
+  const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
+
+  //     setAracdata([...aracdata,{car}])
+
+
   // TR Format date - time=======================================
   // const options = {
   //   year: 'numeric',
@@ -222,11 +237,6 @@ const AccordionCustomIcon = () => {
   const [subtitle, setSubtitle] = useState([])
   const [short, setShort] = useState([])
   const [loadingData, setLoadingData] = useState({ kaynak: '', birim: '', miktar: '' })
-
-
-  const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
-
-  const [aracdata, setAracdata] = useState([])
   const [baslikvalue, setBaslikvalue] = useState('')
   const [load, setLoad] = useState(false)
   const [textControl,setTextControl] = useState(false)
@@ -238,10 +248,8 @@ const AccordionCustomIcon = () => {
   const [baslik2, setBaslik2] = useState("")
   const [datasub, setDatasub] = useState('')
   const [videopen, setVideopen] = useState(false)
-  const [control1, setControl1] = useState(false)
-  const [control2, setControl2] = useState(false)
-  const [control3, setControl3] = useState(false)
-  const [control4, setControl4] = useState(false)
+  const [error,setError] = useState(false)
+  const [change,setChange] = useState(false)
 
 
   // function handleTitle(value,id){
@@ -597,7 +605,7 @@ const AccordionCustomIcon = () => {
         setVer(false)
         setGg(true)
         setDegis(true)
-        setBaslikvalue('TESISE AIT ARAC EMILSYONLARI')
+        setBaslikvalue('TESİSE AİT ARAÇ EMİLSYONLARI')
 
         setCities(states.find((state) => state.name === event.target.textContent).cities);
         setUnits(states.find((state) => state.name === event.target.textContent).units);
@@ -789,15 +797,9 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
-  const getData = (value1) => {
-    setBigdata([...bigdata, { "StartDate": value1 }])
-
-    // console.log("dateeeee",date)
-    // setBigdata(startDate:date.startDate)
-    console.log("bigbig", value1)
-    console.log("DENEME", bigdata)
-
-
+  const getData = (comingFromDataPicker) => {
+    setControl4(comingFromDataPicker)
+    console.log("comingFromDataPicker", comingFromDataPicker)
   }
 
   
@@ -813,39 +815,19 @@ const AccordionCustomIcon = () => {
 
   }
 
-  const Loading = () => {
-    console.log("kaynak--------",savedData.kaynak)
-
-    if(savedData.kaynak === ''){
-      setControl1(true)
-    }
-    else if(savedData.birim === ''){
-      setControl2(true)
-    }
-    else if(savedData.miktar === ''){
-      setControl3(true)
-
-    }
-
-
-    setTimeout(() => {
-      setLoad(true)       
-      setTimeout(() => {
-        setLoad(false)
-      }, 500)
-
-    }, 500)
-
-    setTextControl(true)
-
-  }
+ 
   const changeData = (event, index) => {
-    setTextControl(false)
-    setControl1(false)
-    setControl2(false)
-      setControl3(false)
-      setControl4(false)
+    if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
+      setChange(Number(event.target.value))
+    }
+    console.log("change-Number-data",change)
 
+   const {name,value} = event.target;
+   setFormValues({...formValues,[name]:value})
+   setAddList({...addList,[name]:value})
+
+
+  
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
 
@@ -869,7 +851,7 @@ const AccordionCustomIcon = () => {
       [event.target.name]: event.target.value,
     });
 
-    console.log("taking-data",savedData)
+    // console.log("taking-data",savedData)
 
 
     if (event.target.value === "Yangın Söndürme Tüpü") {
@@ -892,7 +874,8 @@ const AccordionCustomIcon = () => {
     }
     else { null }
   }
-  
+  // console.log("Deneme 1 2",formValues)
+
   const saveValue = (event: String | any, label: String | any) => {
     setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
     setStateScope3(label)
@@ -900,12 +883,108 @@ const AccordionCustomIcon = () => {
    
 }
 
+// console.log("form",formValues)
+console.log("lstdata",listData)
+
+
+const handleValidation = (event)=>{
+  // console.log("after-operation",formValues)
+  // console.log("form-value",formValues.kaynak)
+  // console.log("form-birim",formValues.birim)
+
+
+  // const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,situation:savedData.situation}
+  // const [formValues,setFormValues] = useState(initialValues);
+  // const [formErrors,setFormErrors] = useState({});
+  // const [isSubmit,setIsSubmit] = useState(false)
+  // const [listData,setListData] = useState([])
+  // const [addList,setAddList] = useState({kaynak:'',birim:'',miktar:''})
+
+  // const [aracdata, setAracdata] = useState([])
+  // const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
+ // const handleSave = () => {
+  //   setCar({
+  //     ...car,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // }
+  // setFormValues({...formValues,[name]:value})
+  // setListData({...formValues,[name]:value})
+ 
+    event.preventDefault();
+
+    setFormErrors(validate(formValues));
+    setIsSubmit(true)
+    setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
+        //     setAracdata([...aracdata,{car}])
+
+    console.log("data-List",listData)
+
+   
+   
+  }
+
+  useEffect(()=>{
+    console.log("useEffect-ust",formErrors)
+    if(Object.keys(formErrors).length === 0 && isSubmit){
+      console.log("useEffect-alt",formValues)
+    
+     
+
+    }
+  },[formErrors]);
+
+
+  const validate = (values)=>{
+    const errors={}
+    if(!values.kaynak){
+      errors.kaynak = "NO KAYNAK";
+    }
+    if(!values.birim){
+      errors.birim = "NO BIRIM";
+    }
+    if(!values.situation){
+      errors.situation = "NO siti";
+    }
+
+    return errors;
+  }
 
   
   // Facility Sayfasndan gelen veri
   // console.log("coming-data",facilitySend)
  
-  console.log("taking-data-latest",savedData)
+  // console.log("taking-data-latest",savedData)
+
+
+  const users = [
+    { id: 2, name: 'Sumit Kumar', email: 'sumit@example.com' },
+    { id: 4, name: 'Raj Kumar', email: 'raj@example.com' },
+    { id: 5, name: 'Amit Kumar', email: 'amit@example.com' },
+    { id: 1, name: 'Amit Kumar', email: 'amit@example.com' },
+
+
+
+];
+
+function getDuplicates(arr) {
+    const seen = new Set();
+    const duplicates = [];
+
+    arr.forEach(item => {
+        const identifier = `${item.name}|${item.email}`;
+        console.log(seen.has(identifier))
+        if (seen.has(identifier)) {
+            duplicates.push(item);
+        } else {
+            seen.add(identifier);
+        }
+    });
+    return duplicates;
+}
+
+const duplicateUsers = getDuplicates(users);
+console.log(duplicateUsers);
 
   return (
 
@@ -1037,7 +1116,7 @@ const AccordionCustomIcon = () => {
                           </Tab>
                         ))}
                         </TabsHeader>
-                        <DataPicker/>
+                        {/* <DataPicker/> */}
                         <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar/></div>
                         <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar/></div>
                         <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar/></div>
@@ -1049,16 +1128,67 @@ const AccordionCustomIcon = () => {
                   </div>
                   :
                     <div className="start">
-                      <div className=''>
-                        <DataPicker deneme={getData} />
-                      </div>
+                         <div className="grid grid-cols-1 w-200 " >
+      <div className="flex flex-col my-4">
+        {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
+        <div>
+        { change===false ? <i class="fa-solid fa-triangle-exclamation text-2xl" style={{color:"#d46c6c"}}></i> : null}
+        <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
+        </div>
+        <div className="mt-7">
+          <select  value={savedData.situation} name='situation' className={error ? styles.select.error : styles.select.normal} onChange={(event)=>changeData(event)}>
+            <option value='0'>Lütfen kayıt için dönem/ay seçin</option>
+            <option value='4'>Dönem olarak kayıt</option>
+            <option value='5'>Ay olarak kayıt</option>
+          </select>
+        </div>
+       
+
+        {
+          change === 4 ? <div className="donem mt-7 ">
+          <select className={styles.select.normal}>
+            <option>Lütfen kayıt için dönem girin</option>
+            <option>Ocak - Mart</option>
+            <option>Nisan - Haziran</option>
+            <option>Temmuz - Eylül</option>
+            <option>Ekim - Aralık</option>
+          </select>
+        </div> : null
+        }
+      </div>
+    {
+      change === 5 ?   <div className="ay">
+      <select className={styles.select.normal}>
+        <option>Lütfen kayıt için ay girin</option>
+        <option>Ocak</option>
+        <option>Şubat</option>
+        <option>Mart</option>
+        <option>Nisan</option>
+        <option>Mayıs</option>
+        <option>Haziran</option>
+        <option>Temmuz</option>
+        <option>Ağustos</option>
+        <option>Eylül</option>
+        <option>Ekim</option>
+        <option>Kasım</option>
+        <option>Aralık</option>
+      </select>
+    </div> : null
+    }
+
+
+
+ {/* <DatePicker selected={startDate} onChange={(date) => handleChange(date)}>
+      <div style={{ color: "red" }}>Don't forget to check the weather!</div>
+    </DatePicker> */}
+    </div>
 
                       {/* form start */}
-                      <form >
+                      <form onSubmit={(event)=>handleValidation(event,control4)}>
                         <div className='grid grid-cols-4 gap-3 my-5'>
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={control1 ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={error ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
@@ -1068,13 +1198,13 @@ const AccordionCustomIcon = () => {
                                 <option key={index}>{textControl ? 'kaynak girin' : citiy}</option>
                               ))}
                             </select>
-                            {control1 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
 
                           </div>
 
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={control2 ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={error ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               <option>Birim girin</option>
@@ -1082,13 +1212,13 @@ const AccordionCustomIcon = () => {
                                 <option key={index}>{textControl ? 'Birim girin' : citiy}</option>
                               ))}
                             </select>
-                            {control2 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
 
                           </div>
                           {
                             degis === true ? <div className="block w-full">
                               <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                              <select value={baslik1 || baslik2 ? "" : car.yakitturu} name='yakitturu' id="cities" className={control3 ? styles.select.error : styles.select.normal}
+                              <select value={baslik1 || baslik2 ? "" : car.yakitturu} name='yakitturu' id="cities" className={error ? styles.select.error : styles.select.normal}
                                 onChange={(event) => changeData(event)}>
                                 <option>yakit turu girin</option>
 
@@ -1096,7 +1226,7 @@ const AccordionCustomIcon = () => {
                                   <option key={index}>{citiy}</option>
                                 ))}
                               </select>
-                              {control3 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                              {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
 
 
                             </div> : null
@@ -1107,81 +1237,17 @@ const AccordionCustomIcon = () => {
                               type="text"
                               value={baslik1 || baslik2 ? savedData.miktar : car.miktar}
                               name='miktar'
-                              className={control4 ? styles.input.error : styles.input.normal}
+                              className={error ? styles.input.error : styles.input.normal}
                               placeholder="miktar girin"
-                              required
                               onChange={(event) => changeData(event)}
                             />
-                            {control4 ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
 
 
                           </div>
                         </div>
-                      </form>
-                    </div>
-                }
-                {/* form end */}
-                <hr className='mt-3' />
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-
-                  {
-                    gg ?
-
-                      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
-                          Araç Ekle
-                          {/* <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
-                        </caption>
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                          <tr>
-                            <th scope="col" class="px-6 py-3">
-                              Araç Türü
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                              Yakıt Türü
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                              Birim
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                              Miktar
-                            </th>
-                            {/* <th scope="col" class="px-6 py-3">
-              <span class="sr-only">Edit</span>
-          </th> */}
-                          </tr>
-                        </thead>
-
-                        {
-                          aracdata.map((arac, index) => (
-
-                            <tbody key={index}>
-                              <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                  {arac.car.aracturu}
-                                </th>
-                                <td class="px-6 py-4">
-                                  {arac.car.yakitturu}
-                                </td>
-                                <td class="px-6 py-4">
-                                  {arac.car.birim}
-                                </td>
-                                <td class="px-6 py-4">
-                                  {arac.car.miktar}
-                                </td>
-                                {/* <td class="px-6 py-4 text-right">
-             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-         </td> */}
-                              </tr>
-                            </tbody>
-                          ))
-                        }
-                      </table> : null
-                  }
-                </div>
-
-                <div className='flex justify-end mt-4'>
-                  <button onClick={() => Loading()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                        <div className='flex justify-end mt-4'>
+                  <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
                     {
                       load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
@@ -1190,6 +1256,8 @@ const AccordionCustomIcon = () => {
                     }
                     {load ? 'Kaydediliyor' : "Kaydet"}
                   </button>
+
+                 
                   {/* <button
                 onClick={(e) => handleAdd(e)}
                 type="button"
@@ -1203,6 +1271,84 @@ const AccordionCustomIcon = () => {
                   : null
               } */}
                 </div>
+                      </form>
+                    </div>
+                }
+               
+                {/* form end */}
+                <hr className='mt-3' />
+                <div className={savedData.kaynak ? 'errorListData' : 'warningListData'} style={{background:'#ff000026',width:'100%',height:'40px'}}>
+                <i class="fa-solid fa-triangle-exclamation text-2xl ms-3" style={{color:"#d46c6c"}}></i> 
+                <label className="mb-3 ms-3 text-xl">daha once kayit edildi</label>
+                </div>
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+
+                  
+                    
+
+                      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900  dark:text-white dark:bg-gray-800">
+                          Kaydedilen Liste
+                          {/* <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">Browse a list of Flowbite products designed to help you work and play, stay organized, get answers, keep in touch, grow your business, and more.</p> */}
+                        </caption>
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                          <tr>  
+                            <th scope="col" className="px-6 py-3">
+                              Kaynak
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              Birim
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              Miktar
+                            </th>
+                            <th scope="col" className="px-10 py-3">
+                              Düzenle
+                            </th>
+                            <th scope="col" className="px-10 py-3">
+                              Sil
+                            </th>
+                          
+                          </tr>
+                        </thead>
+
+                        {
+                          listData?.map((arac, index) => (
+
+                            <tbody key={index}>
+                              <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {arac.kaynak}
+                                </th>
+                                <td class="px-6 py-4">
+                                {arac.birim}
+                                </td>
+                                <td class="px-6 py-4">
+                                {arac.miktar}
+                                </td>
+                                <td class="px-6 py-4">
+                                <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                                    <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Duzenle
+                                    </span>
+                                </button>
+                                </td>
+                                <td class="px-6 py-4">
+                                <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                                    <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Sil
+                                    </span>
+                                </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          ))
+                        }
+                      </table> 
+                  
+                </div>
+
+              
               </div>
             </div> : null
           }

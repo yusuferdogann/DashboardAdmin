@@ -16,11 +16,12 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 
 
+
 const Facility = () => {
 
     const [size, setSize] = React.useState(null);
 
-    const { value, setFacilitSend } = userAuth();
+    const { value, setFacilitSend,token } = userAuth();
 
     const handleOpen = (value) => setSize(value);
     const navigate = useNavigate();
@@ -66,9 +67,13 @@ const Facility = () => {
     const handleSetCountry = (e, value) => setCountry(value);
     const handleSetState = (e, value) => setState(value);
     const handleSetCity = (e, value) => setDropCity(value);
-
     const [sweet, setSweet] = useState('')
-    console.log("country",country?.name)
+    // console.log("country---------------",country?.native)
+    // console.log("state------------------",state?.name)
+    // console.log("city------------------",dropcity)
+
+
+    const deneme = "yuusfd";
     // =========================================
     const newData = facilitydata[0].facility
     const [getVeri, setGetVeri] = useState({
@@ -88,7 +93,6 @@ const Facility = () => {
         facilityname: '',
         employeecount: '',
         totalarea: '',
-        sehir:country?.name
     })
     const [checkSpinner, setCheckSpinner] = useState(false)
 
@@ -97,6 +101,9 @@ const Facility = () => {
         e.preventDefault()
         setData({
             ...data,
+            country:country?.native,
+            city:state?.name,
+            state:dropcity?.name,
             [e.target.name]: e.target.value,
         });
         console.log("result", data)
@@ -106,15 +113,32 @@ const Facility = () => {
         e.preventDefault();
         handleOpen(null)
         setFacilitydata([...facilitydata, data])
+        console.log("data--------",data)
+        console.log("local-storage",localStorage.getItem("access_token"))
+        console.log("TOKEN",token)
+
+        
+const config = {
+    headers:{
+        "Content-Type" : "application/json",
+        Authorization:"Bearer " + token
+    }
+}
+
+
 
         try {
-            const addfacilitydata = await post("/addfacility", data)
-            const response = addfacilitydata.data
+            const addfacilitydata = await post( '/addfacility',
+                data
+            )
+            const response = addfacilitydata
             console.log("facility-data", response)
 
         } catch (error) {
             console.log(error)
         }
+
+       
 
     }
 
@@ -183,7 +207,7 @@ const Facility = () => {
 
 
                 <div>
-                    <a href="#" className="flex flex-col items-center bg-white   duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
+                    <a href="#" className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                         {/* <i style={{ fontSize: '50px' }} class="fa-solid fa-industry px-3"></i> */}
                         <div className="flex flex-col justify-between h-[155px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
                             <div className='absolute top-0'>
@@ -217,13 +241,12 @@ const Facility = () => {
                 size={size || "sm"}
                 handler={handleOpen}
             >
-                <DialogHeader>Tesis Bilgilerinizi Girin</DialogHeader>
+                <DialogHeader className='text-center relative' style={{display:'block'}}>Tesis Bilgilerinizi Girin</DialogHeader>
                 <DialogBody>
                     <div className="grid grid-cols-1" >
                         <div>
-                            <div className="flex flex-col items-center bg-white w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
-                                <i style={{ fontSize: '50px' }} className="fa-solid fa-industry px-3"></i>
-                                <div className="flex flex-col justify-between p-4 w-full leading-normal">
+                            <div className="flex flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
+                                <div className="flex flex-col justify-between p-4 w-full leading-normal" >
                                     <div className='flex justify-between w-full  items-center'>
                                         <input
                                             type='text'
@@ -235,32 +258,35 @@ const Facility = () => {
 
                                     </div>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
-                                        <div className='flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-semibold'>
+                                        <div className='flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
                                             <input
                                                 type='number'
                                                 value={data.employeecount}
                                                 name='employeecount'
                                                 onChange={changeSave}
                                                 placeholder='Çalışan sayınızı girin'
-                                                className='w-50 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
+                                                className='w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
                                         </span></div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
-                                        <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-semibold'>
+                                        <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-normal'>
                                             <input
                                                 type='number'
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
                                                 placeholder='Kapasitenizi girin'
-                                                className='w-50 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
-                                        </span></div>
+                                                className='w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
+                                        </span>
+                                        </div>
                                     </p>
-                                    <div className=" items-start" >
+                                    <div className="" >
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
+
                                         <div className='flex justify-between'>
-                                            <div className='pr-3'>
-                                            <div className='mb-2'><span className=" font-bold">Ülke</span></div>
-                                                    <CountryDropdown
+                                           <div> <span className='font-normal'>Ülke:</span><span className='font-semibold'></span></div>
+                                            <div className=''>
+                                            <CountryDropdown
                                                         clearable
                                                         searchable
                                                         value={country}
@@ -268,12 +294,17 @@ const Facility = () => {
                                                         priority={['TR']}
                                                         native='false'
                                                         onChange={handleSetCountry}
+                                                        className=''
                                                     />
                                             </div>
-                                            <div className='ms-3'>
-                                            <div className='mb-2 '><span className="mb-2 font-bold">Şehir</span></div>
-                                                <div className="">
-                                                    <StateDropdown
+                                        </div>
+                                        </p>
+                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
+
+                                        <div className='flex justify-between'>
+                                           <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
+                                            <div>
+                                            <StateDropdown
                                                         clearable
                                                         placeHolder='Şehir girin'
                                                         searchable
@@ -281,15 +312,15 @@ const Facility = () => {
                                                         value={state}
                                                         onChange={handleSetState}
                                                     />
-                                                </div>
                                             </div>
                                         </div>
+                                        </p>
+                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                        <div className='flex mt-5 justify-between'>
-                                            <div className=''>
-                                                <span className="mb-4 font-bold">İlçe</span>
-                                                <div className="mt-3 ">
-                                                    <CityDropdown
+                                        <div className='flex justify-between'>
+                                           <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
+                                            <div>
+                                            <CityDropdown
                                                         className=''
                                                         clearable
                                                         searchable
@@ -300,18 +331,10 @@ const Facility = () => {
                                                         value={dropcity}
                                                         onChange={handleSetCity}
                                                     />
-                                                </div>
                                             </div>
-                                            <div className='w-full ms-6'>
-                                                <span className="mb-0 mb-3 block font-bold">Tesis</span>
-                                                <div className=" w-full">
-                                                    <input onChange={(e) => handleChange7(e)} value={sweet} maxLength={31} name='value7' type="text" placeholder="Tesis girin" className="w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  " />
-                                                    <small className="mt-2 text-sm text-red-600 dark:text-red-500">{sweet?.length === 31 ? "Max karakter sayısına ulaştınız" : ''}</small>
-                                                </div>
-                                            </div>
-
                                         </div>
-                                    </div>
+                                        </p>
+                                        </div>
                                 </div>
                             </div>
                         </div>
