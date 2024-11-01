@@ -5,6 +5,7 @@ const PersonalCar = () => {
 
 
     const [state, setState] = useState([])
+    
     const [user, setUser] = useState({ yakitturu: '', sofor: '', plaka: '' })
   
     const handleChange = (e) => {
