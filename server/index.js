@@ -19,6 +19,13 @@ const path = require('path');
 const app = express();
 dotenv.config();
 
+app.use(function(res,req,next){
+    res.header("Access-Control-Allow-Origin","*"),
+    res.header("Access-Control-Allow-Headers",
+        "Origin,X-Reuested-With,Content-Type,Accept"
+    );
+    next();
+})
 app.use(express.json());
 // middleware
 

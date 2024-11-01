@@ -3,6 +3,7 @@ const Usermodels = require("../../models/User");
 const Data = require("../../models/data");
 const { data } = require("../../controllers/DataController");
 const uniqid = require('uniqid'); 
+const { useState } = require("react");
 
 
 
@@ -108,7 +109,8 @@ const updateFacility = asyncErrorWrapper(async (req,res,next) =>{
 const addedFacility = asyncErrorWrapper( async (req,res,next)=>{
 
     const id = await Usermodels.findById(req.user.id)
-
+    const [text, setText] = useState("Hello world")
+    console.log("TEXTTT",text)
   //   const item = {
   
   // name:"ASELSAN KONYA SUBE",
@@ -186,20 +188,22 @@ const addedFacility = asyncErrorWrapper( async (req,res,next)=>{
   //   },
   // }  
   //   }
-  const item = {
-    birim: "ton",
-    id: 1,
-    ilce: "Etimeskut",
-    kaynak: "Sıkıştırılmış Doğal Gaz (CNG)",
-    miktar: "123",
-    sehir: "Ankara",
-    subtitle: "HAREKETLI YANMA",
-    tarih: "25/10/2024 - 7:5",
-    tesis: "ASELSAN KONYA SUBE",
-    title: "Scope-1",
-    ulke: "Turkiye"
-  }
-    Usermodels.findByIdAndUpdate(req.user.id, { $push: { facility: item } }).exec();
+  // const item = {
+  //   birim: "ton",
+  //   id: 1,
+  //   ilce: "Etimeskut",
+  //   kaynak: "Sıkıştırılmış Doğal Gaz (CNG)",
+  //   miktar: "123",
+  //   sehir: "Ankara",
+  //   subtitle: "HAREKETLI YANMA",
+  //   tarih: "25/10/2024 - 7:5",
+  //   tesis: "ASELSAN KONYA SUBE",
+  //   title: "Scope-1",
+  //   ulke: "Turkiye"
+  // }
+  const item = {city,country,employeecount,facilityname,state,totalarea} = req.body;
+
+    Usermodels.findByIdAndUpdate(id, { $push: { facility: item } }).exec();
    
       res.status(200).json({
         success: true,
