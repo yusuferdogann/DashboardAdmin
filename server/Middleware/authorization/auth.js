@@ -7,11 +7,10 @@ const getAccessToRoute = (req,res,next)=>{
 
     // console.log(req.headers.authorization);
 const {JWT_SECRET_KEY} = process.env;
-    // if(!isTokenIncluded(req)){
-    //     return next(new CustomError("You are not authorized to access this route",401))
-    // }
-    const accessToken = req.headers.authorization;
-    console.log("HEADER------------------",accessToken);
+    if(!isTokenIncluded(req)){
+        return next(new CustomError("You are not authorized to access this route",401))
+    }
+    const accessToken = getAccessTokenFromHeader(req)
 
     jwt.verify(accessToken,JWT_SECRET_KEY,(err,decoded)=>{
         if (err) {
