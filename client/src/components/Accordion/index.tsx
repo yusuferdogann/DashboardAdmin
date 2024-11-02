@@ -1088,7 +1088,7 @@ console.log(duplicateUsers);
             <video width="auto" height="500" autoPlay={true} loop muted>
               <source src={Videokayit} type="video/mp4" />
             </video>
-            <div className="footprint flex"><span className="video-title">LÜTFEN KAYIT İÇİN KAPSAMLARDAN BİRİNİ SEÇEREK İLERLEYİN</span>
+            <div className="footprint flex"><span className="video-title">LÜTFEN KAYIT İÇİN TESİSLERDEN BİRİNİ SEÇİN VEYA YENİ BİR TESİS EKLEYİN</span>
             </div>
           </div>
           {/* before area finish */}

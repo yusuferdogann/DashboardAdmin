@@ -128,9 +128,10 @@ const config = {
 
 
         try {
-            const addfacilitydata = await post( '/addfacility',
-                data
-            )
+            const addfacilitydata = await post( '/addfacility',{data},{headers:
+                { 'authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+            }})
             const response = addfacilitydata
             console.log("facility-data", response)
 

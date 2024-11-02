@@ -39,8 +39,6 @@ import Pdf37 from "../../images/pdfpage/pdf-37.jpg"
 import Pdf38 from "../../images/pdfpage/pdf-38.jpg"
 
 
-import Logo from "../../images/logo/semet-logo-new.png"
-// Create styles
 const styles = StyleSheet.create({
     page: {
         flexDirection: 'row',
