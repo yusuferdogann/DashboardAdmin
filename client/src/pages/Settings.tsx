@@ -8,24 +8,20 @@ import { handleSuccess } from '../common/utils/helpers';
 
 
 const Settings = () => {
-  const {setUser,user} = userAuth()
+  const {setUser,user,value} = userAuth()
 
   const [data,setData] = useState({
     // name:user.username,
-    companyName:user.company_info[0].company_name,
-    cknNumber:user.company_info[0].cknNumber,
-    companyNumber:user.company_info[0].companyNumber,
-    companyMail:user.company_info[0].companyMail,
-    companyWebsite:user.company_info[0].companyWebsite,
-    productArea:user.company_info[0].productArea,
-    closeArea:user.company_info[0].closeArea,
-    openArea:user.company_info[0].openArea,
-    workerCount:user.company_info[0].workerCount,
-    totalArea:user.company_info[0].totalArea,
-
-
-
-  
+    companyName:value.company_info[0].company_name,
+    cknNumber:value.company_info[0].cknNumber,
+    companyNumber:value.company_info[0].companyNumber,
+    companyMail:value.company_info[0].companyMail,
+    companyWebsite:value.company_info[0].companyWebsite,
+    productArea:value.company_info[0].productArea,
+    closeArea:value.company_info[0].closeArea,
+    openArea:value.company_info[0].openArea,
+    workerCount:value.company_info[0].workerCount,
+    totalArea:value.company_info[0].totalArea,
   })
   const changeSave = (e)=>{
     e.preventDefault()

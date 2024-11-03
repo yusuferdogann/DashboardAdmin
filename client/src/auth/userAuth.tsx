@@ -145,6 +145,8 @@ const Userprovider = ({children})=>{
     const [user,setUser] = useState(JSON.parse(localStorage.getItem("username")) || null);
     const [loading,setLoading] = useState(true);
     const [facilitySend,setFacilitSend] = useState()
+    const [checkSpinner,setCheckSpinner] = useState(false)
+
 
     useEffect(()=>{
         const soterToken= JSON.parse(localStorage.getItem("access_token"))
@@ -163,7 +165,7 @@ const Userprovider = ({children})=>{
     }
     return(
         <>
-        <UserContext.Provider value={{token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend}}>
+        <UserContext.Provider value={{checkSpinner,setCheckSpinner,token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend}}>
             {children}
         </UserContext.Provider>
         </>

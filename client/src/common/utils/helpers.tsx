@@ -4,6 +4,7 @@ export const handleSuccess = (msg:String)=>{
     toast.success(msg,{
         position: "top-right",
         autoClose: 2000,
+    
 
     })
 }

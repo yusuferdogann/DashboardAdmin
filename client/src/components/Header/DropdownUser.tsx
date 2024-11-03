@@ -9,22 +9,23 @@ import { ToastContainer } from 'react-toastify';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const {token,user,Logout} = userAuth()
+  const {token,user,setCheckSpinner,checkSpinner} = userAuth()
   const navigate = useNavigate();
 
-console.log("DROPDOWN---------------",user)
   const handleLogout = () =>{
-setTimeout(()=>{
-  handleSuccess('Çıkış işlemi başarılı')
-
-},500)
     setTimeout(()=>{
-      navigate('/login')
-      window.localStorage.clear();
-      window.location.reload()
-    },2000)
-  }
+      setCheckSpinner(true)
+      handleSuccess('Çıkış işlemi başarılı')
+    
+    },500)
+        setTimeout(()=>{
+          navigate('/login')
+          window.localStorage.clear();
+          window.location.reload()
+        },2000)
+      }
   return (
+  <div className={checkSpinner ? 'relatie' : 'z-9999 relative'} >
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -62,7 +63,7 @@ setTimeout(()=>{
       {/* <!-- Dropdown Start --> */}
       {dropdownOpen && (
         <div
-          className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
+          className={`absolute z-0 right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
         >
           <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
             {/* <li>
@@ -161,11 +162,15 @@ setTimeout(()=>{
           </button>
         
           </li>
-          <ToastContainer/>
+      
         </div>
       )}
       {/* <!-- Dropdown End --> */}
     </ClickOutside>
+    <ToastContainer
+        style={{zIndex:'9999'}}
+        />
+  </div>
   );
 };
 

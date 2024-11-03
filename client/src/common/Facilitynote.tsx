@@ -15,7 +15,7 @@ const Facilitynote = (props:any) => {
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative duration-300 ease-in-out">
-      <li style={{listStyle:'none',zIndex:'999',position:'relative'}}>
+      <li style={{listStyle:'none',zIndex:'99',position:'relative'}}>
         <div
           onClick={() => {
             setNotifying(false);

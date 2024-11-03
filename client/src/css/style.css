@@ -95,6 +95,12 @@
 .rcsd.rcsd-dropdown{
   width: 360px !important;
 }
+.ui.toast-container .toast-box {
+  z-index:9999999999;
+}
+.Toastify__toast-container .Toastify__toast-container--top-right{
+  position: fixed;
+}
 .video-title{
   display: flex;
   justify-content: center;
