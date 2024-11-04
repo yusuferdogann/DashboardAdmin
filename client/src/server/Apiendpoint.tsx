@@ -4,7 +4,8 @@ const instance = axios.create({
     // baseURL:'https://dashboard-admin-lovat.vercel.app'
 
     // =====son guncel api======
-    baseURL:'https://dashboard-admin-lovat.vercel.app/api' 
+    baseURL:'https://dashboard-admin-lovat.vercel.app' 
+    
 
     // =====local api===========
     // baseURL:'http://localhost:3000/api'
