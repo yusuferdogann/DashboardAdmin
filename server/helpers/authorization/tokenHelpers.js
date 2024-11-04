@@ -21,8 +21,7 @@ const sendJwtToClient = (user,res ) =>{
 }
 
 const isTokenIncluded = (req)=>{
-    console.log("authorization",req.headers.authorization)
-    return req.headers.authorization 
+    return req.headers.authorization && req.headers.authorization.startsWith("Bearer:")
 }
 
 const getAccessTokenFromHeader = (req) =>{
