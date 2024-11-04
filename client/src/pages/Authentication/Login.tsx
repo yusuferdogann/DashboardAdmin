@@ -47,8 +47,6 @@ const Login: React.FC = () => {
     },1000)
     setTimeout(()=>{
       navigate("/facility")
-      window.location.reload()
-
     },2000)
 
       // console.log(response)
