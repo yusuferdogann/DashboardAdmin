@@ -11,7 +11,7 @@ import { useCookies } from 'react-cookie'
 
 const Login: React.FC = () => {
   const { setToken, setUser } = userAuth();
-  const [cookies, setCookie] = useCookies(['token'])
+  // const [cookies, setCookie] = useCookies(['token'])
 
   const navigate = useNavigate();
 
@@ -37,17 +37,18 @@ const Login: React.FC = () => {
       localStorage.setItem("access_token", JSON.stringify(response.access_token))
       
       localStorage.setItem("username", JSON.stringify(response.data.username))
-      let expires = new Date()
-     expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
-     setCookie('token', response.token, { path: '/',  expires})
-     console.log("cook amk",cookies)      
+      // let expires = new Date()
+    //  expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
+    //  setCookie('token', response.token, { path: '/',  expires})
+    //  console.log("cook amk",cookies)      
 
       setToken(response.data.token)
       setUser(response.data.user)
     },1000)
     setTimeout(()=>{
-      navigate("/")
-    },1000)
+      navigate("/facility")
+      window.location.reload()
+    },2000)
 
      
       // console.log(response)
