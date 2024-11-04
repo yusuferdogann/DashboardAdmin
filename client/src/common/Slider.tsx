@@ -81,7 +81,7 @@ if(currentIndex>cards.length-3) {
             ))}
           </div>
           <div className="flex items-center justify-between relative  bottom-30">
-            <button style={{top:"0",zIndex:"999"}} className="flex h-11.5 w-11.5 ms-[-2rem] items-center justify-center rounded-full bg-[#c2c2c2] text-white shadow-default duration-300  ease-in-out dark:bg-meta-4 hover:bg-[#8f8f8f]" onClick={handlePrev}><i class="fa-solid fa-chevron-left"></i></button>
+            <button className="flex h-11.5 w-11.5 ms-[-2rem] items-center justify-center rounded-full bg-[#c2c2c2] text-white shadow-default duration-300  ease-in-out dark:bg-meta-4 hover:bg-[#8f8f8f]" onClick={handlePrev}><i class="fa-solid fa-chevron-left"></i></button>
             <button className="flex h-11.5 w-11.5 items-center justify-center me-[-2rem] rounded-full bg-[#c2c2c2] text-white shadow-default dark:bg-meta-4 hover:bg-[#8f8f8f] duration-300  ease-in-out"  onClick={handleNext}><i class="fa-solid fa-chevron-right"></i></button>
           </div>
         </div>
