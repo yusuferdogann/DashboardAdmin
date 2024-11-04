@@ -47,7 +47,7 @@ const Login: React.FC = () => {
     },1000)
     setTimeout(()=>{
       navigate("/facility")
-    },2000)
+    },500)
 
       // console.log(response)
     } catch (error) {
