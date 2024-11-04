@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       
       const loginuser = await post("/login", value)
       const response = loginuser.data
-      console.log(response)
+      console.log("RESPONSE-------------------",response)
       localStorage.setItem("access_token", JSON.stringify(response.access_token))
       
       localStorage.setItem("username", JSON.stringify(response.data.username))
@@ -48,9 +48,9 @@ const Login: React.FC = () => {
     setTimeout(()=>{
       navigate("/facility")
       window.location.reload()
+
     },2000)
 
-     
       // console.log(response)
     } catch (error) {
       console.log(error)
