@@ -11,10 +11,10 @@ const Login: React.FC = () => {
     email:"",
     password:""
  })
-const handleChange = ()=>{
+const handleChange = (e)=>{
     const {name,value} = e.target;
     setData(()=>({
-        ...prevData,
+        ...data,
         [name]:value,
     }));
 } 

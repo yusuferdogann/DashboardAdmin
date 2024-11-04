@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { toast, ToastContainer } from 'react-toastify';
+import {  ToastContainer } from 'react-toastify';
 import { post } from "../../server/Apiendpoint"
 import { handleSuccess } from '../../common/utils/helpers';
 import { Link, useNavigate } from 'react-router-dom';
 import { userAuth } from '../../auth/userAuth';
 import Register from "./Register"
-import { useCookies } from 'react-cookie'
 
 
 const Login: React.FC = () => {
@@ -203,7 +202,7 @@ const Login: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={handleChange}
+                      onChange={(e)=>handleChange(e)}
                       type="email"
                       name="email"
                       autoFocus
@@ -238,7 +237,7 @@ const Login: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={handleChange}
+                      onChange={(e)=>handleChange(e)}
                       type="password"
                       name="password"
                       autoFocus
