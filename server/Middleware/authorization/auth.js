@@ -26,6 +26,29 @@ const {JWT_SECRET_KEY} = process.env;
     
 }
 
+
+// const getAccessToRoute =  (req,res,next) => {
+//     const {JWT_SECRET_KEY} = process.env;
+
+//         const authorization = req.headers.authorization;
+//         console.log("ttttt--------",authorization?.split(' ')[1])
+//         access_token =  authorization?.split(' ')[1];
+
+//     console.log("TOKEN---------------------",access_token)
+//     jwt.verify(access_token,JWT_SECRET_KEY,(err,decoded)=>{
+//               if (err) {
+//                   return next(new CustomError("You are not autherized to access this route",401))
+//               }
+//               req.user = {
+//                   id:decoded.id,
+//                   name:decoded.username
+//               }
+//               next()
+      
+//           })
+//   };
+  
+
 module.exports = {
     getAccessToRoute
 }

@@ -19,17 +19,19 @@ const path = require('path');
 const app = express();
 dotenv.config();
 
-// app.use(function(res,req,next){
-//     res.header("Access-Control-Allow-Origin","*"),
-//     res.header("Access-Control-Allow-Headers",
-//         "Origin,X-Reuested-With,Content-Type,Accept"
-//     );
-//     next();
-// })
+app.use(function(req,res,next){
+    res.header("Access-Control-Allow-Origin","*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+})
+
 app.use(express.json());
 // middleware
 
-app.use(cors());
+
 
 app.use('/api',routers)
 
@@ -41,7 +43,10 @@ app.use(httpContext.middleware);
 // parse application/json
 app.use(cookieParser());
 app.use(bodyParser.json())
-
+app.use(cors({
+    origin:'http://localhost:5173',
+    credentials:true
+}));
 
 const PORT =  3000;
 

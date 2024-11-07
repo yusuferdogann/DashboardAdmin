@@ -14,14 +14,14 @@
 // module.exports = router;
 
 
-const {register,login, addFacility, getUser,logout, imageUpload, addData}= require('../controllers/AuthController')
+const {register,login,  getUser,logout, imageUpload, addScope}= require('../controllers/AuthController')
 const {data,getdata} = require('../controllers/DataController')
 const {getAccessToRoute} = require("../Middleware/authorization/auth")
 
 const express = require('express')
 const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
 const updateCompanyInfo = require('../Middleware/companyInfo/companyInfo')
-const {updateFacility,addedFacility, deleteFacility, findObjectName, getAllFacility} = require('../Middleware/facility/updateFacility')
+const {updateFacility,addedFacility, deleteFacility, findObjectName, getAllFacility,filterFacilityByUserId,filterAmountByUserId} = require('../Middleware/facility/updateFacility')
 
 const routers = express.Router()
 
@@ -41,8 +41,13 @@ routers.delete("/delete",getAccessToRoute,deleteFacility)
 routers.get("/findname",getAccessToRoute,findObjectName)
 routers.get('/allfacility',getAccessToRoute,getAllFacility)
 
-// ==================New database data modelinden olusma veriyi 
-routers.post("/adddata",getAccessToRoute,addData)
+// ==================New Facilities data modeline kayit etme route 
+routers.post("/adddata",getAccessToRoute,addScope)
+
+routers.get("/getfacility",getAccessToRoute,filterFacilityByUserId)
+
+routers.get("/getamount",getAccessToRoute,filterAmountByUserId)
+
 
 
 

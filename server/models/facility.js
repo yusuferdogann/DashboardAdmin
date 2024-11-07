@@ -2,11 +2,23 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const FacilitySchema = new Schema({
-    facilityname: {
+  city: {
+    type: String,
+    required: true,
+  },
+  country: {
     type: String,
     required: true,
   },
   employeecount: {
+    type: String,
+    trim: true,
+  },
+    facilityname: {
+    type: String,
+    required: true,
+  },
+  state: {
     type: String,
     trim: true,
   },
@@ -19,7 +31,6 @@ const FacilitySchema = new Schema({
     required:true,
     ref:"users"
   }
-
 });
 
 const FacilityModel = mongoose.model("facility", FacilitySchema);

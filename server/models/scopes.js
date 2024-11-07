@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
-
 const UserSchema = new Schema({
   tarih: {
     type: String,
-    unique: true,
   },
   title: {
     type: String,
     trim: true,
   },
   subtitle: {
+    type: String,
+  },
+  situation: {
     type: String,
   },
   sehir: {
@@ -37,10 +37,10 @@ const UserSchema = new Schema({
     type: String,
   },
   user: {
-    type:mongoose.Schema.ObjectId,
-    required:true,
-    ref:'User'
-  }
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: "users",
+  },
 });
 
 const DataModel = mongoose.model("data", UserSchema);

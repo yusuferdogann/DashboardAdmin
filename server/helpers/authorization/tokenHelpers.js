@@ -2,7 +2,7 @@ const sendJwtToClient = (user,res ) =>{
 
     const token = user.genereteJwtFromUser();
 
-    const {JWT_COOKIE,NODE_ENV} = process.env;
+    const {NODE_ENV,JWT_COOKIE} = process.env;
     return res.status(200)
     .cookie("access_token",token,{
         httpOnly:true,
@@ -16,6 +16,7 @@ const sendJwtToClient = (user,res ) =>{
             username:user.username,
             email:user.email,
             password:user.password
+
         }
     })
 }
@@ -26,7 +27,9 @@ const isTokenIncluded = (req)=>{
 
 const getAccessTokenFromHeader = (req) =>{
     const authorization = req.headers.authorization;
-    const access_token = authorization.split(" ")[1];
+    access_token = authorization.split(" ")[1];
+    // const access_token = authorization;
+
     return access_token;
 }
 module.exports = {

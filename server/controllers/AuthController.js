@@ -1,9 +1,9 @@
 const Usermodels = require("../models/User");
-const Data = require("../models/data");
+const ScopeModel = require("../models/scopes");
 const express = require("express");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
-const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
+const { sendJwtToClient,getAccessTokenFromHeader } = require("../helpers/authorization/tokenHelpers");
 const {
   validateUserInput,
   comparePassword,
@@ -48,7 +48,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
   // .json({
   //   success:true
   // })
-
+  // getAccessTokenFromHeader(user,res)
   sendJwtToClient(user, res);
 });
 const logout = asyncErrorWrapper(async (req, res, next) => {
@@ -85,9 +85,9 @@ const imageUpload = asyncErrorWrapper(async (req, res, next) => {
 });
 
 
-const addData = asyncErrorWrapper(async(req,res,next)=>{
+const addScope = asyncErrorWrapper(async(req,res,next)=>{
     const data = req.body;
-    const savedData = await Data.create({
+    const savedData = await ScopeModel.create({
       ...data,
       user:req.user.id
     })
@@ -100,7 +100,6 @@ const addData = asyncErrorWrapper(async(req,res,next)=>{
 })
 
 const getUser = (req, res, next) => {
-  //   throw new Error()
   res.json({
     success: true,
     data: {
@@ -114,4 +113,4 @@ const getUser = (req, res, next) => {
   // return next(new CustomError("BIR HATA OUSTUR",400))
   //   return next(new CustomError("BIR HATA OUSTU"));
 };
-module.exports = { register, login, addFacility, getUser, logout,imageUpload,addData};
+module.exports = { register, login, addFacility, getUser, logout,imageUpload,addScope};
