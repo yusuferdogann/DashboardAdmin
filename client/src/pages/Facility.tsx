@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb'
 import { Tooltip, Button, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
 import Facilitynone from '../common/Facilitynote';
-import { post } from '../server/Apiendpoint';
+import { post,get } from '../server/Apiendpoint';
 import { userAuth } from '../auth/userAuth';
 import {
     CountryDropdown,
@@ -18,72 +18,58 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 
 const Facility = () => {
+   // CountrySelect Dropdown====================
+   const [country, setCountry] = useState(null);
+   const [state, setState] = useState(null);
+   const [dropcity, setDropCity] = useState(null);
+   const [language, setLanguage] = useState(null);
 
+   const handleSetCountry = (e, value) => setCountry(value);
+   const handleSetState = (e, value) => setState(value);
+   const handleSetCity = (e, value) => setDropCity(value);
+   // =========================================
+
+   
     const [size, setSize] = React.useState(null);
-
-    const { value, setFacilitSend,token } = userAuth();
+    const [resultData,setResultData] = useState([])
+    const { value, setFacilitSend,token,setFacilityRes } = userAuth();
 
     const handleOpen = (value) => setSize(value);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const config = {
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:"Bearer: "+token
+            }
+                };
+        const fetchData = async () => {
+            const dataResult = await get('/getfacility',config);
+            const responseResult = dataResult
+            console.log("getFacility------------------------------",responseResult.data.data)
+            setResultData(responseResult.data.data)
+            setFacilityRes(responseResult.data.data)
 
-    // const FacilityAllData = [
-    //     {
-    //         id: 1,
-    //         facilityname: 'ASELSAN-ISTANBUL SUBE',
-    //         country:'Turkiye',
-    //         city:'Konya',
-    //         town:'Selcuklu',
-    //         totalco2: "12.500ton"
-    //     },
-    //     {
-    //         id: 2,
-    //         facilityname: 'ASELSAN-KONYA SUBE',
-    //         country:'Turkiye',
-    //         city:'Konya',
-    //         town:'Selcuklu',
-    //         totalco2: "5000ton"
-    //     },
-    //     {
-    //         id: 3,
-    //         facilityname: 'ASELSAN-ANKARA SUBE',
-    //         country:'Turkiye',
-    //         city:'Konya',
-    //         town:'Selcuklu',
-    //         totalco2: "2.500ton"
-    //     }
-    // ]
+          }
+
+          fetchData()
+
+    },[])
 
 
     const [veri, setVeri] = useState()
-    const [facilitydata, setFacilitydata] = useState([value])
+    
 
-    // CountrySelect Dropdown====================
-    const [country, setCountry] = useState(null);
-    const [state, setState] = useState(null);
-    const [dropcity, setDropCity] = useState(null);
-    const [language, setLanguage] = useState(null);
+ 
 
-    const handleSetCountry = (e, value) => setCountry(value);
-    const handleSetState = (e, value) => setState(value);
-    const handleSetCity = (e, value) => setDropCity(value);
-    const [sweet, setSweet] = useState('')
-    // console.log("country---------------",country?.native)
-    // console.log("state------------------",state?.name)
-    // console.log("city------------------",dropcity)
-
-
-    const deneme = "yuusfd";
-    // =========================================
-    const newData = facilitydata[0].facility
     const [getVeri, setGetVeri] = useState({
-        name: "",
+        facilityname: "",
         country: '',
-        city: '',
-        town: '',
-        totalco2: "",
+        employeecount: '',
+        state: '',
+        totalarea: "",
     })
-    const [summary, setSummary] = useState(newData)
     const getData = (data) => {
         console.log("ss", data)
         setVeri(data)
@@ -112,26 +98,16 @@ const Facility = () => {
     const saveData = async (e) => {
         e.preventDefault();
         handleOpen(null)
-        setFacilitydata([...facilitydata, data])
-        console.log("data--------",data)
-        console.log("local-storage",localStorage.getItem("access_token"))
-        console.log("TOKEN",token)
-
-        
-const config = {
-    headers:{
-        "Content-Type" : "application/json",
-        Authorization:"Bearer " + token
-    }
-}
-
-
-
+       
+ 
+        const config = {
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:"Bearer: "+token
+            }
+                };
         try {
-            const addfacilitydata = await post( '/addfacility',{data},{headers:
-                { 'authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-            }})
+            const addfacilitydata = await post('/addfacility',data,config)
             const response = addfacilitydata
             console.log("facility-data", response)
 
@@ -144,20 +120,21 @@ const config = {
     }
 
     // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
-    const getAllData = (index) => {
-        summary.map((p) => p.id === index
-            ? setGetVeri(p)
-            : ""
+    const getAllData = (item) => {
+           setGetVeri(item)
 
-        )
+        
         setCheckSpinner(true)
 
         setTimeout(() => {
             navigate('/calculation')
         }, 750)
-
+        // console.log("getVeri-guncel---------------------",item)
 
     }
+
+    // console.log("veriii-----------",getVeri)
+
     // hazir veri
     setFacilitSend(getVeri)
 
@@ -174,7 +151,7 @@ const config = {
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 relative '>
 
                 {
-                    summary.map((item, index) => (
+                    resultData.map((item, index) => (
                         <div >
                             {/* group relative flex items-center gap-2.5 rounded-sm
                         py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out
@@ -183,10 +160,10 @@ const config = {
                                 <i style={{ fontSize: '50px' }} className="fa-solid fa-industry px-3"></i>
                                 <div key={index} className="flex flex-col justify-between p-4 w-100 leading-normal">
                                     <div className='flex justify-between  items-center'>
-                                        {veri ? <input type='text' placeholder='' className='w-70 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' /> : <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.name}</h5>}
+                                        {veri ? <input type='text' placeholder='' className='w-70 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' /> : <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
                                         <Facilitynone onClick={getData} />
                                     </div>
-                                    <div onClick={() => getAllData(index)}>
+                                    <div onClick={() => getAllData(item)}>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
                                         <div className='flex justify-between'><span className='font-normal'>Ulke:</span><span className='font-semibold'>{item.country}</span></div>
                                     </p>
@@ -194,10 +171,10 @@ const config = {
                                         <div className='flex justify-between'><span className='font-normal'>Sehir:</span><span className='font-semibold'>{item.city}</span></div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
-                                        <div className='flex justify-between'><span className='font-normal'>Ilce:</span><span className='font-semibold'>{item.town}</span></div>
+                                        <div className='flex justify-between'><span className='font-normal'>Ilce:</span><span className='font-semibold'>{item.state}</span></div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
-                                        <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-semibold'>{item.totalco2}</span></div>
+                                        <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-semibold'>{item.totalarea}</span></div>
                                     </p>
                                     </div>
                                 </div>
@@ -210,7 +187,7 @@ const config = {
                 <div>
                     <a href="#" className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                         {/* <i style={{ fontSize: '50px' }} class="fa-solid fa-industry px-3"></i> */}
-                        <div className="flex flex-col justify-between h-[155px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
+                        <div className="flex flex-col justify-between h-[230px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
                             <div className='absolute top-0'>
                                 <Tooltip content="Tesis Ekleyin" placement="right" style={{ color: "red", zIndex: "0" }}>
                                     <button className='flex justify-center items-center relative z-3320' style={{ height: '140px', width: '240px', borderRadius: '20px' }}></button>

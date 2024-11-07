@@ -44,7 +44,7 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
           <h4 className="text-title-md font-bold" style={{color,marginBottom}}>
             {total}
           </h4>
-          <span className="text-normal font-medium" style={{background,padding,borderRadius,color}}>{title}</span>
+          <span className="text-normal font-medium" style={{background,padding,borderRadius,color}}>{title ? title : "veri yok"}</span>
         </div>
 
         <span

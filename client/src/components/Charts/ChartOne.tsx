@@ -115,18 +115,25 @@ const ChartOne: React.FC = () => {
     series: [
       {
         name: 'Kapsam 1',
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+        // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+        data: [null, null, null, null,null, null, null, null, null, null, null, null],
+        
       },
       {
         name: 'Kapsam 2',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        // data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        data:[]
       },
       {
         name: 'Kapsam 3',
-        data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
+        // data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
+        data:[]
       },
     ],
+    
   });
+  console.log(state.series[0].data[10])
+ state.series[0].data[10] = 10 
 
   const handleReset = () => {
     setState((prevState) => ({

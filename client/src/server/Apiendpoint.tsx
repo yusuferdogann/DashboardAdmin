@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const instance = axios.create({
+export const instance = axios.create({
     // baseURL:'https://dashboard-admin-lovat.vercel.app'
 
     // =====son guncel api======
@@ -8,14 +8,23 @@ const instance = axios.create({
     
 
     // =====local api===========
-    baseURL:'http://localhost:3000/api'
-
-
+    baseURL:'http://localhost:3000/auth',
+    
 })
 
+// export const configdetail = axios.interceptors.request.use((config) => {
+//     const token = JSON.parse(localStorage.getItem("access_token"));
+//     console.log("GELIYOR------------------",token)
+//     if (token) {
+//       config.headers.Authorization = `Bearer: ${token}`;
+//       config.headers["Content-Type"] = "application/json";
+//     }
+//     return config;
+//   });
 
-export const post = (url,data)=>instance.post(url,data)
-export const get  = (url)=>instance.get(url)
+export const post = (url,data,config)=>instance.post(url,data,config)
+export const get  = (url,config)=>instance.get(url,config)
+export const register = (url,value)=>instance.post(url,value)
 
 
 // dashboard-admin-new.vercel.app

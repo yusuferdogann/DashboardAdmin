@@ -215,14 +215,14 @@ const index = (props) => {
                     </div>
                     <div className=' px-5  justify-end w-100'>
                         <div className="flex justify-between">
-                        <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.town? facilitySend?.town : state?.name ? state?.name : "-----"}</span>
-                            <span className="text-normal  justify-end"><i style={{ color:facilitySend?.town ? "#3de846" : state?.name ? "#3de846" : "black" }} className="fas fa-map-marker-alt" ></i></span>
+                        <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.state? facilitySend?.state : state?.name ? state?.name : "-----"}</span>
+                            <span className="text-normal  justify-end"><i style={{ color:facilitySend?.state ? "#3de846" : state?.name ? "#3de846" : "black" }} className="fas fa-map-marker-alt" ></i></span>
                         </div>
                     </div>
                     <div className=' px-5  justify-end w-100'>
                         <div className="flex justify-between">
-                            <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.name ? facilitySend?.name : sweet ? sweet : "-----"}</span>
-                            <span className="text-normal  justify-end" ><i style={{ color:facilitySend?.town ? '#3de846' : sweet   ? "#3de846" : "black" }} className="fas fa-industry" ></i></span>
+                            <span className="text-normal font-bold text-end w-100 me-5">{facilitySend?.facilityname ? facilitySend?.facilityname : sweet ? sweet : "-----"}</span>
+                            <span className="text-normal  justify-end" ><i style={{ color:facilitySend?.facilityname ? '#3de846' : sweet   ? "#3de846" : "black" }} className="fas fa-industry" ></i></span>
 
                         </div>
                     </div>

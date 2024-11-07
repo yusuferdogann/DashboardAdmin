@@ -3,12 +3,13 @@ import { Link,useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/profile.webp';
 import { userAuth } from '../../auth/userAuth';
+import Login from '../../pages/Authentication/Login';
 import { handleSuccess } from '../../common/utils/helpers';
 import { ToastContainer } from 'react-toastify';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const {user,setCheckSpinner,checkSpinner} = userAuth()
+  const {token,user,setCheckSpinner,checkSpinner} = userAuth()
   const navigate = useNavigate();
 
   const handleLogout = () =>{

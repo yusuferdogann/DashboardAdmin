@@ -120,24 +120,7 @@ const Userprovider = ({children})=>{
         }
         ],
         company_logo:'',
-        facility:[
-         {
-            id:0,
-            name:"ASELSAN ANKARA SUBE",
-            country:'Turkiye',
-            city:'Ankara',
-            town:'Etimeskut',
-            totalco2: "2.500ton",
-         },
-         {
-          id:1,
-          name:"ASELSAN KONYA SUBE",
-          country:'Turkiye',
-          city:'Konya',
-          town:'Selcuklu',
-          totalco2: "1.500ton",
-       }
-        ],
+        facility:[],
         username: '',
         password: ''
     });
@@ -146,6 +129,7 @@ const Userprovider = ({children})=>{
     const [loading,setLoading] = useState(true);
     const [facilitySend,setFacilitSend] = useState()
     const [checkSpinner,setCheckSpinner] = useState(false)
+    const [facilityRes,setFacilityRes] = useState([])
 
 
     useEffect(()=>{
@@ -165,7 +149,7 @@ const Userprovider = ({children})=>{
     }
     return(
         <>
-        <UserContext.Provider value={{checkSpinner,setCheckSpinner,token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend}}>
+        <UserContext.Provider value={{checkSpinner,setCheckSpinner,token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend,setFacilityRes,facilityRes}}>
             {children}
         </UserContext.Provider>
         </>

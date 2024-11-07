@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
-import { post } from "../../server/Apiendpoint";
+import { register } from "../../server/Apiendpoint";
 import { ToastContainer } from 'react-toastify';
 import { handleSuccess } from '../../common/utils/helpers';
 import { userAuth } from '../../auth/userAuth';
@@ -29,16 +29,17 @@ const Register: React.FC = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const registeruser = await post('/register', value);
+            const registeruser = await register('/register', value);
             const response = registeruser.data;
             console.log("rrrrr",response)
             
 
             if (response.success) {
-                handleSuccess(response.message)
+                handleSuccess("Kait islemi basarili")
                 setTimeout(()=>{
                     navigate("/login")
                 },2000)
+                setValue('')
             }
             console.log(response)
         } catch (error) {

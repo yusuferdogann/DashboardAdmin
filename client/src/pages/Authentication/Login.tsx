@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import {  ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { post } from "../../server/Apiendpoint"
 import { handleSuccess } from '../../common/utils/helpers';
 import { Link, useNavigate } from 'react-router-dom';
 import { userAuth } from '../../auth/userAuth';
 import Register from "./Register"
+import { useCookies } from 'react-cookie'
+import axios from 'axios';
 
 
 const Login: React.FC = () => {
@@ -30,9 +32,9 @@ const Login: React.FC = () => {
     try {
     setTimeout( async ()=>{
       
-      const loginuser = await post("/login", value)
+      const loginuser = await axios.post("http://localhost:3000/auth/login", value)
       const response = loginuser.data
-      console.log("RESPONSE-------------------",response)
+      console.log(response)
       localStorage.setItem("access_token", JSON.stringify(response.access_token))
       
       localStorage.setItem("username", JSON.stringify(response.data.username))
@@ -46,8 +48,10 @@ const Login: React.FC = () => {
     },1000)
     setTimeout(()=>{
       navigate("/facility")
-    },500)
+      window.location.reload()
+    },2000)
 
+     
       // console.log(response)
     } catch (error) {
       console.log(error)
@@ -200,7 +204,7 @@ const Login: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={(e)=>handleChange(e)}
+                      onChange={handleChange}
                       type="email"
                       name="email"
                       autoFocus
@@ -235,7 +239,7 @@ const Login: React.FC = () => {
                   </label>
                   <div className="relative">
                     <input
-                      onChange={(e)=>handleChange(e)}
+                      onChange={handleChange}
                       type="password"
                       name="password"
                       autoFocus

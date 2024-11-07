@@ -15,6 +15,8 @@ import { userAuth } from '../../auth/userAuth';
 import { Tabs, TabsHeader,  Tab,  } from "@material-tailwind/react";
 import { handleErrorForFacility } from '../../common/utils/helpers'
 import { ToastContainer } from 'react-toastify'
+import { handleSuccess } from '../../common/utils/helpers';
+
 
 
 
@@ -148,7 +150,7 @@ const AccordionCustomIcon = () => {
 
 ];
 
-  const { facilitySend } = userAuth();
+  const { facilitySend,token } = userAuth();
 
   const [units, setUnits] = useState([]);
   const [country, setCountry] = useState([]);
@@ -182,11 +184,9 @@ const AccordionCustomIcon = () => {
                   + currentdate.getHours() + ":"  
                   + currentdate.getMinutes() 
   // console.log("date-time",datetime)
-  const [control4, setControl4] = useState(false)
 
   const [savedData, setSavedData] = useState(
     { 
-      id: 1,
       tarih:datetime,
       title: '', 
       subtitle: '', 
@@ -195,13 +195,13 @@ const AccordionCustomIcon = () => {
       miktar: '',
       ulke:facilitySend?.country,
       sehir:facilitySend?.city,
-      ilce:facilitySend?.town,
-      tesis:facilitySend?.name,
+      ilce:facilitySend?.state,
+      tesis:facilitySend?.facilityname,
       situation:''
      }
   );
 
-  const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,situation:savedData.situation}
+  const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,miktar:savedData.miktar,situation:savedData.situation}
   const [formValues,setFormValues] = useState(initialValues);
   const [formErrors,setFormErrors] = useState({});
   const [isSubmit,setIsSubmit] = useState(false)
@@ -312,13 +312,6 @@ const AccordionCustomIcon = () => {
   // console.log("saved-SUB",savedData)
   // ========================================
   
-  // ===============REVIZE DATA==============
-
-
-
-  // ========================================
-
-
 
 
   function handleTitle(title) {
@@ -544,6 +537,9 @@ const AccordionCustomIcon = () => {
       setGg(false)
       setDegis(false)
       setVer(false)
+      setSavedData({...savedData,"title":event.target.value})
+      console.log("Scope-2-saved-data",savedData)
+
       if(facilitySend?.country === undefined || facilitySend?.country === ""){
         setVideopen(false)
         handleOpen(false)
@@ -629,6 +625,8 @@ const AccordionCustomIcon = () => {
           setBaslik2(event.target.id)
           setDatasub(first.name)
           setId(first.id)
+          setSavedData({...savedData,subtitle:event.target.textContent})
+        console.log("Scope-2-saved-data-subtitle",savedData)
           // console.log("scopeson2", scope2)
           // console.log("scopetxt2", event.target.textContent)
         }
@@ -797,10 +795,6 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
-  const getData = (comingFromDataPicker) => {
-    setControl4(comingFromDataPicker)
-    console.log("comingFromDataPicker", comingFromDataPicker)
-  }
 
   
 
@@ -820,13 +814,13 @@ const AccordionCustomIcon = () => {
     if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
       setChange(Number(event.target.value))
     }
-    console.log("change-Number-data",change)
+    // console.log("change-Number-data",change)
 
    const {name,value} = event.target;
    setFormValues({...formValues,[name]:value})
    setAddList({...addList,[name]:value})
 
-
+    console.log("forms---------",savedData)
   
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
@@ -851,7 +845,6 @@ const AccordionCustomIcon = () => {
       [event.target.name]: event.target.value,
     });
 
-    // console.log("taking-data",savedData)
 
 
     if (event.target.value === "Yangın Söndürme Tüpü") {
@@ -875,6 +868,8 @@ const AccordionCustomIcon = () => {
     else { null }
   }
   // console.log("Deneme 1 2",formValues)
+  // console.log("taking-data",savedData.situation)
+  // console.log("forms---------",savedData)
 
   const saveValue = (event: String | any, label: String | any) => {
     setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
@@ -883,51 +878,54 @@ const AccordionCustomIcon = () => {
    
 }
 
-// console.log("form",formValues)
-console.log("lstdata",listData)
 
 
-const handleValidation = (event)=>{
+
+const handleValidation = async (event)=>{
+  event.preventDefault();
+
   // console.log("after-operation",formValues)
   // console.log("form-value",formValues.kaynak)
   // console.log("form-birim",formValues.birim)
-
-
-  // const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,situation:savedData.situation}
-  // const [formValues,setFormValues] = useState(initialValues);
-  // const [formErrors,setFormErrors] = useState({});
-  // const [isSubmit,setIsSubmit] = useState(false)
-  // const [listData,setListData] = useState([])
-  // const [addList,setAddList] = useState({kaynak:'',birim:'',miktar:''})
-
-  // const [aracdata, setAracdata] = useState([])
-  // const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
- // const handleSave = () => {
-  //   setCar({
-  //     ...car,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // }
-  // setFormValues({...formValues,[name]:value})
+  // console.log("form",formValues)
+  // console.log("lstdata",listData)
+  const {name,value} = event.target;
+  setFormValues({...formValues,[name]:value})
   // setListData({...formValues,[name]:value})
- 
-    event.preventDefault();
 
     setFormErrors(validate(formValues));
     setIsSubmit(true)
-    setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
-        //     setAracdata([...aracdata,{car}])
+    // setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
 
-    console.log("data-List",listData)
+    // console.log("data-List",listData)
+    console.log("handle-button---------",savedData)
 
-   
-   
   }
-
   useEffect(()=>{
-    console.log("useEffect-ust",formErrors)
+    // console.log("useEffect-ust",formErrors)
     if(Object.keys(formErrors).length === 0 && isSubmit){
-      console.log("useEffect-alt",formValues)
+      const isEmpty = (obj) => { 
+        return Object.keys(obj).length === 0; 
+      }; 
+      
+      
+      console.log(isEmpty(formErrors)); // true 
+      if(isEmpty(formErrors)){
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+      }
+          };
+
+          const fetchData = async () => {
+            const dataResult = await post('/adddata',savedData,config);
+            handleSuccess('Veri başarıyla kayt edildi.')
+            console.log("result-data",dataResult)
+
+          }
+          fetchData()
+      }
     
      
 
@@ -938,17 +936,21 @@ const handleValidation = (event)=>{
   const validate = (values)=>{
     const errors={}
     if(!values.kaynak){
-      errors.kaynak = "NO KAYNAK";
+      errors.kaynak = "Bu alan boş bırakılamaz.";
     }
     if(!values.birim){
-      errors.birim = "NO BIRIM";
+      errors.birim = "Bu alan boş bırakılamaz.";
+    }
+    if(!values.miktar){
+      errors.miktar = "Bu alan boş bırakılamaz.";
     }
     if(!values.situation){
-      errors.situation = "NO siti";
+      errors.situation = "Bu alan boş bırakılamaz.";
     }
 
     return errors;
   }
+
 
   
   // Facility Sayfasndan gelen veri
@@ -973,7 +975,7 @@ function getDuplicates(arr) {
 
     arr.forEach(item => {
         const identifier = `${item.name}|${item.email}`;
-        console.log(seen.has(identifier))
+        // console.log(seen.has(identifier))
         if (seen.has(identifier)) {
             duplicates.push(item);
         } else {
@@ -984,7 +986,7 @@ function getDuplicates(arr) {
 }
 
 const duplicateUsers = getDuplicates(users);
-console.log(duplicateUsers);
+// console.log(duplicateUsers);
 
   return (
 
@@ -1100,6 +1102,7 @@ console.log(duplicateUsers);
                   {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
                 </div>
                 <hr className='my-4 ' />
+                
                 {
                   ver ? <div>
                      <Tabs value='personal'>
@@ -1136,42 +1139,43 @@ console.log(duplicateUsers);
         <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
         </div>
         <div className="mt-7">
-          <select  value={savedData.situation} name='situation' className={error ? styles.select.error : styles.select.normal} onChange={(event)=>changeData(event)}>
+          <select  value={savedData.situation} name='situation' className={formErrors.situation ? styles.select.error : styles.select.normal} onChange={(event)=>changeData(event)}>
             <option value='0'>Lütfen kayıt için dönem/ay seçin</option>
             <option value='4'>Dönem olarak kayıt</option>
             <option value='5'>Ay olarak kayıt</option>
           </select>
+          <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.situation}</small> 
         </div>
        
 
         {
           change === 4 ? <div className="donem mt-7 ">
-          <select className={styles.select.normal}>
+          <select className={styles.select.normal} name='situation' value={savedData.situation}  onChange={(event) => changeData(event)}>
             <option>Lütfen kayıt için dönem girin</option>
-            <option>Ocak - Mart</option>
-            <option>Nisan - Haziran</option>
-            <option>Temmuz - Eylül</option>
-            <option>Ekim - Aralık</option>
+            <option value='Ocak - Mart'>Ocak - Mart</option>
+            <option value='Nisan - Haziran'>Nisan - Haziran</option>
+            <option value='Temmuz - Eylül'>Temmuz - Eylül</option>
+            <option value='Ekim - Aralık'>Ekim - Aralık</option>
           </select>
         </div> : null
         }
       </div>
     {
       change === 5 ?   <div className="ay">
-      <select className={styles.select.normal}>
+      <select className={styles.select.normal}  name='situation' value={savedData.situation}  onChange={(event) => changeData(event)}>
         <option>Lütfen kayıt için ay girin</option>
-        <option>Ocak</option>
-        <option>Şubat</option>
-        <option>Mart</option>
-        <option>Nisan</option>
-        <option>Mayıs</option>
-        <option>Haziran</option>
-        <option>Temmuz</option>
-        <option>Ağustos</option>
-        <option>Eylül</option>
-        <option>Ekim</option>
-        <option>Kasım</option>
-        <option>Aralık</option>
+        <option value='Ocak'>Ocak</option>
+        <option value='Şubat'>Şubat</option>
+        <option value='Mart'>Mart</option>
+        <option value='Nisan'>Nisan</option>
+        <option value='Mayıs'>Mayıs</option>
+        <option value='Haziran'>Haziran</option>
+        <option value='Temmuz'>Temmuz</option>
+        <option value='Ağustos'>Ağustos</option>
+        <option value='Eylül'>Eylül</option>
+        <option value='Ekim'>Ekim</option>
+        <option value='Kasım'>Kasım</option>
+        <option value='Aralık'>Aralık</option>
       </select>
     </div> : null
     }
@@ -1184,11 +1188,11 @@ console.log(duplicateUsers);
     </div>
 
                       {/* form start */}
-                      <form onSubmit={(event)=>handleValidation(event,control4)}>
+                      <form onSubmit={(event)=>handleValidation(event)}>
                         <div className='grid grid-cols-4 gap-3 my-5'>
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={error ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={formErrors.kaynak ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
@@ -1198,13 +1202,13 @@ console.log(duplicateUsers);
                                 <option key={index}>{textControl ? 'kaynak girin' : citiy}</option>
                               ))}
                             </select>
-                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
 
                           </div>
 
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={error ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={formErrors.birim ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               <option>Birim girin</option>
@@ -1212,7 +1216,7 @@ console.log(duplicateUsers);
                                 <option key={index}>{textControl ? 'Birim girin' : citiy}</option>
                               ))}
                             </select>
-                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.birim}</small> 
 
                           </div>
                           {
@@ -1237,11 +1241,11 @@ console.log(duplicateUsers);
                               type="text"
                               value={baslik1 || baslik2 ? savedData.miktar : car.miktar}
                               name='miktar'
-                              className={error ? styles.input.error : styles.input.normal}
+                              className={formErrors.miktar ? styles.input.error : styles.input.normal}
                               placeholder="miktar girin"
                               onChange={(event) => changeData(event)}
                             />
-                            {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                             <small class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.miktar}</small> 
 
 
                           </div>
@@ -1302,10 +1306,10 @@ console.log(duplicateUsers);
                             <th scope="col" className="px-6 py-3">
                               Miktar
                             </th>
-                            <th scope="col" className="px-10 py-3">
+                            <th scope="col" className="px-6 py-3 text-center w-0">
                               Düzenle
                             </th>
-                            <th scope="col" className="px-10 py-3">
+                            <th scope="col" className="px-6 py-3 text-center w-0">
                               Sil
                             </th>
                           
@@ -1316,24 +1320,24 @@ console.log(duplicateUsers);
                           listData?.map((arac, index) => (
 
                             <tbody key={index}>
-                              <tr class="border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                              <tr className="border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {arac.kaynak}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td className="px-6 py-4">
                                 {arac.birim}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td className="px-6 py-4">
                                 {arac.miktar}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td className="px-6 py-4 text-center">
                                 <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
-                                    <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    <span className="relative px-2 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Duzenle
                                     </span>
                                 </button>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-center">
                                 <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                                     <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Sil
@@ -1354,7 +1358,6 @@ console.log(duplicateUsers);
           }
         </div>
       </div>
-      {/* <Deneme/> */}
   <ToastContainer/>
     </div>
   );

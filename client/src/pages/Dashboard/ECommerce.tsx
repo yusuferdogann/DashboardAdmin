@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
@@ -10,15 +10,45 @@ import Image1 from "../../images/logo/co2_4038678.png"
 import Image2 from "../../images/logo/gas_3327542.png"
 import Image3 from "../../images/logo/tesla-coil_9888644.png"
 import Slider from "../../common/Slider"
+import { userAuth } from '../../auth/userAuth';
+import {get} from "../../server/Apiendpoint"
 
 
 
 const ECommerce: React.FC = () => {
+
+  const {token} = userAuth()
+  const [result,setResult] = useState([])
+  
+  useEffect(()=>{
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+ token
+      }
+          };
+
+          const fetchData = async () => {
+            const dataResult = await get('/getamount',config);
+            console.log("result-data",dataResult.data.data)
+            setResult([dataResult.data.data])
+
+          }
+          fetchData()
+
+},[])
+
+const AmountAll = () =>{
+  result?.map((p)=>{
+    console.log("p-data----------------------",p)
+  })
+}
+AmountAll()
   return (
     <>
       <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
-         title="22 ton "
+         title =''  
           total="KAPSAM 1"
           color='black'
           // rate="0.43%" 
@@ -27,7 +57,7 @@ const ECommerce: React.FC = () => {
          <img src={Image1} alt="" />
         </CardDataStats>
         <CardDataStats 
-        title="66%"
+        title=""
         total="KAPSAM 2" 
         color='black'
 
@@ -38,7 +68,7 @@ const ECommerce: React.FC = () => {
 
         </CardDataStats>
         <CardDataStats  
-         title="134 m3"
+         title=""
          total="KAPSAM 3"
          color='black'
 
