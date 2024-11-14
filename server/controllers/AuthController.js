@@ -69,26 +69,57 @@ const addFacility = async (req, res) => {
   //   console.log(token)
 };
 
+// const imageUpload = asyncErrorWrapper(async (req, res, next) => {
+
+//  const user =  await Usermodels.findByIdAndUpdate(req.user.id,{
+//     "company_logo" : req.saveProfileImage
+//   },{
+//     new:true,
+//     runValidators:true
+//   })
+//   res.status(200).json({
+//     success: true,
+//     message: "Image upload successfull",
+//     data:user
+//   });
+// });
+
+
 const imageUpload = asyncErrorWrapper(async (req, res, next) => {
 
- const user =  await Usermodels.findByIdAndUpdate(req.user.id,{
-    "company_logo" : req.saveProfileImage
-  },{
-    new:true,
-    runValidators:true
-  })
-  res.status(200).json({
-    success: true,
-    message: "Image upload successfull",
-    data:user
-  });
-});
+  // console.log(req.body)
+  const id = req.user.id
 
+  const {base64} = req.body
+
+  // <SORGU - UPDATE>
+   const deneme = Usermodels.findByIdAndUpdate(id,{company_logo:base64 } ).exec();
+
+  // const user =  await Usermodels.findByIdAndUpdate(req.user.id,{"company_logo" : req.body}).exec()
+
+   res.status(200).json({
+     success: true,
+     message: "Image upload successfull",
+     data:deneme
+   });
+ });
+ 
 
 const addScope = asyncErrorWrapper(async(req,res,next)=>{
-    const data = req.body;
+    const {birim,ilce,kaynak,miktar,sehir,situation,subtitle,tarih,tesis,title,ulke,type} = req.body;
     const savedData = await ScopeModel.create({
-      ...data,
+      birim,
+      ilce,
+      kaynak,
+      miktar,
+      sehir,
+      situation,
+      subtitle,
+      tarih,
+      tesis,
+      title,
+      ulke,
+      type,
       user:req.user.id
     })
     res.status(200)

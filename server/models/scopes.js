@@ -36,6 +36,9 @@ const UserSchema = new Schema({
   tesis: {
     type: String,
   },
+  type: {
+    type: String,
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     required: true,

@@ -19,9 +19,9 @@ const {data,getdata} = require('../controllers/DataController')
 const {getAccessToRoute} = require("../Middleware/authorization/auth")
 
 const express = require('express')
-const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
+// const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
 const updateCompanyInfo = require('../Middleware/companyInfo/companyInfo')
-const {updateFacility,addedFacility, deleteFacility, findObjectName, getAllFacility,filterFacilityByUserId,filterAmountByUserId} = require('../Middleware/facility/updateFacility')
+const {DashboardWeekGrafic,DeletedFacility,updateFacility,addedFacility, deleteFacility, findObjectName, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
 
 const routers = express.Router()
 
@@ -31,8 +31,8 @@ routers.post('/register',register)
 routers.post('/login',login)
 routers.post('/logout',getAccessToRoute,logout)
 routers.get("/profile",getAccessToRoute,getUser)
-routers.post("/upload",[getAccessToRoute,profileImageUpload.single("company_logo")],imageUpload)
-
+// routers.post("/upload",[getAccessToRoute,profileImageUpload.single("company_logo")],imageUpload)
+routers.post('/uploadimage',getAccessToRoute,imageUpload)
 routers.post("/companyinfo",getAccessToRoute,updateCompanyInfo)
 
 routers.post("/facility",getAccessToRoute,updateFacility)
@@ -47,8 +47,17 @@ routers.post("/adddata",getAccessToRoute,addScope)
 routers.get("/getfacility",getAccessToRoute,filterFacilityByUserId)
 
 routers.get("/getamount",getAccessToRoute,filterAmountByUserId)
+routers.post("/getsummarydata",getAccessToRoute,summaryFilterData)
 
+routers.get("/getgraficdata",getAccessToRoute,DashboardMounthGrafic)
 
+routers.get("/getfacilitygraficdata",getAccessToRoute,DashboardFacilityGrafic)
+
+routers.get("/getcardgraficdata",getAccessToRoute,DashboardScopeGrafic)
+
+routers.get("/getweekgraficdata",getAccessToRoute,DashboardWeekGrafic)
+
+routers.post("/deletefacility",getAccessToRoute,DeletedFacility)
 
 
 routers.post("/calculation",data)
