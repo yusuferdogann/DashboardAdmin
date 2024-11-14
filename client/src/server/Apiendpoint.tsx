@@ -25,6 +25,7 @@ export const instance = axios.create({
 export const post = (url,data,config)=>instance.post(url,data,config)
 export const get  = (url,config)=>instance.get(url,config)
 export const register = (url,value)=>instance.post(url,value)
+export const deleteFacilityApi = (url,data)=>instance.delete(url,data)
 
 
 // dashboard-admin-new.vercel.app

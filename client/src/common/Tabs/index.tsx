@@ -1,30 +1,37 @@
 import { Tabs, TabsHeader, TabsBody, Tab, TabPanel, } from "@material-tailwind/react";
 import Table from "../../common/Table/index"
 import { useEffect, useState } from "react";
-import { get } from "../../server/Apiendpoint"
+import { post } from "../../server/Apiendpoint"
+import {userAuth} from "../../auth/userAuth"
 
 
 const TabsDefault = () => {
     const [open, setOpen] = useState();
     const handleOpen = (index) => setOpen(open === index ? index : index);
-    console.log("opennnn", open)
-    const [veri, setVeri] = useState(["SABIT YANMA", "HAREKETLI ANMA", "DOĞRUDAN SIZMA KAÇAK EMILSYONU"])
+    // console.log("opennnn", open)
+    const {token} = userAuth()
+    const [veri, setVeri] = useState(["SABIT YANMA", "HAREKETLI YANMA", "DOĞRUDAN SIZMA KAÇAK EMILSYONU"])
     const [veri2, setVeri2] = useState([])
+    const [requestData,setRequestData] = useState([{}])
+    const [sendingData,setSendingData] = useState({ScopeTitle:'',Situation:'',Subtitle:''})
     const Data = [
         {
             label: "KAPSAM-1",
             value: "html",
+            scopename:'SCOPE-1',
             subtitle: ['SABİT YANMA', 'HAREKETLİ YANMA', 'DOĞRUDAN SIZMA KAÇAK EMILSYONU'],
 
         },
         {
             label: "KAPSAM-2",
             value: "react",
+            scopename:'SCOPE-2',
             subtitle: ['SATIN ALINAN ENERJI'],
         },
         {
             label: "KAPSAM-3",
             value: "vue",
+            scopename:'SCOPE-3',
             subtitle: ['Upstream Nakliye (aracın firmaya ait olması durumunda)', 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)'],
 
             deeptitle: [
@@ -62,20 +69,80 @@ const TabsDefault = () => {
     }
     const [state, setState] = useState('SCOPE-1')
 
-    const saveValue = (event: String | any, label: String | any) => {
+    const saveValue = (event: String | any, label: String | any,scopename: String | any) => {
         handleOpen(false)
         setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
         setState(label)
+        console.log("scopename",scopename)
+        // setSendingData({ScopeTitle:label})
+        setRequestData({...requestData,'ScopeTitle':scopename})
 
         if (state === "KAPSAM-1" || "KAPSAM-2") {
             setVeri2(null)
         }
+        // setRequestData({'ScopeTitle':state})
+        console.log("ver---------",requestData)
+
     }
-    console.log("veri  ", state)
+    // console.log("veri  ", state)
+    console.log("getir-----",requestData)
+
+    // setRequestData([{...requestData,'ScopeTitle':state}])
+    // setRequestData({'ScopeTitle':state})
 
 
-    const checkControlCarType = (e, index) => {
-        console.log("indexxxx", index)
+  
+    const [change,setChange] = useState(false)
+    const [checksubtitle,setCheckSubtitle] = useState(false)
+    const [getData,setGetData] = useState({donem:'',ay:''})
+    const [returnData,setReturnData] = useState([])
+
+
+
+    const changeControl = (event)=>{
+        // console.log(event.target.value,"valuuuuu")
+        const {name,value} = event.target;
+        setChange(Number(event.target.value))
+        // console.log("getVALUE",getData)
+
+
+      }
+
+
+      const getSubtitle = (event)=>{
+        setCheckSubtitle(true)
+        console.log("eventtt------",state)
+        // setRequestData([{'Situation':event.target.value}])
+        console.log("Update-Situation=================",requestData)
+        setRequestData({"ScopeTitle":state,'Situation':event.target.value})
+        // setRequestData({"ScopeTitle":state,"ScopeTitle":state,'Situation':event.target.value})
+
+
+        // console.log("Situation--------------------",event.target.value)
+        // console.log("ScopeTitle--------------------",state)
+        console.log("Request-Data=================",requestData)
+      }
+    //   console.log("Request-Data=================",requestData)
+
+      const checkControlCarType = async(e, index) => {
+        // console.log("indexxxx", index)
+        // console.log("true---------------", )
+        // console.log('sub-title-------------------',e.target.textContent)
+        setRequestData({...requestData,'Subtitle':e.target.textContent})
+        // console.log('sub-title-------------------',requestData)
+        // console.log(index)
+        
+            const config = {
+                headers:{
+                    "Content-Type":"application/json",
+                    Authorization:"Bearer: "+token
+                }
+                    };
+                const addfacilitydata = await post('/getsummarydata',requestData,config)
+                console.log("RESULT----------------------------",addfacilitydata.data.data)
+                setReturnData(addfacilitydata.data.data)
+        
+
         handleOpen(index)
         if (index === 0 && state === 'KAPSAM-3') {
             setVeri2(['Şahsi Araçlar'])
@@ -89,28 +156,7 @@ const TabsDefault = () => {
             setVeri2([null])
         }
     }
-    const [change,setChange] = useState(false)
-    const [checksubtitle,setCheckSubtitle] = useState(false)
-    const [getData,setGetData] = useState({donem:'',ay:''})
-
-
-
-    const changeControl = (event)=>{
-        // console.log(event.target.value,"valuuuuu")
-        const {name,value} = event.target;
-
-        setChange(Number(event.target.value))
-
-
-        console.log("getVALUE",getData)
-
-
-      }
-
-
-      const getSubtitle = (event)=>{
-        setCheckSubtitle(true)
-      }
+    // console.log("requestData-------",requestData)
     // console.log("state",state)
 
     // console.log("STATE",state)
@@ -155,10 +201,10 @@ const TabsDefault = () => {
                                 change === 4 ? <div className="donem mt-7 ">
                                     <select onChange={getSubtitle} className="py-1 px-4 h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
                                         <option>Lütfen rapor için dönem girin</option>
-                                        <option>Ocak - Mart</option>
-                                        <option>Nisan - Haziran</option>
-                                        <option>Temmuz - Eylül</option>
-                                        <option>Ekim - Aralık</option>
+                                        <option value='Ocak - Mart'>Ocak - Mart</option>
+                                        <option value='Nisan - Haziran'>Nisan - Haziran</option>
+                                        <option value='Temmuz - Eylül'>Temmuz - Eylül</option>
+                                        <option value='Ekim - Aralık'>Ekim - Aralık</option>
                                     </select>
                                 </div> : null
                             }
@@ -167,18 +213,18 @@ const TabsDefault = () => {
                             change === 5 ? <div className="ay mt-5">
                                 <select onChange={getSubtitle} className="py-1 px-4 h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
                                     <option>Lütfen rapor için ay girin</option>
-                                    <option>Ocak</option>
-                                    <option>Şubat</option>
-                                    <option>Mart</option>
-                                    <option>Nisan</option>
-                                    <option>Mayıs</option>
-                                    <option>Haziran</option>
-                                    <option>Temmuz</option>
-                                    <option>Ağustos</option>
-                                    <option>Eylül</option>
-                                    <option>Ekim</option>
-                                    <option>Kasım</option>
-                                    <option>Aralık</option>
+                                    <option value='Ocak'>Ocak</option>
+                                    <option value='Şubat'>Şubat</option>
+                                    <option value='Mart'>Mart</option>
+                                    <option value='Nisan'>Nisan</option>
+                                    <option value='Mayıs'>Mayıs</option>
+                                    <option value='Haziran'>Haziran</option>
+                                    <option value='Temmuz'>Temmuz</option>
+                                    <option value='Ağustos'>Ağustos</option>
+                                    <option value='Eylül'>Eylül</option>
+                                    <option value='Ekim'>Ekim</option>
+                                    <option value='Kasım'>Kasım</option>
+                                    <option value='Aralık'>Aralık</option>
                                 </select>
                             </div> : null
                         }
@@ -193,8 +239,8 @@ const TabsDefault = () => {
       </div>
             <Tabs value="html" className='p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                 <TabsHeader className=" mt-5" style={{ fontWeight: '800' }}>
-                    {Data.map(({ label, value }) => (
-                        <Tab className="text-normal  uppercase font-bold dark:bg-gray-100 dark:text-gray-100 hover:bg-[#6a6a6a1c] duration-300  ease-in-out" key={value} value={value} onClick={(event) => saveValue(event, label)}>
+                    {Data.map(({ label,scopename, value }) => (
+                        <Tab className="text-normal  uppercase font-bold dark:bg-gray-100 dark:text-gray-100 hover:bg-[#6a6a6a1c] duration-300  ease-in-out"  key={scopename} value={value} onClick={(event) => saveValue(event, label,scopename)}>
                             {label}
                         </Tab>
                     ))}
@@ -210,7 +256,7 @@ const TabsDefault = () => {
                 </div>
                 <div className="crazy " style={{ display: 'flex' }}>
                     {veri2?.map((citiy, index) => (
-                        <button className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" style={{ margin: '0px 40px', padding: '10px', borderRadius: "10px" }} key={index}>{citiy}</button>
+                        <button className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" style={{ margin: '0px 40px', padding: '10px', borderRadius: "10px" }}  key={index}>{citiy}</button>
                     ))}
                 </div> 
                
@@ -219,7 +265,7 @@ const TabsDefault = () => {
                 <TabsBody>
                     {Data.map(({ value, desc }) => (
                         <TabPanel key={value} value={value}>
-                            <Table state={state} />
+                            <Table state={state} returnData={returnData}/>
                         </TabPanel>
                     ))}
                 </TabsBody>

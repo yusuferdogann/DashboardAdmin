@@ -1,7 +1,8 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-
+import { userAuth } from '../../auth/userAuth';
+import { get } from '../../server/Apiendpoint';
 const options: ApexOptions = {
   legend: {
     show: false,
@@ -99,7 +100,7 @@ const options: ApexOptions = {
       },
     },
     min: 0,
-    max: 100,
+    max: 200,
   },
 };
 
@@ -110,13 +111,16 @@ interface ChartOneState {
   }[];
 }
 
-const ChartOne: React.FC = () => {
-  const [state, setState] = useState<ChartOneState>({
+const ChartOne: React.FC = (props) => {
+
+  const {token} = userAuth()
+  // const [result,setResult] = useState()
+  const [result,setResult] = useState({
     series: [
       {
         name: 'Kapsam 1',
         // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-        data: [null, null, null, null,null, null, null, null, null, null, null, null],
+        data: [],
         
       },
       {
@@ -130,17 +134,58 @@ const ChartOne: React.FC = () => {
         data:[]
       },
     ],
+  })
+  
+  useEffect(()=>{
     
-  });
-  console.log(state.series[0].data[10])
- state.series[0].data[10] = 10 
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+      }
+          };
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
-  };
-  handleReset;
+          const fetchData = async () => {
+            const dataResult = await get('/getgraficdata',config);
+            // console.log("result-data",dataResult.data.data)
+            // day.push(dataResult.data.data)
+            // for (let i = 0; i < result.length; i++) {
+            //   const element = result[i];
+            //   day.push(element)
+            //   setData(element)
+
+            // }
+            setResult({
+              series: [
+                {
+                  name: 'Kapsam 1',
+                  // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
+                  data: dataResult?.data.data,
+                  
+                },
+                {
+                  name: 'Kapsam 2',
+                  // data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+                  data:[]
+                },
+                {
+                  name: 'Kapsam 3',
+                  // data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
+                  data:[]
+                },
+              ],
+            })
+          
+
+          }
+          fetchData()
+},[])
+
+
+  // console.log(state.series[0].data[10])
+//  state.series[0].data[10] = 10 
+
+ 
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
@@ -184,7 +229,7 @@ const ChartOne: React.FC = () => {
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
             options={options}
-            series={state.series}
+            series={result?.series}
             type="area"
             height={350}
           />

@@ -57,7 +57,7 @@ const AccordionCustomIcon = () => {
   const Countries = [
     {
       id: 1,
-      name: "Scope-1",
+      name: "SCOPE-1",
       states: [
         {
           id: 1,
@@ -71,7 +71,7 @@ const AccordionCustomIcon = () => {
           name: "HAREKETLI YANMA",
           short: ['hareketli'],
           cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
-          units: ['scope-1', 'ton', 'lt', 'm3']
+          units: ['SCOPE-1', 'ton', 'lt', 'm3']
         },
         {
           id: 3,
@@ -86,7 +86,7 @@ const AccordionCustomIcon = () => {
     },
     {
       id: 2,
-      name: "Scope-2",
+      name: "SCOPE-2",
       states: [
         {
           id: 1,
@@ -98,7 +98,7 @@ const AccordionCustomIcon = () => {
     },
     {
       id: 3,
-      name: "Scope-3",
+      name: "SCOPE-3",
       states: [
         {
           id: 1,
@@ -150,6 +150,13 @@ const AccordionCustomIcon = () => {
 
 ];
 
+const ResultTravel = [];
+Data.map((value)=>{
+  // console.log(value.value)
+  ResultTravel.push(value.value)
+
+})
+// console.log("sonuc------------",ResultTravel[3])
   const { facilitySend,token } = userAuth();
 
   const [units, setUnits] = useState([]);
@@ -170,6 +177,8 @@ const AccordionCustomIcon = () => {
   const [sub, setSub] = useState({ name1: '', name2: '', name3: '', name4: '' })
   const [degis, setDegis] = useState(false)
   const [gg, setGg] = useState(false)
+  const [travelCarControl,setTravelCarControl] = useState(false)
+  const [holdLabelScope,setHoldLabelScope] = useState('')
   const [date, setDate] = useState({ startDate: '', endDate: '' })
   const [todos, setTodos] = useState([
     { id: 1, title: '', subtitle: '', sabit: ["sab"], hareketli: ['har'], dogrudan: ['dog'] },
@@ -182,7 +191,8 @@ const AccordionCustomIcon = () => {
                   + (currentdate.getMonth()+1)  + "/" 
                   + currentdate.getFullYear() + " - "  
                   + currentdate.getHours() + ":"  
-                  + currentdate.getMinutes() 
+                  + currentdate.getMinutes() + ":"
+                  + currentdate.getMilliseconds()
   // console.log("date-time",datetime)
 
   const [savedData, setSavedData] = useState(
@@ -200,6 +210,41 @@ const AccordionCustomIcon = () => {
       situation:''
      }
   );
+  const [savedDataScope3, setSavedDataScope3] = useState(
+    { 
+      tarih:datetime,
+      title: '', 
+      subtitle: '', 
+      kaynak: '', 
+      yakitturu:'',
+      birim: '', 
+      miktar: '',
+      ulke:facilitySend?.country,
+      sehir:facilitySend?.city,
+      ilce:facilitySend?.state,
+      tesis:facilitySend?.facilityname,
+      situation:''
+     }
+  );
+  const [scope3DownTitle,setScope3DownTitle] = useState('')
+
+  const [savedDataScope4, setSavedDataScope4] = useState(
+    { 
+      tarih:datetime,
+      title: 'SCOPE-3', 
+      subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+      plaka: '', 
+      yakitturu:'',
+      birim: '', 
+      miktar: '',
+      ulke:facilitySend?.country,
+      sehir:facilitySend?.city,
+      ilce:facilitySend?.state,
+      tesis:facilitySend?.facilityname,
+      situation:'',
+      type:'Şahsi Araçlar'
+     }
+  );
 
   const initialValues = {kaynak:savedData.kaynak,birim:savedData.birim,miktar:savedData.miktar,situation:savedData.situation}
   const [formValues,setFormValues] = useState(initialValues);
@@ -209,6 +254,7 @@ const AccordionCustomIcon = () => {
   const [addList,setAddList] = useState({kaynak:'',birim:'',situation:'',miktar:''})
   const [aracdata, setAracdata] = useState([])
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
+  const [dublicate,setDublicate] = useState(false)
 
   //     setAracdata([...aracdata,{car}])
 
@@ -246,6 +292,7 @@ const AccordionCustomIcon = () => {
   const [scope3, setScope3] = useState("")
   const [baslik1, setBaslik1] = useState("")
   const [baslik2, setBaslik2] = useState("")
+  const [baslik3, setBaslik3] = useState("")
   const [datasub, setDatasub] = useState('')
   const [videopen, setVideopen] = useState(false)
   const [error,setError] = useState(false)
@@ -443,9 +490,27 @@ const AccordionCustomIcon = () => {
     setScope1(false)
     setId(false)
     setCountry(event.target.value);
-    setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
+    setStates(Countries.find((ctr) => ctr.name === "SCOPE-1").states);
+    setSub({ name1: 'Kaynak', name2: 'Birim', name3: '', name4: 'Miktar' })
 
-    if (event.target.value === 'Scope-1') {
+    if (event.target.value === 'SCOPE-1') {
+      setSavedDataScope3({ 
+        tarih:datetime,
+        title: '', 
+        subtitle: '', 
+        kaynak: '', 
+        yakitturu:'',
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+       setBaslik3('')
+      console.log("Click Scope1 after Scope3-----------------",savedDataScope3)
+
       if(facilitySend?.country === undefined || facilitySend?.country === ""){
         setVideopen(false)
 
@@ -455,8 +520,9 @@ const AccordionCustomIcon = () => {
         setVideopen(true)
       }
       setBaslik1(event.target.value)
+      console.log("title-Scope-1-------------",baslik1)
       setBaslikvalue('TESİSTE ISINMA VE ÜRETİM AMACIYLA KULLANILAN ENERJİ TÜRLERİ')
-      setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
+      setStates(Countries.find((ctr) => ctr.name === "SCOPE-1").states);
       // setShort(states.find((ctr) => ctr.short===ctr.short).short);
 
 
@@ -464,8 +530,6 @@ const AccordionCustomIcon = () => {
       handleTitle(event.target.value)
       setSavedData({...savedData,"title":event.target.value})
       //setKapsamdetail([...kapsamdetail,{"kapsambasligi":event.target.textContent}])
-
-      console.log("saved-data",savedData)
       //  console.log("first",todos) 
       // todos.filter((item)=>{
       //   if (item.id===1) {
@@ -529,16 +593,20 @@ const AccordionCustomIcon = () => {
       }
 
     }
-    else if (event.target.value === 'Scope-2') {
+    else if (event.target.value === 'SCOPE-2') {
       setScope2(false)
       setId(false)
-      setBaslik2('')
+      // setBaslik2('')
+      setBaslik2(event.target.value)
+      console.log("title-Scope-2---------------",baslik2)
+
       handleOpen(2)
       setGg(false)
       setDegis(false)
       setVer(false)
       setSavedData({...savedData,"title":event.target.value})
-      console.log("Scope-2-saved-data",savedData)
+      console.log("SCOPE-2-saved-data",savedData)
+
 
       if(facilitySend?.country === undefined || facilitySend?.country === ""){
         setVideopen(false)
@@ -553,16 +621,48 @@ const AccordionCustomIcon = () => {
       setBaslikvalue('TESİS BÜNYESİNDE KAYITLI ARAÇLARIN KULLADIĞI YAKITLAR')
       // console.log("bassssss2", baslik)
 
-      setStates(Countries.find((ctr) => ctr.name === "Scope-2").states);
+      setStates(Countries.find((ctr) => ctr.name === "SCOPE-2").states);
 
 
     }
-    else if (event.target.value === 'Scope-3') {
+    else if (event.target.value === 'SCOPE-3') {
       // console.log("opennnn", open)
+      setSavedData( { 
+        tarih:datetime,
+        title: '', 
+        subtitle: '', 
+        kaynak: '', 
+        yakitturu:'',
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+
+     
+       console.log("scopsdsde-3",savedDataScope3)
+
+       console.log("scope-3---------",baslik3)
       setBaslik(event.target.value)
+      setSavedData({...savedData,"title":event.target.value})
+      setSavedDataScope3({...savedDataScope3,"title":event.target.value})
+      setBaslik3(event.target.value)
+      // console.log("Baslik-3----",baslik3)
+      // console.log("Baslik-----",baslik)
+      // console.log("Baslik-1----",baslik1)
+      // console.log("Baslik-2----",baslik2)
+      setBaslik1('')
+      setBaslik2('')
+      // console.log("Baslik-1-After----",baslik1)
+      // console.log("Baslik-2-After----",baslik2)
+
+
       if(facilitySend?.country === undefined || facilitySend?.country === ""){
         setVideopen(false)
-        setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
+        setStates(Countries.find((ctr) => ctr.name === "SCOPE-3").states);
         setBirim(states.find((state) => state).birim);
         handleOpen(false)
         return handleErrorForFacility("Lütfen kayıt yapmadan önce Tesisler sekmesinden tesis seçin veya yeni bir tesis ekleyin")
@@ -570,7 +670,7 @@ const AccordionCustomIcon = () => {
       else{
         handleOpen(3)
         setVideopen(true)
-        setStates(Countries.find((ctr) => ctr.name === "Scope-3").states);
+        setStates(Countries.find((ctr) => ctr.name === "SCOPE-3").states);
         setBirim(states.find((state) => state).birim);
       }
       setBaslikvalue('TESİSİNİZDE KULLANILAN SOĞUTUCU YANGIN TÜPLERİ(KARBON ESASLI)')
@@ -584,11 +684,12 @@ const AccordionCustomIcon = () => {
 
   const changeState = (event, index) => {
 
+    setDublicate(false)
 
-    if (event.target.id === "Scope-3") {
+    if (event.target.id === "SCOPE-3") {
       setSubtitle(event.target.textContent[0])
       states.map((first) => {
-        if (first.id === index && event.target.id === "Scope-3") {
+        if (first.id === index && event.target.id === "SCOPE-3") {
           setScope3(first.name)
           setId(first.id)
           // console.log("scopeson3", scope3)
@@ -598,10 +699,27 @@ const AccordionCustomIcon = () => {
       })
 
       if (event.target.textContent[0] === "U") {
+        setSavedDataScope3({ 
+          tarih:datetime,
+          title: '', 
+          subtitle: '', 
+          kaynak: '', 
+          yakitturu:'',
+          birim: '', 
+          miktar: '',
+          ulke:facilitySend?.country,
+          sehir:facilitySend?.city,
+          ilce:facilitySend?.state,
+          tesis:facilitySend?.facilityname,
+          situation:'',
+         })
+        console.log("Scope-3---------",savedDataScope3)
+
         setVer(false)
         setGg(true)
         setDegis(true)
         setBaslikvalue('TESİSE AİT ARAÇ EMİLSYONLARI')
+        setSavedDataScope3({...savedDataScope3,subtitle:event.target.textContent})
 
         setCities(states.find((state) => state.name === event.target.textContent).cities);
         setUnits(states.find((state) => state.name === event.target.textContent).units);
@@ -618,15 +736,15 @@ const AccordionCustomIcon = () => {
         setSub({ name1: 'Ulaşım Türü', name2: 'Yakıt Türü', name3: 'Birim', name4: 'Miktar' })
       }
     }
-    else if (event.target.id === "Scope-2") {
+    else if (event.target.id === "SCOPE-2") {
       states.map((first) => {
-        if (first.id === index && event.target.id === "Scope-2") {
+        if (first.id === index && event.target.id === "SCOPE-2") {
           setScope2(first.name)
           setBaslik2(event.target.id)
           setDatasub(first.name)
           setId(first.id)
           setSavedData({...savedData,subtitle:event.target.textContent})
-        console.log("Scope-2-saved-data-subtitle",savedData)
+        console.log("SCOPE-2-saved-data-subtitle",savedData)
           // console.log("scopeson2", scope2)
           // console.log("scopetxt2", event.target.textContent)
         }
@@ -639,15 +757,16 @@ const AccordionCustomIcon = () => {
       setSub({ name1: 'Kaynak', name2: 'Birim', name3: '', name4: 'Miktar' })
 
     }
-    else if (event.target.id === "Scope-1") {
+    else if (event.target.id === "SCOPE-1") {
+
       if (event.target.textContent[0] === "S" || "H" || "D") {
 
-        setStates(Countries.find((ctr) => ctr.name === "Scope-1").states);
+        setStates(Countries.find((ctr) => ctr.name === "SCOPE-1").states);
         setShort(states.find((ctr) => ctr.name === event.target.textContent).short);
         setSavedData({...savedData,subtitle:event.target.textContent})
         console.log("saved-data-subtitle",savedData)
         states.map((first) => {
-          if (first.id === index && event.target.id === "Scope-1") {
+          if (first.id === index && event.target.id === "SCOPE-1") {
             setScope1(first.name)
             setDatasub(first.name)
             setBaslik1(event.target.id)
@@ -712,7 +831,6 @@ const AccordionCustomIcon = () => {
         setVer(false)
       }
 
-      setSub({ name1: 'Kaynak', name2: 'Birim', name3: '', name4: 'Miktar' })
 
     }
 
@@ -730,13 +848,13 @@ const AccordionCustomIcon = () => {
 
   const handleAdd = (e) => {
     // ===============================================================================
-    const title = todos.find(obj => obj.title === 'Scope-1');
+    const title = todos.find(obj => obj.title === 'SCOPE-1');
     const subtitle = todos.find(obj => obj.subtitle[0] === 'S' || 'H' || 'D');
     const inputveri = cities.length
 
     
 
-    if (country === 'Scope-1') {
+    if (country === 'SCOPE-1') {
 
       if (inputveri === 24) {
 
@@ -747,17 +865,17 @@ const AccordionCustomIcon = () => {
         handleHareketli(car)
       }
     }
-    // console.log("Scope-1", todos)
+    // console.log("SCOPE-1", todos)
 
-    //  if (country==='Scope-2') {
+    //  if (country==='SCOPE-2') {
     //   if (inputveri === 9) {
     //     handleHareketli(car)
 
     //   }
-    //   console.log("scope-2",todos)
+    //   console.log("SCOPE-2",todos)
     //  }
 
-    // if (country==='Scope-3') {
+    // if (country==='SCOPE-3') {
     //   if (inputveri === 6) {
     //     handleDogrudan(car)
     //   }
@@ -772,7 +890,7 @@ const AccordionCustomIcon = () => {
     //   });
 
 
-    // if (country==="Scope-3" && subtitle==='U') {
+    // if (country==="SCOPE-3" && subtitle==='U') {
     //     setAracdata([...aracdata,{car}])
     // }
     // console.log("arac",todos)
@@ -795,9 +913,6 @@ const AccordionCustomIcon = () => {
     console.log(loginuser)
   }
 
-
-  
-
   // const handleSave = () => {
   //   setCar({
   //     ...car,
@@ -814,14 +929,65 @@ const AccordionCustomIcon = () => {
     if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
       setChange(Number(event.target.value))
     }
+    
+    console.log("baslik1-----",baslik1)
+    console.log("baslik2-----",baslik2)
+    console.log("baslik3-----",baslik3)
+
+    if(baslik1 || baslik2){
+      setSavedData({ 
+        tarih:datetime,
+        title: '', 
+        subtitle: '', 
+        kaynak: '', 
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+      setSavedData({
+        ...savedData,
+        [event.target.name]: event.target.value,
+      });  
+      console.log("Scope-1-2---------",savedData)
+ 
+    }
+    else if(baslik3==='SCOPE-3'){
+      console.log("baslik3-------------",baslik3)
+      setSavedData({ 
+        tarih:datetime,
+        title: '', 
+        subtitle: '', 
+        kaynak: '', 
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+      setSavedDataScope3({
+        ...savedDataScope3,
+        [event.target.name]: event.target.value,
+      });
+      console.log("Scope-1122---------",savedData)
+      console.log("Scope-3------------",savedDataScope3)
+      // console.log("country",facilitySend?.country)
+    }
+   
+   
+   
     // console.log("change-Number-data",change)
 
    const {name,value} = event.target;
    setFormValues({...formValues,[name]:value})
    setAddList({...addList,[name]:value})
 
-    console.log("forms---------",savedData)
-  
+    
     setAlldata([...alldata, { "cities": event.target.value }])
     setAlldata([...alldata, { units: event.target.value }])
 
@@ -840,11 +1006,9 @@ const AccordionCustomIcon = () => {
     //   [event.target.name]: event.target.value,
 
     // });
-    setSavedData({
-      ...savedData,
-      [event.target.name]: event.target.value,
-    });
-
+  
+ 
+  
 
 
     if (event.target.value === "Yangın Söndürme Tüpü") {
@@ -874,7 +1038,11 @@ const AccordionCustomIcon = () => {
   const saveValue = (event: String | any, label: String | any) => {
     setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
     setStateScope3(label)
-    console.log("labelll",label)
+    setSavedDataScope4({...savedDataScope4,type:event.target.textContent})
+    // console.log("labelll",savedDataScope4)
+    setHoldLabelScope(label)
+
+
    
 }
 
@@ -884,54 +1052,80 @@ const AccordionCustomIcon = () => {
 const handleValidation = async (event)=>{
   event.preventDefault();
 
-  // console.log("after-operation",formValues)
-  // console.log("form-value",formValues.kaynak)
-  // console.log("form-birim",formValues.birim)
-  // console.log("form",formValues)
-  // console.log("lstdata",listData)
+ 
   const {name,value} = event.target;
   setFormValues({...formValues,[name]:value})
   // setListData({...formValues,[name]:value})
 
     setFormErrors(validate(formValues));
     setIsSubmit(true)
-    // setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
-
+    setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
+    console.log(formErrors)
     // console.log("data-List",listData)
-    console.log("handle-button---------",savedData)
-
+    // console.log("handle-button---------",savedData)
+    console.log("baslik1-----",baslik1)
+    console.log("baslik2-----",baslik2)
+    console.log("baslik3-----",baslik3)
+   
+  
+  
   }
   useEffect(()=>{
     // console.log("useEffect-ust",formErrors)
+    function getDuplicates(arr) {
+      const seen = new Set();
+      const duplicates = [];
+  
+      arr.forEach(item => {
+          const identifier = `${item.name}|${item.email}`;
+          if (seen.has(identifier)) {
+              duplicates.push(item);
+              setDublicate(true)
+          } else {
+              seen.add(identifier);
+          }
+      });
+      return duplicates;
+  }
+  const duplicateUsers = getDuplicates(listData);
+
     if(Object.keys(formErrors).length === 0 && isSubmit){
       const isEmpty = (obj) => { 
         return Object.keys(obj).length === 0; 
       }; 
       
       
-      console.log(isEmpty(formErrors)); // true 
-      if(isEmpty(formErrors)){
+      console.log(formErrors); // true 
+      if(isEmpty(formErrorsflist)){
+
     const config = {
       headers:{
           "Content-Type":"application/json",
           Authorization:"Bearer: "+token
-      }
-          };
+        }
+      };
 
+         if(!dublicate){
           const fetchData = async () => {
+           if(baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2'){
+            
             const dataResult = await post('/adddata',savedData,config);
-            handleSuccess('Veri başarıyla kayt edildi.')
+            handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
             console.log("result-data",dataResult)
-
+           }
+           else if(baslik3 === "SCOPE-3"){  
+            const dataResult = await post('/adddata',savedDataScope3,config);
+            handleSuccess('Scope3 başarıyla kayt edildi.')
+            console.log("saved3-------",savedDataScope3)
+            console.log("result-data",dataResult)
+           }
           }
           fetchData()
-      }
-    
-     
 
+         }
+      }
     }
   },[formErrors]);
-
 
   const validate = (values)=>{
     const errors={}
@@ -951,54 +1145,27 @@ const handleValidation = async (event)=>{
     return errors;
   }
 
+  const users = [
+    { id: 2, name: 'Sumit Kumar', email: 'sumit@example.com' },
+    { id: 4, name: 'Raj Kumar', email: 'raj@example.com' },
+    { id: 5, name: 'Amit Kumar', email: 'amit@example.com' },
+    { id: 2, name: 'Sumit Kumar', email: 'sumit@example.com' },
 
+];
+
+
+
+// console.log("DUPLICATED---------------------",duplicateUsers);
   
   // Facility Sayfasndan gelen veri
   // console.log("coming-data",facilitySend)
  
   // console.log("taking-data-latest",savedData)
 
-
-  const users = [
-    { id: 2, name: 'Sumit Kumar', email: 'sumit@example.com' },
-    { id: 4, name: 'Raj Kumar', email: 'raj@example.com' },
-    { id: 5, name: 'Amit Kumar', email: 'amit@example.com' },
-    { id: 1, name: 'Amit Kumar', email: 'amit@example.com' },
-
-
-
-];
-
-function getDuplicates(arr) {
-    const seen = new Set();
-    const duplicates = [];
-
-    arr.forEach(item => {
-        const identifier = `${item.name}|${item.email}`;
-        // console.log(seen.has(identifier))
-        if (seen.has(identifier)) {
-            duplicates.push(item);
-        } else {
-            seen.add(identifier);
-        }
-    });
-    return duplicates;
-}
-
-const duplicateUsers = getDuplicates(users);
-// console.log(duplicateUsers);
-
   return (
-
-
-
-    <div >
-          
-
+    <div>
       <Breadcrumb pageName="Hesaplama" />
       <Facility  />
-    
-      
       {/* <Language/> */}
       <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
         <div className='grid grid-cols-3 gap-4'>
@@ -1012,7 +1179,7 @@ const duplicateUsers = getDuplicates(users);
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                 <div className="flex">
                   {open === 1 ? <div style={{ background: 'blue', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='Scope-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
+                  <AccordionHeader onClick={changeCountry} value='SCOPE-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
                 </div>
 
                 <AccordionBody className='px-3' value={state}>
@@ -1023,8 +1190,8 @@ const duplicateUsers = getDuplicates(users);
                       multiple={false}
                     >
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
-                          style={scope1 === scope1 && id === index + 1 && baslik1 === 'Scope-1' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}>{state.name}
+                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={scope1 === scope1 && id === index + 1 && baslik1 === 'SCOPE-1' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}>{state.name}
                         </button>
                       ))}
                     </div>
@@ -1036,7 +1203,7 @@ const duplicateUsers = getDuplicates(users);
 
                 <div className="flex">
                   {open === 2 ? <div style={{ background: 'green', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='Scope-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader onClick={changeCountry} value='SCOPE-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 2
                   </AccordionHeader>
                 </div>
@@ -1049,8 +1216,8 @@ const duplicateUsers = getDuplicates(users);
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
-                          style={scope2 === scope2 && baslik2 === 'Scope-2' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }} >{state.name}</button>
+                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={scope2 === scope2 && baslik2 === 'SCOPE-2' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }} >{state.name}</button>
                       ))}
                     </div>
                   }
@@ -1060,7 +1227,7 @@ const duplicateUsers = getDuplicates(users);
               <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
                 <div className="flex">
                   {open === 3 ? <div style={{ background: 'purple', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='Scope-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader onClick={changeCountry} value='SCOPE-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 3
                   </AccordionHeader>
                 </div>
@@ -1074,8 +1241,8 @@ const duplicateUsers = getDuplicates(users);
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event, index + 1)} id='Scope-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
-                          style={id === index + 1 && baslik === "Scope-3" ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}
+                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-3' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                          style={id === index + 1 && baslik === "SCOPE-3" ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}
                         >{state.name}</button>
                       ))}
                     </div>
@@ -1120,10 +1287,10 @@ const duplicateUsers = getDuplicates(users);
                         ))}
                         </TabsHeader>
                         {/* <DataPicker/> */}
-                        <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar/></div>
-                        <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar/></div>
-                        <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar/></div>
-                        <div style={{display:statescope3 === 'business' ? 'block' : 'none'}}><TravelCar/></div>
+                        <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar savedData={savedData} savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
+                        <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar   savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
+                        <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
+                        <div style={{display:statescope3 === 'business' ? 'block' : 'none'}}><TravelCar travelCarControl={travelCarControl}/></div>
 
 
                   </Tabs> 
@@ -1131,7 +1298,7 @@ const duplicateUsers = getDuplicates(users);
                   </div>
                   :
                     <div className="start">
-                         <div className="grid grid-cols-1 w-200 " >
+      <div className="grid grid-cols-1 w-200 " >
       <div className="flex flex-col my-4">
         {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
         <div>
@@ -1192,14 +1359,14 @@ const duplicateUsers = getDuplicates(users);
                         <div className='grid grid-cols-4 gap-3 my-5'>
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
-                            <select value={baslik1 || baslik2 ? savedData.kaynak :  car.aracturu} name={baslik1 || baslik2 ? "kaynak" :"aracturu"} id="cities" className={formErrors.kaynak ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 || baslik2 ? savedData.kaynak :  savedDataScope3.kaynak} name={baslik1 || baslik2 ? "kaynak" :"kaynak"} id="cities" className={formErrors.kaynak ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
                               {/* onChange={(event) => setAlldata([...alldata, { "cities": event.target.value }])}> */}
                               <option>kaynak girin</option>
 
                               {cities?.map((citiy, index) => (
-                                <option key={index}>{textControl ? 'kaynak girin' : citiy}</option>
+                                <option key={index}>{textControl ? 'Kaynak girin' : citiy}</option>
                               ))}
                             </select>
                              <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
@@ -1208,10 +1375,10 @@ const duplicateUsers = getDuplicates(users);
 
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name2 === '' ? 'Birim' : sub.name2}</label>
-                            <select value={baslik1 || baslik2 ? savedData.birim : car.birim} name='birim' id="units" className={formErrors.birim ? styles.select.error : styles.select.normal}
+                            <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? savedData.birim : savedDataScope3.yakitturu} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? 'birim' : 'yakitturu'} id="units" className={formErrors.birim ? styles.select.error : styles.select.normal}
                               onClick={()=>setTextControl(false)}
                               onChange={(event) => changeData(event)}>
-                              <option>Birim girin</option>
+                              <option>{baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2'  ? 'Birim girin' : 'Yakit turu girin'}</option>
                               {units?.map((citiy, index) => (
                                 <option key={index}>{textControl ? 'Birim girin' : citiy}</option>
                               ))}
@@ -1222,9 +1389,9 @@ const duplicateUsers = getDuplicates(users);
                           {
                             degis === true ? <div className="block w-full">
                               <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                              <select value={baslik1 || baslik2 ? "" : car.yakitturu} name='yakitturu' id="cities" className={error ? styles.select.error : styles.select.normal}
+                              <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? null : savedDataScope3.birim} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? '' : 'birim'} id="cities" className={error ? styles.select.error : styles.select.normal}
                                 onChange={(event) => changeData(event)}>
-                                <option>yakit turu girin</option>
+                                <option>{baslik3 === 'SCOPE-3' ? 'Birim girin' : 'yakit turu girin'}</option>
 
                                 {birim?.map((citiy, index) => (
                                   <option key={index}>{citiy}</option>
@@ -1239,7 +1406,7 @@ const duplicateUsers = getDuplicates(users);
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
                             <input
                               type="text"
-                              value={baslik1 || baslik2 ? savedData.miktar : car.miktar}
+                              value={baslik1 || baslik2 ? savedData.miktar : savedDataScope3.miktar}
                               name='miktar'
                               className={formErrors.miktar ? styles.input.error : styles.input.normal}
                               placeholder="miktar girin"
@@ -1251,7 +1418,7 @@ const duplicateUsers = getDuplicates(users);
                           </div>
                         </div>
                         <div className='flex justify-end mt-4'>
-                  <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
+                  <button type="submit" className="relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                     {
                       load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
@@ -1281,11 +1448,13 @@ const duplicateUsers = getDuplicates(users);
                
                 {/* form end */}
                 <hr className='mt-3' />
-                <div className={savedData.kaynak ? 'errorListData' : 'warningListData'} style={{background:'#ff000026',width:'100%',height:'40px'}}>
-                <i class="fa-solid fa-triangle-exclamation text-2xl ms-3" style={{color:"#d46c6c"}}></i> 
-                <label className="mb-3 ms-3 text-xl">daha once kayit edildi</label>
-                </div>
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+               { dublicate ?  <div className={dublicate ? 'errorListData' : 'warningListData'} style={{background:'#ff000026',width:'100%',height:'40px'}}>
+                <i class="fa-solid fa-triangle-exclamation text-2xl p-1 ms-4" style={{color:"#d46c6c"}}></i> 
+                <label className="mb-3 ms-3 text-normal">Bu veri daha önce kayıt edildi</label>
+                </div> : null
+                
+               }
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-4" style={(travelCarControl === false && holdLabelScope === 'business')  ? {display:'none'} : {display:'block'}}>
 
                   
                     
@@ -1349,10 +1518,10 @@ const duplicateUsers = getDuplicates(users);
                           ))
                         }
                       </table> 
-                  
+                
                 </div>
-
-              
+                       {listData.length >=5 ?  <a href="/sumary"><button  className="w-full mt-4 relative inline-flex items-center justify-center p-2  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">Devamını gör</button>
+                        </a> : null}
               </div>
             </div> : null
           }

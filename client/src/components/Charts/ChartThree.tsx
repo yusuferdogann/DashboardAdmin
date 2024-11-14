@@ -1,6 +1,9 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { userAuth } from '../../auth/userAuth';
+import { get } from '../../server/Apiendpoint';
+
 
 interface ChartThreeState {
   series: number[];
@@ -50,20 +53,97 @@ const options: ApexOptions = {
 };
 
 const ChartThree: React.FC = () => {
-  const [state, setState] = useState<ChartThreeState>({
-    series: [65, 34, 12, 56],
-  });
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-      series: [65, 34, 12, 56],
-    }));
-  };
-  handleReset;
+  const [threeChartData,setThreeChartData] = useState([])
+  const [donutData,setDonutData] = useState({
+    series: [],
+  })
+  const [returnData,setReturnData] = useState()
+  const [lastData,setLastData] = useState([{}])
+  const [responseArray,setResponseArray] = useState()
+  const {token} = userAuth()
+
+  useEffect(() => {
+    const config = {
+        headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer: "+token
+        }
+            };
+    const fetchData = async () => {
+        const dataResult = await get('/getfacility',config);
+        const getDonutData = await get('/getfacilitygraficdata',config);
+
+        const responseResult = dataResult
+        console.log("getFacility------------------------------",responseResult?.data.data)
+        setResponseArray(responseResult?.data.data)
+        // console.log("get-Donut-Data------------------------------",getDonutData.data.data)
+        let sum = 0
+        returnData?.map(x => sum += x);
+        var b = returnData?.map(x=>x*100)
+        var resultPurple = b?.map(y => y / sum)
+        const ttayta =  resultPurple?.map(a => a.toFixed(2))
+        console.log("percent------------------------------",ttayta)
+
+        const returnValue = responseResult?.data.data
+        
+          // const initialArr = [
+          //   {name: 'eve'},
+          //   {name: 'john'},
+          //   {name: 'jane'},
+          //   {name: 'yusuf'}
+
+          // ]
+      
+      const newArr1 = returnValue?.map((v,index) =>({...v, percent: ttayta[index]}))
+      setLastData(newArr1)
+      // const newArr2 = initialArr.map(v => Object.assign(v, {isActive: true}))
+      // console.log("array1----",newArr1)
+      // console.log("array2----",newArr2)
+
+      //  console.log("bismillah----------------",lastData)
+        setReturnData(getDonutData.data.data)
+        setThreeChartData(responseResult.data.data)
+        setDonutData({
+          series: getDonutData?.data.data,
+        })
+
+      }
+
+   
+
+      fetchData()
+
+},[])
+// console.log("tt--------",lastData)
+// let sum = 0
+// returnData?.map(x => sum += x);
+// var b = returnData?.map(x=>x*100)
+// var resultPurple = b?.map(y => y / sum)
+// var ttayta = resultPurple?.map(a=>a.toFixed(2))
+// console.log(b)
+// console.log(resultPurple)
+// console.log(ttayta)
+// const newObject = Object.assign({0:threeChartData,1:ttayta})
+// console.log("newData----",newObject)
+
+     
+// console.log(sum);
+  // const [state, setState] = useState<ChartThreeState>({
+  //   series: [12213, 4334, 2212, 1256],
+  // });
+
+  // const handleReset = () => {
+  //   setState((prevState) => ({
+  //     ...prevState,
+  //     series: [65, 34, 12, 56],
+  //   }));
+  // };
+  // handleReset;
 
   return (
-    <div className="sm:px-7.5 col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5">
+    <div className="sm:px-7.5 col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-5" 
+    style={threeChartData.length>=6 ? {height:'96%'} : {height:'100%'}}>
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
@@ -112,49 +192,28 @@ const ChartThree: React.FC = () => {
         <div id="chartThree" className="mx-auto flex justify-center">
           <ReactApexChart
             options={options}
-            series={state.series}
+            series={donutData?.series}
             type="donut"
           />
         </div>
       </div>
 
-      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
-        <div className="sm:w-1/2 w-full px-8">
+      <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3" style={threeChartData .length >=6 ? {overflowY:'scroll',height:"20%"} : null} >
+      {
+        lastData?.map((data)=>(
+          <div className="sm:w-1/2 w-full px-8">
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ff8e]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Şişli Şube </span>
-              <span> 65% </span>
+              <span> {data?.facilityname} </span>
+              <span>{data?.percent}</span>
+             
             </p>
           </div>
         </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ffb3]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Etimeskut Şube </span>
-              <span> 34% </span>
-            </p>
-          </div>
-        </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ffea]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Mamak Şube </span>
-              <span> 12% </span>
-            </p>
-          </div>
-        </div>
-        <div className="sm:w-1/2 w-full px-8">
-          <div className="flex w-full items-center">
-            <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00a0fe]"></span>
-            <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Gölbaşı Şube </span>
-              <span> 56% </span>
-            </p>
-          </div>
-        </div>
+        ))
+      }
+        
       </div>
     </div>
   );

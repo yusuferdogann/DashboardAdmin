@@ -1,9 +1,12 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { get } from '../../server/Apiendpoint';
+import { userAuth } from '../../auth/userAuth';
+
 
 const options: ApexOptions = {
-  colors: ['#00ff8e', '#00a0fe'],
+  colors: ['#00tf6h', '#00ffb3', '#00ffea', '#00a0fe'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'bar',
@@ -44,7 +47,7 @@ const options: ApexOptions = {
   },
 
   xaxis: {
-    categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    categories: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'],
   },
   legend: {
     position: 'top',
@@ -70,32 +73,84 @@ interface ChartTwoState {
 }
 
 const ChartTwo: React.FC = () => {
-  const [state, setState] = useState<ChartTwoState>({
+
+  const {token} = userAuth()
+  const [twoGrafic,setTwoGrafic] = useState({
     series: [
       {
-        name: 'Doğrudan',
-        data: [44, 55, 41, 67, 22, 43, 65],
+        name: 'Ocak-Mart',
+        // data: [12,null,null,null,null,null,null]
+        data:[]
       },
       {
-        name: 'Dolaylı',
-        data: [13, 23, 20, 8, 13, 27, 15],
+        name: 'Nisan-Haziran',
+        // data: [13, 23, 20, 8, 13, 27, 15],
+        data:[]
+      },
+      {
+        name: 'Temmuz-Eylül',
+        // data: [13, 23, 20, 8, 13, 27, 15],
+        data:[]
+      },
+      {
+        name: 'Ekim-Aralık',
+        // data: [13, 23, 20, 8, 13, 27, 15],
+        data:[]
       },
     ],
-  });
+  })
+  useEffect(() => {
+    const config = {
+        headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer: "+token
+        }
+            };
+    const fetchData = async () => {
+        const dataResult = await get('/getweekgraficdata',config);
+        const responseResult = dataResult
+        // console.log("haftalik-Grafik------------------------------",responseResult.data.data)
+        setTwoGrafic(responseResult?.data.data)
+        setTwoGrafic({
+          series: [
+            {
+              name: 'Ocak-Mart',
+              // data: [12,null,null,null,null,null,null]
+              data:responseResult?.data.data
+            },
+            {
+              name: 'Nisan-Haziran',
+              // data: [13, 23, 20, 8, 13, 27, 15],
+              data:[]
+            },
+            {
+              name: 'Temmuz-Eylül',
+              // data: [13, 23, 20, 8, 13, 27, 15],
+              data:[]
+            },
+            {
+              name: 'Ekim-Aralık',
+              // data: [13, 23, 20, 8, 13, 27, 15],
+              data:[]
+            },
+          ],
+        })
+
+      }
+
+      fetchData()
+
+},[])
+
   
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
-  };
-  handleReset;  
+ 
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark xl:col-span-4">
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
           <h4 className="font-semibold text-black dark:text-white">
-            Dönem/Ay Kapsamlara Göre Doğrudan/Dolaylı Emisyon
+            Döneme Göre Emisyon
           </h4>
         </div>
         <div>
@@ -133,12 +188,13 @@ const ChartTwo: React.FC = () => {
       </div>
 
       <div>
-        <div id="chartTwo" className="-ml-5 -mb-9">
+        <div id="chartTwo" className="ml-2 -mb-9">
           <ReactApexChart
             options={options}
-            series={state.series}
+            series={twoGrafic?.series}
             type="bar"
-            height={350}
+            height={400}
+    
           />
         </div>
       </div>

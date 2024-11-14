@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { toast, ToastContainer } from 'react-toastify';
 import { post } from "../../server/Apiendpoint"
-import { handleSuccess } from '../../common/utils/helpers';
+import { handleError, handleSuccess } from '../../common/utils/helpers';
 import { Link, useNavigate } from 'react-router-dom';
 import { userAuth } from '../../auth/userAuth';
 import Register from "./Register"
@@ -12,7 +12,6 @@ import axios from 'axios';
 
 const Login: React.FC = () => {
   const { setToken, setUser } = userAuth();
-  // const [cookies, setCookie] = useCookies(['token'])
 
   const navigate = useNavigate();
 
@@ -28,33 +27,34 @@ const Login: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-      handleSuccess('Giriş İşlem Başarılı')
     try {
-    setTimeout( async ()=>{
       
       const loginuser = await axios.post("http://localhost:3000/auth/login", value)
       const response = loginuser.data
-      console.log(response)
-      localStorage.setItem("access_token", JSON.stringify(response.access_token))
-      
-      localStorage.setItem("username", JSON.stringify(response.data.username))
-      // let expires = new Date()
-    //  expires.setTime(expires.getTime() + (response.data.expires_in * 1000))
-    //  setCookie('token', response.token, { path: '/',  expires})
-    //  console.log("cook amk",cookies)      
-
-      setToken(response.data.token)
-      setUser(response.data.user)
-    },1000)
-    setTimeout(()=>{
-      navigate("/facility")
-      window.location.reload()
-    },2000)
-
+      console.log("response-----------------------",response)
      
-      // console.log(response)
+      if(response.success){
+        handleSuccess('Giriş İşlem Başarılı')
+
+        localStorage.setItem("access_token", JSON.stringify(response.access_token))
+        localStorage.setItem("username",     JSON.stringify(response.data.username))
+        localStorage.setItem("detail",     JSON.stringify(response.data.detail))
+
+        
+        setToken(response.data.token)
+        setUser(response.data.user)
+
+        setTimeout(()=>{
+          navigate("/facility")
+          window.location.reload()
+        },2000)
+      }
+      else{
+      }
+     
     } catch (error) {
-      console.log(error)
+       handleError('Giriş İşlem Başarısız.Lütfen bilgilerinizi kontrol edin')
+
 
     }
   };

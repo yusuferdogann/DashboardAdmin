@@ -119,7 +119,7 @@ const Userprovider = ({children})=>{
             totalArea:"11.500m2",
         }
         ],
-        company_logo:'',
+        company_logo:'dfdfdf',
         facility:[],
         username: '',
         password: ''

@@ -18,7 +18,7 @@ import {get} from "../../server/Apiendpoint"
 const ECommerce: React.FC = () => {
 
   const {token} = userAuth()
-  const [result,setResult] = useState([])
+  const [result,setResult] = useState()
   
   useEffect(()=>{
     const config = {
@@ -29,26 +29,26 @@ const ECommerce: React.FC = () => {
           };
 
           const fetchData = async () => {
-            const dataResult = await get('/getamount',config);
+            const dataResult = await get('/getcardgraficdata',config);
             console.log("result-data",dataResult.data.data)
-            setResult([dataResult.data.data])
-
+            setResult(dataResult.data.data)
+            // console.log("RESULT---------------",result?.CardScope3[0]?.miktar)
           }
           fetchData()
 
 },[])
 
-const AmountAll = () =>{
-  result?.map((p)=>{
-    console.log("p-data----------------------",p)
-  })
-}
-AmountAll()
+// const AmountAll = () =>{
+//   result?.map((p)=>{
+//     // console.log("p-data----------------------",p)
+//   })
+// }
+// AmountAll()
   return (
     <>
       <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
-         title =''  
+         title = {result?.CardScope1[0]?.miktar}  
           total="KAPSAM 1"
           color='black'
           // rate="0.43%" 
@@ -57,18 +57,18 @@ AmountAll()
          <img src={Image1} alt="" />
         </CardDataStats>
         <CardDataStats 
-        title=""
-        total="KAPSAM 2" 
+         title = {result?.CardScope2[0]?.miktar}  
+         total="KAPSAM 2" 
         color='black'
 
         // rate="4.35%" 
         // levelUp
         >
         <img src={Image2} alt="" />
-
         </CardDataStats>
         <CardDataStats  
-         title=""
+          title = {result?.CardScope3[0]?.miktar}  
+
          total="KAPSAM 3"
          color='black'
 
@@ -118,10 +118,9 @@ AmountAll()
       </div>
         <div className='mt-10'>
         <Slider/>
-
         </div>
       <div className=" grid grid-cols-12 gap-4 md:gap-6  2xl:gap-7.5">
-        <ChartOne />
+        <ChartOne/>
         <ChartTwo />
         <ChartThree />
         {/* <MapOne /> */}

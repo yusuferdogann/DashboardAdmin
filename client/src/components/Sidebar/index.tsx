@@ -7,6 +7,7 @@ import zIndex from '@mui/material/styles/zIndex';
 import Image from "../../images/logo/sidebarlogodd.jpg"
 import { userAuth } from '../../auth/userAuth';
 import Report from "../../images/logo/report.png"
+import { post } from '../../server/Apiendpoint';
 
 
 interface SidebarProps {
@@ -20,7 +21,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
-  const { value } = userAuth();
+  const { value ,token,user} = userAuth();
   // console.log("VALUEEE",value)
   const fileUploadRef = useRef();
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
@@ -29,6 +30,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   );
 
   const [avatarURL,setAvatarURL] = useState('')
+  const [image,setImage] = useState("")
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -44,7 +46,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   });
-
+  var val = localStorage.getItem('detail');
+  var object = JSON.parse(val);
+  
+// console.log("data-----------------",object.company_logo)
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -76,11 +81,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     const cachedURL = URL.createObjectURL(uploadFile);
     setAvatarURL(cachedURL)
   }
-  const convertToBase64 = (e)=>{
+  const convertToBase64 =  (e)=>{
     var reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
-    reader.onload=()=>{
+    reader.onload = async ()=>{
       console.log(reader.result)
+      setImage(reader.result)
+      const config = {
+        headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer: "+token
+          }
+        };
+        const dataResult = await post('/uploadimage',({base64:reader.result}),config);
+        console.log("DATA-IMAGE-----------",dataResult)
     }
     reader.onerror = error =>{
       console.log("error",error)
@@ -95,7 +109,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between relative logoblock" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:avatarURL ? "" : '2px dashed white',height:"140px"}}>
+      <div className="flex items-center justify-between relative logoblock" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:image ? "" : '2px dashed white',height:"140px"}}>
       
           
          
@@ -104,13 +118,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <div className='absolute top-0 right-0 z-999  text-bodydark1 duration-300 ease-in-out hover:bg-white dark:hover:bg-white bg-[#d3d3d3] dark:bg-meta-4 logohover' style={{padding:"10px",borderRadius:'50%',margin:".75rem"}}>
          <button type='submit' onClick={handleImageUpload}> <i style={{fontSize:'35x',color:"black"}} className="fa-regular fa-image"></i></button>
         </div>
-        <input type="file"  id='file' ref={fileUploadRef} onChange={uploadImageDisplay} hidden/>
+        <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>
         </form>
          <div className='relative' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
-         <img className='z-99' style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"240px"}} src={value.company_logo} alt="" onChange={(e)=>convertToBase64(e)}/>
+         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object.company_logo} alt="" />
          <div className='absolute top-0'>
          <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0"}}>
-          <button className='flex justify-center items-center relative z-3320' style={{height:'140px',width:'240px',borderRadius:'20px'}}>{avatarURL ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
+          <button className='flex justify-center items-center relative z-3320' style={{height:'140px',width:'245px',borderRadius:'20px'}}>{avatarURL ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
         </Tooltip>
          </div>
          </div>

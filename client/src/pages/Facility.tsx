@@ -87,10 +87,11 @@ const Facility = () => {
         e.preventDefault()
         setData({
             ...data,
+            
+            [e.target.name]: e.target.value,
             country:country?.native,
             city:state?.name,
             state:dropcity?.name,
-            [e.target.name]: e.target.value,
         });
         console.log("result", data)
     }
@@ -108,6 +109,8 @@ const Facility = () => {
                 };
         try {
             const addfacilitydata = await post('/addfacility',data,config)
+            setResultData([...resultData,{facilityname:data.facilityname,country:data.country,employeecount:data.employeecount,state: data.state,totalarea: data.totalarea,}])
+            // window.location.reload()
             const response = addfacilitydata
             console.log("facility-data", response)
 
@@ -133,15 +136,14 @@ const Facility = () => {
 
     }
 
+
     // console.log("veriii-----------",getVeri)
 
     // hazir veri
     setFacilitSend(getVeri)
 
     return (
-
         <>
-
             <Breadcrumb pageName="Tesisler" />
             {checkSpinner ? <div role="status" className="grid place-items-center fixed w-screen h-screen bg-black bg-opacity-60 backdrop-blur-sm"
                 style={{ opacity: '1', position: 'fixed', top: '0', left: '0', zIndex: '12343' }}>
@@ -156,12 +158,12 @@ const Facility = () => {
                             {/* group relative flex items-center gap-2.5 rounded-sm
                         py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out
                         hover:bg-graydark dark:hover:bg-meta-4 bg-graydark dark:bg-meta-4 active */}
-                            <div className="flex flex-col items-center bg-white cursor-pointer  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
+                            <div  className="flex flex-col items-center bg-white cursor-pointer  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                                 <i style={{ fontSize: '50px' }} className="fa-solid fa-industry px-3"></i>
                                 <div key={index} className="flex flex-col justify-between p-4 w-100 leading-normal">
                                     <div className='flex justify-between  items-center'>
                                         {veri ? <input type='text' placeholder='' className='w-70 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' /> : <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
-                                        <Facilitynone onClick={getData} />
+                                        <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData}/>
                                     </div>
                                     <div onClick={() => getAllData(item)}>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
@@ -225,16 +227,7 @@ const Facility = () => {
                         <div>
                             <div className="flex flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
                                 <div className="flex flex-col justify-between p-4 w-full leading-normal" >
-                                    <div className='flex justify-between w-full  items-center'>
-                                        <input
-                                            type='text'
-                                            value={data.facilityname}
-                                            name='facilityname'
-                                            onChange={changeSave}
-                                            placeholder='Tesis bilgilerinizi girin'
-                                            className='w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
-
-                                    </div>
+                                 
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
                                         <div className='flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
                                             <input
@@ -296,7 +289,7 @@ const Facility = () => {
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
                                         <div className='flex justify-between'>
-                                           <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
+                                           <div> <span className='font-normal'>İlçe:</span><span className='font-semibold'></span></div>
                                             <div>
                                             <CityDropdown
                                                         className=''
@@ -311,6 +304,16 @@ const Facility = () => {
                                                     />
                                             </div>
                                         </div>
+                                        <div className='flex justify-between w-full mt-4 items-center'>
+                                        <input
+                                            type='text'
+                                            value={data.facilityname}
+                                            name='facilityname'
+                                            onChange={changeSave}
+                                            placeholder='Tesis isminizi girin'
+                                            className='w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
+
+                                    </div>
                                         </p>
                                         </div>
                                 </div>
