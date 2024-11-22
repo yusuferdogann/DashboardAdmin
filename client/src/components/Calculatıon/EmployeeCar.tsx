@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { userAuth } from '../../auth/userAuth';
+import { handleSuccess } from '../../common/utils/helpers';
+import { post } from '../../server/Apiendpoint';
 
-const EmployeeCar = (props) => {
+const EmployeeCar = () => {
 
-    const [state, setState] = useState([])
-    const [user, setUser] = useState({ yakitturu: '', sofor: '', plaka: '' })
-    const [load, setLoad] = useState(false)
-    const [formErrors,setFormErrors] = useState({});
+  const { facilitySend,token } = userAuth();
+
+
 
     const [change,setChange] = useState(false)
     const styles = {
@@ -19,7 +21,39 @@ const EmployeeCar = (props) => {
   
       }
     }
+    var currentdate = new Date(); 
+    var datetime =    currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear()  
+                    // + currentdate.getHours() + ":"  
+                    // + currentdate.getMinutes() + ":"
+                    // + currentdate.getMilliseconds()
+    // console.log("date-time",datetime)
+    const [employeeData, setEmployeeData] = useState(
+      { 
+        tarih:datetime,
+        title: 'SCOPE-3', 
+        subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+        plaka: '', 
+        yakitturu:'',
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:'',
+        type:'Müşteri Ziyaretlerİnde Kullanılan Araçlar'
+       }
+    );
 
+    const [state, setState] = useState([])
+    const [user, setUser] = useState({ yakitturu: '', sofor: '', plaka: '' })
+    const [load, setLoad] = useState(false)
+    const initialValues = {plaka:employeeData.plaka, yakitturu:employeeData.yakitturu, miktar: employeeData.miktar, birim:employeeData.birim, situation: employeeData.situation}
+    const [formValues,setFormValues] = useState(initialValues);
+    const [formErrors,setFormErrors] = useState({});
+    const [isSubmit,setIsSubmit] = useState(false)
     // const handleChange = (e) => {
     //   setUser({
     //     ...user,
@@ -33,32 +67,89 @@ const EmployeeCar = (props) => {
     }
     // console.log("user", user)
     // console.log("state", state)
-    const changePersonal = (event)=>{
+    const changeEmployee = (event)=>{
       if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
         setChange(Number(event.target.value))
       }
-      console.log(change)
+      // console.log(change)
       const {name,value}=event.target
-      setPersonalData({...personalData,[name]:value})
-      // console.log("personaldata",personalData)
-       props.savedDataScope4.birim = personalData.birim
-       props.savedDataScope4.yakitturu = personalData.yakitturu
-       props.savedDataScope4.plaka = personalData.plaka
-       props.savedDataScope4.miktar = personalData.miktar
-       props.savedDataScope4.situation = personalData.situation
+      setFormValues({...formValues,[name]:value})
+      console.log("employeeData",employeeData)
+
+      setEmployeeData({...employeeData,[name]:value})
+     
+      
 
 
 
 
-      console.log("savedDataScope4------------",props.savedDataScope4)
+      console.log("savedDataScope4------------",employeeData)
 
       // console.log("fuction---------",props.setSavedDataScope4)
 
     }
 
+    const handleValidation = async (event)=>{
+      event.preventDefault();
+      const {name,value} = event.target;
+      // setListData({...formValues,[name]:value})
+    
+        setFormErrors(validate(formValues));
+        setIsSubmit(true)
+        console.log(formErrors)
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+          const dataResult = await post('/adddata',employeeData,config);
+          handleSuccess('PesonalCar Scope3 başarıyla kayt edildi.')
+          // console.log("saved3-------",savedDataScope3)
+          console.log("result-data",dataResult)
+       
+
+    
+      }
+      useEffect(()=>{
+        // console.log("useEffect-ust",formErrors)
+      
+    
+        if(Object.keys(formErrors).length === 0 && isSubmit){
+          const isEmpty = (obj) => { 
+            return Object.keys(obj).length === 0; 
+          }; 
+          
+          
+          console.log(formErrors); // true 
+         
+        }
+      },[formErrors]);
+    
+      const validate = (values)=>{
+        const errors={}
+        if(!values.plaka){
+          errors.plaka = "Bu alan boş bırakılamaz.";
+        }
+        if(!values.birim){
+          errors.birim = "Bu alan boş bırakılamaz.";
+        }
+        if(!values.miktar){
+          errors.miktar = "Bu alan boş bırakılamaz.";
+        }
+        if(!values.situation){
+          errors.situation = "Bu alan boş bırakılamaz.";
+        }
+        if(!values.yakitturu){
+          errors.yakitturu = "Bu alan boş bırakılamaz.";
+        }
+    
+    
+        return errors;
+      }
 
   return (
-    <div>
+    <form onSubmit={(event)=>handleValidation(event)}>
         <div className="grid grid-cols-1 w-200 " >
       <div className="flex flex-col my-4">
         {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
@@ -67,7 +158,7 @@ const EmployeeCar = (props) => {
         <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
         </div>
         <div className="mt-7">
-          <select  value={props.savedDataScope4.situation} name='situation' className={formErrors.situation ? styles.select.error : styles.select.normal} onChange={(event)=>changePersonal(event)}>
+          <select  value={employeeData.situation} name='situation' className={formErrors.situation ? styles.select.error : styles.select.normal} onChange={(event)=>changeEmployee(event)}>
             <option value='0'>Lütfen kayıt için dönem/ay seçin</option>
             <option value='4'>Dönem olarak kayıt</option>
             <option value='5'>Ay olarak kayıt</option>
@@ -78,7 +169,7 @@ const EmployeeCar = (props) => {
 
         {
           change === 4 ? <div className="donem mt-7 ">
-          <select className={styles.select.normal} name='situation' value={props.savedDataScope4.situation}  onChange={(event) => changePersonal(event)}>
+          <select className={styles.select.normal} name='situation' value={employeeData.situation}  onChange={(event) => changeEmployee(event)}>
             <option>Lütfen kayıt için dönem girin</option>
             <option value='Ocak - Mart'>Ocak - Mart</option>
             <option value='Nisan - Haziran'>Nisan - Haziran</option>
@@ -90,7 +181,7 @@ const EmployeeCar = (props) => {
       </div>
     {
       change === 5 ?   <div className="ay">
-      <select className={styles.select.normal}  name='situation' value={props.savedDataScope4.situation}  onChange={(event) => changePersonal(event)}>
+      <select className={styles.select.normal}  name='situation' value={employeeData.situation}  onChange={(event) => changeEmployee(event)}>
         <option>Lütfen kayıt için ay girin</option>
         <option value='Ocak'>Ocak</option>
         <option value='Şubat'>Şubat</option>
@@ -120,33 +211,47 @@ const EmployeeCar = (props) => {
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
             <input
               type="text"
-              name='miktar'
-              className="bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              name='plaka'
+              onChange={(e) => changeEmployee(e)} 
+              className={formErrors.plaka ? styles.select.error : styles.select.normal}
               placeholder="Plaka girin"
-              required
             />
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
-            <select onChange={(e) => handleChange(e)} value={state.yakitturu} name='yakitturu' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+            <select onChange={(e) => changeEmployee(e)} value={employeeData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
               <option>Yakıt türü seçin</option>
               <option>Dizel</option>
               <option>LPG</option>
               <option>Benzin</option>
             </select>
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.yakitturu}</small> 
+
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Birim</label>
-            <select onChange={(e) => handleChange(e)} value={state.sofor} name='sofor' id="cities" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none">
+            <select onChange={(e) => changeEmployee(e)} value={employeeData.sofor} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
               <option>Birim seçin</option>
               <option>Ton</option>
               <option>lt</option>
               <option>m3</option>
             </select>
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
+
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Miktar</label>
-            <input onChange={(e) => handleChange(e)} value={state.plaka} name='plaka' type="text" placeholder="Miktar girin" className="h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none" />
+            <input 
+            onChange={(e) => changeEmployee(e)} 
+            value={employeeData.miktar} 
+            name='miktar' 
+            type="text" 
+            placeholder="Miktar girin" 
+            className={formErrors.miktar ? styles.select.error : styles.select.normal}
+            />
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.miktar}</small> 
+
           </div>
         </div>
         <div className='flex justify-end mt-4'>
@@ -206,7 +311,7 @@ const EmployeeCar = (props) => {
           </table>
         </div> */}
         {/* =============================================== */}
-    </div>
+    </form>
   )
 }
 

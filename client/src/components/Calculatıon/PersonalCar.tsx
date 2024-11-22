@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { userAuth } from '../../auth/userAuth';
+import { handleSuccess } from '../../common/utils/helpers';
+import { post } from '../../server/Apiendpoint';
 
-const PersonalCar = (props) => {
+const PersonalCar = () => {
  
   const { facilitySend,token } = userAuth();
 
@@ -17,9 +19,17 @@ const PersonalCar = (props) => {
 
     }
   }
+  var currentdate = new Date(); 
+  var datetime =    currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear()  
+                  // + currentdate.getHours() + ":"  
+                  // + currentdate.getMinutes() + ":"
+                  // + currentdate.getMilliseconds()
+  // console.log("date-time",datetime)
   const [personalData, setPersonalData] = useState(
     { 
-      tarih:'',
+      tarih:datetime,
       title: 'SCOPE-3', 
       subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
       plaka: '', 
@@ -72,11 +82,7 @@ const PersonalCar = (props) => {
       setPersonalData({...personalData,[name]:value})
       console.log("personaldata",personalData)
       setFormValues({...formValues,[name]:value})
-      // setListData({...formValues,[name]:value})
-    
-        setFormErrors(validate(formValues));
-        setIsSubmit(true)
-        console.log(formErrors)
+
 
 
 
@@ -88,12 +94,24 @@ const PersonalCar = (props) => {
     }
     const handleValidation = async (event)=>{
       event.preventDefault();
-    
+      const {name,value} = event.target;
       // setListData({...formValues,[name]:value})
     
-        // setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
-        // console.log("data-List",listData)
-        // console.log("handle-button---------",savedData)
+        setFormErrors(validate(formValues));
+        setIsSubmit(true)
+        console.log(formErrors)
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+          const dataResult = await post('/adddata',personalData,config);
+          handleSuccess('PesonalCar Scope3 başarıyla kayt edildi.')
+          // console.log("saved3-------",savedDataScope3)
+          console.log("result-data",dataResult)
+       
+
     
       }
       useEffect(()=>{
@@ -220,13 +238,13 @@ const PersonalCar = (props) => {
               <option>LPG</option>
               <option>Benzin</option>
             </select>
-            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.yakitturu}</small> 
 
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Birim</label>
             <select value={personalData.birim} onChange={(event)=>changePersonal(event)} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
-              <option>Birim türü seçin</option>
+              <option>Birim seçin</option>
               <option>Litre</option>
               <option>Ton</option>
               <option>m3</option>

@@ -109,29 +109,31 @@ const ChartTwo: React.FC = () => {
     const fetchData = async () => {
         const dataResult = await get('/getweekgraficdata',config);
         const responseResult = dataResult
-        // console.log("haftalik-Grafik------------------------------",responseResult.data.data)
+        console.log("haftalik-Grafik------------------------------",responseResult.data.data)
         setTwoGrafic(responseResult?.data.data)
         setTwoGrafic({
           series: [
             {
               name: 'Ocak-Mart',
               // data: [12,null,null,null,null,null,null]
-              data:responseResult?.data.data
+              data:responseResult?.data.data.Ocak_Mart
             },
             {
               name: 'Nisan-Haziran',
               // data: [13, 23, 20, 8, 13, 27, 15],
-              data:[]
+              data:responseResult?.data.data.Nisan_Haziran
+
             },
             {
               name: 'Temmuz-Eylül',
               // data: [13, 23, 20, 8, 13, 27, 15],
-              data:[]
+              data:responseResult?.data.data.Temmuz_Eylul
             },
             {
               name: 'Ekim-Aralık',
               // data: [13, 23, 20, 8, 13, 27, 15],
-              data:[]
+              data:responseResult?.data.data.Ekim_Aralik
+
             },
           ],
         })
@@ -154,7 +156,7 @@ const ChartTwo: React.FC = () => {
           </h4>
         </div>
         <div>
-          <div className="relative z-20 inline-block">
+          {/* <div className="relative z-20 inline-block">
             <select
               name="#"
               id="#"
@@ -183,7 +185,7 @@ const ChartTwo: React.FC = () => {
                 />
               </svg>
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 

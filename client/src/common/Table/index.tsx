@@ -4,9 +4,7 @@ const index = (props:String) => {
 
 const [tableData,setTableData] = useState(false)
 // console.log("return-data",props.returnData)
-useEffect(()=>{
-    
-},[])
+
 
 
   return (

@@ -7,7 +7,6 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
-import { PDFViewer,BlobProvider } from "@react-pdf/renderer";
 import PdfView from "../components/Pdf/PdfView";
  
 export default function DialogSizes() {
@@ -66,20 +65,12 @@ export default function DialogSizes() {
       <Breadcrumb pageName="Rapor" />
       <div className="mb-3 flex gap-3">
         
-        <Button  onClick={() => handleOpen("sm")} color="blue" variant="gradient">
+        {/* <Button  onClick={() => handleOpen("sm")} color="blue" variant="gradient">
           Rapor Al
-        </Button>
+        </Button> */}
       </div>
 
-      {/* <PDFViewer>
         <PdfView />   
-      </PDFViewer>  */}
-
-  {pdfcontrol ?   <BlobProvider document={<PdfView /> }>
-    {({ blob, url }) => (
-    <div><span className="text-semibold text-black">RAPOR:  </span> <a href={url} target="_blank">  indir</a></div>
-  )}
-  </BlobProvider> : null}
 
       <Dialog
         open={

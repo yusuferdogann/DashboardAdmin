@@ -100,7 +100,7 @@ const options: ApexOptions = {
       },
     },
     min: 0,
-    max: 200,
+    max: 100000,
   },
 };
 
@@ -197,7 +197,7 @@ const ChartOne: React.FC = (props) => {
             </span> */}
             <div className="w-full">
               <p className="font-semibold text-black dark:text-white" >Aylara Göre Karbon Emisyonu Dağılımı</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
+              {/* <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p> */}
             </div>
           </div>
           {/* <div className="flex min-w-47.5">
@@ -212,15 +212,15 @@ const ChartOne: React.FC = (props) => {
         </div>
         <div className="flex w-full max-w-45 justify-end">
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
+            {/* <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
               Gün
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
+            </button> */}
+            {/* <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
               Hafta
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
+            </button> */}
+            {/* <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
               Ay
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -127,7 +127,7 @@ const index = (props) => {
     // console.log("send-data",send)
     // console.log("calculation-ust",facilitySend?.name)
     return (
-        <div className='flex justify-between gap-2 p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  mb-12 '>
+        <div className='flex justify-between gap-2 p-4 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  mb-6 '>
             <div>
                 {/* <h6 className="mb-4">Tesis Ayarları</h6> */}
                 {/* <div className="flex items-start" >

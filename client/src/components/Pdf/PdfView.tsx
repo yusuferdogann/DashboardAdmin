@@ -1,116 +1,185 @@
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import Main from "../../images/cover/kapakpdf.jpg"
-import Pdf2 from "../../images/pdfpage/pdf-2.jpg"
-import Pdf3 from "../../images/pdfpage/pdf-3.jpg"
-import Pdf4 from "../../images/pdfpage/pdf-4.jpg"
-import Pdf5 from "../../images/pdfpage/pdf-5.jpg"
-import Pdf6 from "../../images/pdfpage/pdf-6.jpg"
-import Pdf7 from "../../images/pdfpage/pdf-7.jpg"
-import Pdf8 from "../../images/pdfpage/pdf-8.jpg"
-import Pdf9 from "../../images/pdfpage/pdf-9.jpg"
-import Pdf10 from "../../images/pdfpage/pdf-10.jpg"
-import Pdf11 from "../../images/pdfpage/pdf-11.jpg"
-import Pdf12 from "../../images/pdfpage/pdf-12.jpg"
-import Pdf13 from "../../images/pdfpage/pdf-13.jpg"
-import Pdf14 from "../../images/pdfpage/pdf-14.jpg"
-import Pdf15 from "../../images/pdfpage/pdf-15.jpg"
-import Pdf16 from "../../images/pdfpage/pdf-16.jpg"
-import Pdf17 from "../../images/pdfpage/pdf-17.jpg"
-import Pdf18 from "../../images/pdfpage/pdf-18.jpg"
-import Pdf19 from "../../images/pdfpage/pdf-19.jpg"
-import Pdf20 from "../../images/pdfpage/pdf-20.jpg"
-import Pdf21 from "../../images/pdfpage/pdf-21.jpg"
-import Pdf22 from "../../images/pdfpage/pdf-22.jpg"
-import Pdf23 from "../../images/pdfpage/pdf-23.jpg"
-import Pdf24 from "../../images/pdfpage/pdf-24.jpg"
-import Pdf25 from "../../images/pdfpage/pdf-25.jpg"
-import Pdf26 from "../../images/pdfpage/pdf-26.jpg"
-import Pdf27 from "../../images/pdfpage/pdf-27.jpg"
-import Pdf28 from "../../images/pdfpage/pdf-28.jpg"
-import Pdf29 from "../../images/pdfpage/pdf-29.jpg"
-import Pdf30 from "../../images/pdfpage/pdf-30.jpg"
-import Pdf31 from "../../images/pdfpage/pdf-31.jpg"
-import Pdf32 from "../../images/pdfpage/pdf-32.jpg"
-import Pdf33 from "../../images/pdfpage/pdf-33.jpg"
-import Pdf34 from "../../images/pdfpage/pdf-34.jpg"
-import Pdf35 from "../../images/pdfpage/pdf-35.jpg"
-import Pdf36 from "../../images/pdfpage/pdf-36.jpg"
-import Pdf37 from "../../images/pdfpage/pdf-37.jpg"
-import Pdf38 from "../../images/pdfpage/pdf-38.jpg"
-
-
-const styles = StyleSheet.create({
-    page: {
-        flexDirection: 'row',
-        backgroundColor: 'none',
-        width: "100%"
-    },
-    section: {
-        margin: 10,
-        padding: 10,
-
-    },
-    logo: {
-        width: '150px',
-        height: "100px",
-        borderRadius: "10px",
-        margin:10,
-        padding:10
-    },
-    duzen: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between'
-    }
-});
+import { useEffect, useRef, useState } from 'react';
+import html2pdf from 'html2pdf.js';
+import { userAuth } from "../../auth/userAuth"
+import { get } from '../../server/Apiendpoint';
+import CoverImage from '../../images/cover/revizecover.jpg'
+import {
+    Button,
+   
+  } from "@material-tailwind/react";
 
 const PdfView = () => {
-    return (
-        <Document
-            pageMode='fullScreen'
-        >
-            <Page size="A4" style={styles.page}><Image src={Main} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf2} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf3} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf4} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf5} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf6} /></Page>
+    const contentRef = useRef(null);
+    const {token} = userAuth()
+    const [reportData,setReportData] = useState()
+    const [periodData,setPeriodData] = useState()
+    var currentdate = new Date(); 
+    var datetime =    currentdate.getDate() + "/"
+                    + (currentdate.getMonth()+1)  + "/" 
+                    + currentdate.getFullYear()  
 
-            <Page size="A4" style={styles.page}><Image src={Pdf7} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf8} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf9} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf10} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf11} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf12} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf13} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf14} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf15} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf16} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf17} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf18} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf19} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf20} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf21} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf22} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf23} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf24} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf25} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf26} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf27} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf28} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf29} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf30} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf31} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf32} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf33} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf34} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf35} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf36} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf37} /></Page>
-            <Page size="A4" style={styles.page}><Image src={Pdf38} /></Page>
-            
-            
-        </Document>
-    )
-}
-export default PdfView
+    useEffect(()=>{
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+ token
+          }
+              };
+    
+              const fetchData = async () => {
+                const dataResult = await get('/getcardgraficdata',config);
+
+                const reportperioddata = await get('/reportperioddata',config);
+
+                setPeriodData(reportperioddata.data.data)
+                console.log("reporttotal--------------",periodData?.KAPSAM1)
+
+                console.log("report---------------",periodData?.KAPSAM3)
+
+                setReportData(dataResult.data.data)
+                // console.log("RESULT---------------",reportData?.CardScope3[0]?.miktar)
+              }
+              fetchData()
+    },[])
+
+    const convertToPdf = () => {
+        const content = contentRef.current;
+
+        const options = {
+            filename: datetime +" "+ 'Rapor.pdf',
+            margin: 0,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 1 },
+            jsPDF: {
+                unit: 'in',
+                format: 'A4',
+                orientation: 'portrait',
+            },
+            // pagebreak: { after: '.beforeClass' },
+            // pagebreakMode : 'avoid-all'
+            pagebreak: {
+                mode: ['avoid-all']
+            },
+        };
+
+        html2pdf().set(options).from(content).save();
+    };
+    var val = localStorage.getItem('detail');
+    var object = JSON.parse(val);
+    return (
+    <>
+                <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button>
+
+        <div style={{visibility:'hidden'}}>
+
+<div ref={contentRef}>
+            <div >
+            <div className='beforeClass' style={{ height: "100%",width:'100%',objectFit:'contain' }}><img  src={CoverImage} alt=""  /></div>
+           
+           <div style={{margin:'5rem'}}>
+           <div className='flex justify-between'>
+                <div><img width={100} style={{ borderRadius: '10px', margin: 0 }} src={object.company_logo} alt="" /></div>
+                <span className='font-bold'>Rapor Tarihi: {datetime}</span>
+            </div>
+            <hr className='my-4' style={{ height: '2px solid black' }} />
+            <span className='font-bold text-2xl'>ŞİRKET İSMİ: CARBONISTAN</span><h1 className='mt-2'> </h1>
+            <div className="relative overflow-x-auto mt-5">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" className="px-6 py-3">
+                                Kapsam başlıkları
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Ocak-MART
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Nisan-Haziran
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Temmuz-Eylul
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Ekim-Aralik
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                KAPSAM-1
+                            </th>
+                            <td className="px-6 py-4 tex">
+                                {periodData?.KAPSAM1[0][0].miktar}
+                            </td>
+                            <td className="px-6 py-4">
+                                {periodData?.KAPSAM1[1][0].miktar}
+                            </td>
+                            <td className="px-6 py-4">
+                                {periodData?.KAPSAM1[2][0]?.miktar ? periodData?.KAPSAM1[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                            {periodData?.KAPSAM1[3][0]?.miktar ? periodData?.KAPSAM1[3][0]?.miktar : 'veri yok'}
+                            </td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                KAPSAM-2
+                            </th>
+                            <td className="px-6 py-4 tex">
+                            {periodData?.KAPSAM2[0][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                            {periodData?.KAPSAM2[0][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                                {periodData?.KAPSAM2[2][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                            {periodData?.KAPSAM2[3][0]?.miktar ? periodData?.KAPSAM2[3][0]?.miktar : 'veri yok'}
+                            </td>
+                        </tr>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                KAPSAM-3
+                            </th>
+                            <td className="px-6 py-4 tex">
+                            {periodData?.KAPSAM3[0][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                            {periodData?.KAPSAM3[0][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                                {periodData?.KAPSAM3[2][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                            </td>
+                            <td className="px-6 py-4">
+                            {periodData?.KAPSAM3[3][0]?.miktar ? periodData?.KAPSAM3[3][0]?.miktar : 'veri yok'}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {/* <hr className='mt-10' /> */}
+            <h2 className='mt-20 font-bold text-large'>TOPLAM KARBON EMİLSYONLARI:</h2>
+            <h3 className='font-bold text-large mt-3 mb-2'>KAPSAM-1:  {reportData?.CardScope1[0]?.miktar ? reportData?.CardScope1[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+            <h3 className='font-bold text-large mb-2'>KAPSAM-2:  {reportData?.CardScope2[0]?.miktar ? reportData?.CardScope2[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+            <h3 className='font-bold text-large'>KAPSAM-3:  {reportData?.CardScope3[0]?.miktar ? reportData?.CardScope3[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+            <hr className='mt-10' />
+            <div className='html2pdf_page-break'></div>
+            <div className='mt-15'>
+                <span className='block'><span className='font-bold'>Adres:  </span>Şemsitebrizi, Vali İzzetbey Cd. No:2, 42030 Karatay/Konya</span>
+                <span className='block'><span className='font-bold'>Site:  </span> www.carbonistan.com</span>
+                <span className='block'><span className='font-bold'>Tel:  </span> 555 555 55 55</span>
+            </div>
+           </div>
+            </div>
+
+            </div>
+
+        </div>
+        </>
+    );
+};
+
+export default PdfView;

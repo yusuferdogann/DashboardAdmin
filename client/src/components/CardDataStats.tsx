@@ -15,7 +15,9 @@ interface CardDataStatsProps {
   background:String,
   padding:String,
   borderRadius:String,
-  marginBottom:String
+  marginBottom:String,
+  birim:String,
+  opacity:String
 }
 
 const CardDataStats: React.FC<CardDataStatsProps> = ({
@@ -32,19 +34,21 @@ const CardDataStats: React.FC<CardDataStatsProps> = ({
   background,
   padding,
   marginBottom,
-  borderRadius
+  borderRadius,
+  birim,
+  opacity
 }) => {
   return (
-    <div className="rounded-sm border flex justify-between items-center border-stroke bg-white py-6 px-5.5 shadow-default dark:border-strokedark dark:bg-boxdark" style={{backdropFilter,backgroundColor,boxShadow}}>
-      <div className="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-meta-2 dark:bg-meta-4">
+    <div className="rounded-sm border flex justify-between items-center border-stroke bg-white py-6 px-5.5 shadow-default " style={{opacity,backdropFilter,backgroundColor,boxShadow}}>
+      <div className="flex h-11.5 w-11.5 items-center justify-center">
         {children}
       </div>
       <div className="mt-1 flex items-end justify-between" >
         <div>
           <h4 className="text-title-md font-bold" style={{color,marginBottom}}>
-            {total}
+            {total}  
           </h4>
-          <span className="text-normal font-medium" style={{background,padding,borderRadius,color}}>{title ? title : "veri yok"}</span>
+          <span className="text-normal text-xl font-bold" style={{background,padding,borderRadius,color}}>{title ? title : "veri yok"}</span><span>{birim}</span>
         </div>
 
         <span

@@ -30,8 +30,8 @@ const ECommerce: React.FC = () => {
 
           const fetchData = async () => {
             const dataResult = await get('/getcardgraficdata',config);
-            console.log("result-data",dataResult.data.data)
-            setResult(dataResult.data.data)
+            console.log("result-data",dataResult?.data.data)
+            setResult(dataResult?.data.data)
             // console.log("RESULT---------------",result?.CardScope3[0]?.miktar)
           }
           fetchData()
@@ -48,40 +48,44 @@ const ECommerce: React.FC = () => {
     <>
       <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
-         title = {result?.CardScope1[0]?.miktar}  
+         title = {result?.CardScope1[0]?.miktar?.toFixed(2)}
           total="KAPSAM 1"
           color='black'
+          birim=' /tonCo2e'
+
           // rate="0.43%" 
           // levelUp
           >
          <img src={Image1} alt="" />
         </CardDataStats>
         <CardDataStats 
-         title = {result?.CardScope2[0]?.miktar}  
+         title = {result?.CardScope2[0]?.miktar?.toFixed(2)}  
          total="KAPSAM 2" 
         color='black'
+        birim=' /tonCo2e'
+
 
         // rate="4.35%" 
         // levelUp
         >
-        <img src={Image2} alt="" />
+        <img src={Image3} alt="" />
         </CardDataStats>
         <CardDataStats  
-          title = {result?.CardScope3[0]?.miktar}  
-
+          title = {result?.CardScope3[0]?.miktar?.toFixed(2)}  
+        birim=' /tonCo2e'
          total="KAPSAM 3"
          color='black'
 
           // rate="2.59%"  
           // levelUp
           >
-                            <img src={Image3} alt="" />
+                            <img src={Image2} alt="" />
 
         </CardDataStats>
         <CardDataStats 
-        title="Coming Soon" 
+        title="Yakında" 
         total="KAPSAM 4"
-        backgroundColor= 'rgb(173 172 172 / 13%)'
+        backgroundColor= 'rgb(28 36 52 / 0.3)'
         boxShadow= "2px 2px 5px #b6b6b6, -2px -2px 2px #ffffff"
         backdropFilter="blur(3px)"
         color='rgb(255 255 255)'
@@ -89,6 +93,7 @@ const ECommerce: React.FC = () => {
         padding='8px'
         borderRadius='20px'
         marginBottom='10px'
+        opacity='1'
 
         // rate="0.95%" 
         // levelDown

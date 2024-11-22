@@ -9,13 +9,103 @@ interface ChartThreeState {
   series: number[];
 }
 
+
+const ChartThree: React.FC = () => {
+
+  const [threeChartData,setThreeChartData] = useState([])
+  const [donutData,setDonutData] = useState({
+    series: [],
+  })
+  const [returnData,setReturnData] = useState()
+  const [lastData,setLastData] = useState([{}])
+  const [responseArray,setResponseArray] = useState()
+  const [getResponse,setGetResponse] = useState()
+  const {token} = userAuth()
+  const [label,setLabel] = useState()
+  
+
+  let sum = 0
+  const takeData = getResponse?.data.data
+  returnData?.map(x => sum += x);
+  var b = returnData?.map(x=>x*100)
+  var resultPurple = b?.map(y => y / sum)
+  const ttayta =  resultPurple?.map(a => a.toFixed(0))
+  // console.log("percent------------------------------",ttayta)
+
+  const returnValue = takeData
+  setTimeout(()=>{
+      const newArr1 = returnValue?.map((v,index) =>({...v, percent: ttayta[index]}))
+      setLastData(newArr1)
+
+  },1000)
+  useEffect(() => {
+    const config = {
+        headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer: "+token
+        }
+            };
+    const fetchData = async () => {
+        const dataResult = await get('/getfacility',config);
+        const getDonutData = await get('/getfacilitygraficdata',config);
+
+        const responseResult = dataResult
+        console.log("getFacility------------------------------",responseResult?.data.data)
+        setResponseArray(responseResult?.data.data)
+
+        responseArray?.map((name)=>{
+          console.log("name----",name.facilityname)
+          setLabel(name.facilityname)
+          console.log("result-label--------",label)
+
+        })
+        let DonutLabel = []
+        for (let i = 0; i < responseArray?.length; i++) {
+          const element = responseArray[i];
+          console.log("element--------",element.facilityname)
+          DonutLabel.push(element.facilityname)
+          console.log("self ------",DonutLabel)
+          setLabel(DonutLabel)
+        }
+
+        setGetResponse(responseResult)
+        // console.log("get-Donut-Data------------------------------",getDonutData.data.data)
+      
+          // const initialArr = [
+          //   {name: 'eve'},
+          //   {name: 'john'},
+          //   {name: 'jane'},
+          //   {name: 'yusuf'}
+
+          // ]
+      
+     
+      // const newArr2 = initialArr.map(v => Object.assign(v, {isActive: true}))
+      // console.log("array1----",newArr1)
+      // console.log("array2----",newArr2)
+
+      //  console.log("bismillah----------------",lastData)
+        setReturnData(getDonutData.data.data)
+        setThreeChartData(responseResult.data.data)
+        setDonutData({
+          series: getDonutData?.data.data,
+        })
+
+      }
+
+   
+    
+      
+      fetchData()
+
+},[])
 const options: ApexOptions = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
   },
   colors: ['#00ff8e', '#00ffb3', '#00ffea', '#00a0fe'],
-  labels: ['Şişli Şube', 'Etimeskut Şube', 'Mamak Şube', 'Gölbaşı Şube'],
+  labels: label,
   legend: {
     show: false,
     position: 'bottom',
@@ -52,69 +142,7 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartThree: React.FC = () => {
 
-  const [threeChartData,setThreeChartData] = useState([])
-  const [donutData,setDonutData] = useState({
-    series: [],
-  })
-  const [returnData,setReturnData] = useState()
-  const [lastData,setLastData] = useState([{}])
-  const [responseArray,setResponseArray] = useState()
-  const {token} = userAuth()
-
-  useEffect(() => {
-    const config = {
-        headers:{
-            "Content-Type":"application/json",
-            Authorization:"Bearer: "+token
-        }
-            };
-    const fetchData = async () => {
-        const dataResult = await get('/getfacility',config);
-        const getDonutData = await get('/getfacilitygraficdata',config);
-
-        const responseResult = dataResult
-        console.log("getFacility------------------------------",responseResult?.data.data)
-        setResponseArray(responseResult?.data.data)
-        // console.log("get-Donut-Data------------------------------",getDonutData.data.data)
-        let sum = 0
-        returnData?.map(x => sum += x);
-        var b = returnData?.map(x=>x*100)
-        var resultPurple = b?.map(y => y / sum)
-        const ttayta =  resultPurple?.map(a => a.toFixed(2))
-        console.log("percent------------------------------",ttayta)
-
-        const returnValue = responseResult?.data.data
-        
-          // const initialArr = [
-          //   {name: 'eve'},
-          //   {name: 'john'},
-          //   {name: 'jane'},
-          //   {name: 'yusuf'}
-
-          // ]
-      
-      const newArr1 = returnValue?.map((v,index) =>({...v, percent: ttayta[index]}))
-      setLastData(newArr1)
-      // const newArr2 = initialArr.map(v => Object.assign(v, {isActive: true}))
-      // console.log("array1----",newArr1)
-      // console.log("array2----",newArr2)
-
-      //  console.log("bismillah----------------",lastData)
-        setReturnData(getDonutData.data.data)
-        setThreeChartData(responseResult.data.data)
-        setDonutData({
-          series: getDonutData?.data.data,
-        })
-
-      }
-
-   
-
-      fetchData()
-
-},[])
 // console.log("tt--------",lastData)
 // let sum = 0
 // returnData?.map(x => sum += x);
@@ -151,7 +179,7 @@ const ChartThree: React.FC = () => {
           </h5>
         </div>
         <div>
-          <div className="relative z-20 inline-block">
+          {/* <div className="relative z-20 inline-block">
             <select
               name=""
               id=""
@@ -184,7 +212,7 @@ const ChartThree: React.FC = () => {
                 />
               </svg>
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -193,6 +221,7 @@ const ChartThree: React.FC = () => {
           <ReactApexChart
             options={options}
             series={donutData?.series}
+            
             type="donut"
           />
         </div>
@@ -200,13 +229,13 @@ const ChartThree: React.FC = () => {
 
       <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3" style={threeChartData .length >=6 ? {overflowY:'scroll',height:"20%"} : null} >
       {
-        lastData?.map((data)=>(
-          <div className="sm:w-1/2 w-full px-8">
+        lastData?.map((data,index)=>(
+          <div className="sm:w-1/2 w-full px-8" key={index}>
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#00ff8e]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
               <span> {data?.facilityname} </span>
-              <span>{data?.percent}</span>
+              <span>{data?.percent}%</span>
              
             </p>
           </div>

@@ -2,24 +2,23 @@ import { Accordion, AccordionHeader, AccordionBody, } from "@material-tailwind/r
 import Facility from "../Facility/index"
 import DataPicker from "../../common/DataPicker/index"
 import { useEffect, useState } from "react";
-import { post } from "../../server/Apiendpoint"
+import { post,get } from "../../server/Apiendpoint"
 import PersonalCar from "../Calculatıon/PersonalCar"
 import ServiceCar from "../Calculatıon/ServiceCar"
 import EmployeeCar from "../Calculatıon/EmployeeCar"
 import TravelCar from "../Calculatıon/TravelCar"
 import Videokayit from '../../../src/images/video/animation-video.mp4'
 // import Language from "../Facility/languagetest"
-import { Tooltip, Button } from "@material-tailwind/react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import { userAuth } from '../../auth/userAuth';
 import { Tabs, TabsHeader,  Tab,  } from "@material-tailwind/react";
 import { handleErrorForFacility } from '../../common/utils/helpers'
 import { ToastContainer } from 'react-toastify'
 import { handleSuccess } from '../../common/utils/helpers';
-
-
-
-
+import { v4 as uuidv4 } from 'uuid';
+import {CalculateFuction} from "../../common/utils/calculateFunction"
+import ClickOutside from '../components/ClickOutside';
+import { Tooltip, Button, Dialog, DialogHeader, DialogBody, DialogFooter } from "@material-tailwind/react";
 
 
 
@@ -41,6 +40,12 @@ const Icon = ({ id, open }) => {
 const AccordionCustomIcon = () => {
   const [veri, setVeri] = useState()
   const [veri2,setVeri2] = useState([])
+  const [size, setSize] = useState(null);
+  const handleModal = (value) => setSize(value);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+
+
   const styles = {
     input: {
       normal: 'bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
@@ -63,23 +68,27 @@ const AccordionCustomIcon = () => {
           id: 1,
           name: "SABIT YANMA",
           short: ['sabit'],
-          cities: ["Doğal Gaz", "Fleoil 2", "Fleoil 6", "Gazyağı", "Sıvılaştırılmış Petrol Gazları (LPG)", "Antrasit Kömür", "Bitümlü Kömür", "Alt Bitümlü Kömür", "Linyit Kömürü", "Kok komuru", "Belediye Katı Atıkları", "Petrol Kökü", "Plastik", "Lastik", "Yaş Biokütle", "Turba", "Kuru Biokutle", "Ahşap ve Ahşap Kalıntıları", "Propan Gazı", "Çöp Gazı", "Biyodizel (%100),", "Etanol (%100)", "İşlenmiş Hayvansal Yağ", "Bitkisel Yağ"],
-          units: ['kg', 'ton', 'lt', 'm3']
+          cities: ["Doğal Gaz", "Linyit Kömürü",  "Yaş Biokütle"],
+          // cities: ["Doğal Gaz", "Fleoil 2", "Fleoil 6", "Gazyağı", "Sıvılaştırılmış Petrol Gazları (LPG)", "Antrasit Kömür", "Bitümlü Kömür", "Alt Bitümlü Kömür", "Linyit Kömürü", "Kok komuru", "Belediye Katı Atıkları", "Petrol Kökü", "Plastik", "Lastik", "Yaş Biokütle", "Turba", "Kuru Biokutle", "Ahşap ve Ahşap Kalıntıları", "Propan Gazı", "Çöp Gazı", "Biyodizel (%100),", "Etanol (%100)", "İşlenmiş Hayvansal Yağ", "Bitkisel Yağ"],
+          units: ['ton','m3']
         },
         {
           id: 2,
           name: "HAREKETLI YANMA",
           short: ['hareketli'],
-          cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
-          units: ['SCOPE-1', 'ton', 'lt', 'm3']
+          // cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
+          cities: ["Dizel Yakıt","Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin"],
+          units: [ 'lt']
         },
         {
           id: 3,
           name: "DOGRUDAN SIZMA KACAK EMISYONU",
           short: ['dogrudan'],
-          birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
+          // birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
+          birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R600a','R601','R601a'],
+
           cities: ["Su Sebili", "Buzdolabi", "Chiller", "Klima", "Yangın Söndürme Tüpü", "Endüstriyel Soğutucu"],
-          units: ['kg', 'ton', 'lt', 'm3']
+          units: ['kg','m3']
         },
 
       ],
@@ -91,8 +100,8 @@ const AccordionCustomIcon = () => {
         {
           id: 1,
           name: "Satın Alınan Enerji",
-          cities: ["elektrik"],
-          units: ['megaWatt', 'kWawt']
+          cities: ["Elektrik"],
+          units: ['kWawt']
         },
       ],
     },
@@ -104,8 +113,8 @@ const AccordionCustomIcon = () => {
           id: 1,
           name: "Upstream Nakliye (aracın firmaya ait olması durumunda)",
           cities: ["Minibüs", "Otobüs", "Pazarlama", "Nakliye"],
-          units: ['dizel', 'lpg'],
-          birim: ['lt', 'ton', 'm3']
+          units: ["Dizel Yakıt","Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin"],
+          birim: ['lt']
 
         },
         {
@@ -113,8 +122,8 @@ const AccordionCustomIcon = () => {
           name: "Downstream Nakliye hizmetin dışardan satın alınması durumunda)",
           cities: ["Personel işe gidiş-geliş", "Müşteri ziyaretli kaynaklı emilsyonlar", "İş seyahat kaynaklı emilsyonlar"],
           option: ["otobus icin yakit tuketimi", "otelde kisi sayisi", "taksi ile mi arac kiralama mi"],
-          units: ['dizel', 'lpg'],
-          birim: ['lt', 'ton', 'm3']
+          units: ["Dizel Yakıt","Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin"],
+          birim: ['lt']
 
         },
 
@@ -149,7 +158,28 @@ const AccordionCustomIcon = () => {
   
 
 ];
-
+const DataSheet = [
+  {
+    label: "Doğal Gaz",
+      m3: 2.02,
+      ton:2539.25
+  },
+  {
+    label: "Dizel Yakıt",
+    m3: 2.02,
+    ton:2539.25
+},
+{
+  label: "R600A",
+  m3: 2.02,
+  ton:2539.25
+},
+{
+  label: "Elektrik",
+  m3: 2.02,
+  ton:2539.25
+}
+];
 const ResultTravel = [];
 Data.map((value)=>{
   // console.log(value.value)
@@ -158,7 +188,19 @@ Data.map((value)=>{
 })
 // console.log("sonuc------------",ResultTravel[3])
   const { facilitySend,token } = userAuth();
+//   var images = [
+//     { height: 10 },
+//     { height: 20 },
+//     { height: 54 }
+//   ];
 
+// // var areas = images.map( img => img.height * img.width);
+// var total = images.reduce((prevValue,curValue) =>{
+//   return prevValue * curValue
+// });
+
+// // console.log(areas);
+// console.log(total)
   const [units, setUnits] = useState([]);
   const [country, setCountry] = useState([]);
   const [state, setState] = useState([])
@@ -189,10 +231,10 @@ Data.map((value)=>{
   var currentdate = new Date(); 
   var datetime =    currentdate.getDate() + "/"
                   + (currentdate.getMonth()+1)  + "/" 
-                  + currentdate.getFullYear() + " - "  
-                  + currentdate.getHours() + ":"  
-                  + currentdate.getMinutes() + ":"
-                  + currentdate.getMilliseconds()
+                  + currentdate.getFullYear()  
+                  // + currentdate.getHours()  
+                  // + currentdate.getMinutes() + ":"
+                  // + currentdate.getMilliseconds()
   // console.log("date-time",datetime)
 
   const [savedData, setSavedData] = useState(
@@ -202,12 +244,14 @@ Data.map((value)=>{
       subtitle: '', 
       kaynak: '', 
       birim: '', 
-      miktar: '',
+      miktar: Number,
       ulke:facilitySend?.country,
       sehir:facilitySend?.city,
       ilce:facilitySend?.state,
       tesis:facilitySend?.facilityname,
-      situation:''
+      situation:'',
+      gasType:''
+      
      }
   );
   const [savedDataScope3, setSavedDataScope3] = useState(
@@ -255,6 +299,9 @@ Data.map((value)=>{
   const [aracdata, setAracdata] = useState([])
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
   const [dublicate,setDublicate] = useState(false)
+  const [deletedScope,setDeletedScope] = useState()
+
+
 
   //     setAracdata([...aracdata,{car}])
 
@@ -924,12 +971,24 @@ Data.map((value)=>{
 
   }
 
- 
+  const funcKaynak = savedData?.kaynak;
+  const funcBirim = savedData?.birim;
+  const funcMiktar = Number(savedData?.miktar)
+  const gasType = savedData?.gasType
+  const [arrayData,setArrayData] = useState()
+  const Dok = []
+  const calculated = CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2)
+  // console.log("ne oluyo--------",funcKaynak,funcBirim,funcMiktar)
+  console.log('aciz--------------',Dok.push(CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)))
+  Dok.push(CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2))
   const changeData = (event, index) => {
     if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
       setChange(Number(event.target.value))
     }
-    
+    setArrayData(String(Dok[0]?.toFixed(2)))
+
+    console.log('aciz1111111--------------',arrayData)
+
     console.log("baslik1-----",baslik1)
     console.log("baslik2-----",baslik2)
     console.log("baslik3-----",baslik3)
@@ -941,7 +1000,7 @@ Data.map((value)=>{
         subtitle: '', 
         kaynak: '', 
         birim: '', 
-        miktar: '',
+        miktar: 3 * savedData?.miktar,
         ulke:facilitySend?.country,
         sehir:facilitySend?.city,
         ilce:facilitySend?.state,
@@ -978,18 +1037,13 @@ Data.map((value)=>{
       console.log("Scope-3------------",savedDataScope3)
       // console.log("country",facilitySend?.country)
     }
-   
-   
-   
     // console.log("change-Number-data",change)
-
    const {name,value} = event.target;
    setFormValues({...formValues,[name]:value})
    setAddList({...addList,[name]:value})
 
-    
-    setAlldata([...alldata, { "cities": event.target.value }])
-    setAlldata([...alldata, { units: event.target.value }])
+  setAlldata([...alldata, { "cities": event.target.value }])
+  setAlldata([...alldata, { units: event.target.value }])
 
     // setSubtitle(event.target.textContent)
     // console.log("subtitle", subtitle)
@@ -1006,11 +1060,6 @@ Data.map((value)=>{
     //   [event.target.name]: event.target.value,
 
     // });
-  
- 
-  
-
-
     if (event.target.value === "Yangın Söndürme Tüpü") {
       setDegis(false)
       setGg(false)
@@ -1046,6 +1095,60 @@ Data.map((value)=>{
    
 }
 
+// console.log("ne olud bize-----------------",savedData?.birim)
+
+// -------Buzdolabi/R600A------------------------------
+// const buz11 =  [0.1  * 1300 ];
+// ====================================================
+
+// -------Buzdolabi/R134a------------------------------
+// const buz11 =  [0.1  * 1300 ];
+// ====================================================
+// -------Buzdolabi/R32------------------------------
+// const buz11 =  [0.1  * 675 ];
+// ====================================================
+// -------yangin tupu ------------------------------
+// const buz11 =  [4 * miktar ];
+// ====================================================
+// -------Elektrik ------------------------------
+const buz11 =  [ 0.6345 ];
+// ====================================================
+// const sum11 = dizel11.reduce((prevValue,curValue) => {
+//     return prevValue * curValue
+// });
+// const sum22 = dizel22.reduce((prevValue,curValue) => {
+//   return prevValue * curValue
+// });
+// const sum33 = dizel33.reduce((prevValue,curValue) => {
+//   return prevValue * curValue
+// });
+const sum11 = buz11.reduce((prevValue,curValue) => {
+  return prevValue * curValue
+});
+// const sum22 = dizel22.reduce((prevValue,curValue) => {
+// return prevValue * curValue
+// });
+// const sum33 = dizel33.reduce((prevValue,curValue) => {
+// return prevValue * curValue
+// });
+
+// const arrayResult11 = sum11  * value11;
+// const arrayResult22 = sum22 * value22;
+// const arrayResult33 = sum33 * value33;
+
+// ===============buzdolabi=====================
+const arrayResult11 = sum11  
+// const arrayResult22 = sum22 * value22;
+// const arrayResult33 = sum33 * value33;
+// ============================================
+
+// const Dok = []
+// const CalclateRealValue = (funcKaynak,funcMiktar) =>{
+//   // DataSheet.find(v=>v.label=== funcKaynak ? Dok.push(v[funcBirim] * funcMiktar) : null)
+
+// DataSheet.find(v=>v.label === 'Elektrik' ? Dok.push(  (funcMiktar  / 1000) * 0.6345  )  : null)
+
+// }
 
 
 
@@ -1055,11 +1158,12 @@ const handleValidation = async (event)=>{
  
   const {name,value} = event.target;
   setFormValues({...formValues,[name]:value})
+
   // setListData({...formValues,[name]:value})
 
     setFormErrors(validate(formValues));
     setIsSubmit(true)
-    setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:formValues.miktar}])
+    // setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:Dok[0].toFixed(2),id:uuidv4()}])
     console.log(formErrors)
     // console.log("data-List",listData)
     // console.log("handle-button---------",savedData)
@@ -1070,8 +1174,23 @@ const handleValidation = async (event)=>{
   
   
   }
+
   useEffect(()=>{
-    // console.log("useEffect-ust",formErrors)
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+        }
+      };
+    const getScopeList = async() =>{
+
+      const dataResult = await get('/getdailyscope',config);
+      console.log("self-control-------",dataResult)
+      setListData(dataResult.data.data)
+    }
+
+    getScopeList()
+
     function getDuplicates(arr) {
       const seen = new Set();
       const duplicates = [];
@@ -1096,22 +1215,33 @@ const handleValidation = async (event)=>{
       
       
       console.log(formErrors); // true 
-      if(isEmpty(formErrorsflist)){
-
-    const config = {
-      headers:{
-          "Content-Type":"application/json",
-          Authorization:"Bearer: "+token
-        }
-      };
+      if(isEmpty(formErrors)){
 
          if(!dublicate){
           const fetchData = async () => {
            if(baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2'){
             
-            const dataResult = await post('/adddata',savedData,config);
+            const savedDataLast= { 
+              tarih:datetime,
+              title: savedData?.title, 
+              subtitle: savedData?.subtitle, 
+              kaynak: savedData?.kaynak, 
+              birim: savedData?.birim, 
+              miktar: CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2),
+              ulke:facilitySend?.country,
+              sehir:facilitySend?.city,
+              ilce:facilitySend?.state,
+              tesis:facilitySend?.facilityname,
+              situation:savedData?.situation,
+              gasType:savedData?.gasType
+             }
+
+
+            const dataResult = await post('/adddata',savedDataLast,config);
+            setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+
             handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
-            console.log("result-data",dataResult)
+            console.log("result-data--------",dataResult)
            }
            else if(baslik3 === "SCOPE-3"){  
             const dataResult = await post('/adddata',savedDataScope3,config);
@@ -1153,7 +1283,37 @@ const handleValidation = async (event)=>{
 
 ];
 
+const DeleteScope = (event,item) =>{
+  console.log("funda------------------------------",item)
+  setDeletedScope(item)
+  handleModal('xs')
 
+}
+
+const WillDeletedScope = async() =>{
+  const config = {
+    headers:{
+        "Content-Type":"application/json",
+        Authorization:"Bearer: "+token
+      }
+    };
+  console.log("deleteded scope")
+  const deleteScopeId = deletedScope?._id
+  console.log("deleted--------",deleteScopeId)
+  // const afterDeletedScope = await post('/deletedscope',{deleteScopeId},config);
+  // console.log("deleted-Scope-------",afterDeletedScope)
+
+
+  const deletedData = async () => {
+    // props.setResultData((state) => state.filter((item) => item._id !== idDeletedFacility))
+    const dataResult = await post('/deletedscope', {deleteScopeId},config);
+
+    console.log("deleted-scope-----------------",dataResult)
+
+  }
+  deletedData()
+
+}
 
 // console.log("DUPLICATED---------------------",duplicateUsers);
   
@@ -1169,7 +1329,7 @@ const handleValidation = async (event)=>{
       {/* <Language/> */}
       <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
         <div className='grid grid-cols-3 gap-4'>
-          <div className=" border border-slate-300 ">
+          <div className="border border-slate-300 ">
             <div className="px-4">
               <div className="flex flex-col my-4">
                 <span className="title-dynamily">KAPSAM BAŞLIKLARI</span>
@@ -1257,7 +1417,7 @@ const handleValidation = async (event)=>{
             <video width="auto" height="500" autoPlay={true} loop muted>
               <source src={Videokayit} type="video/mp4" />
             </video>
-            <div className="footprint flex"><span className="video-title">LÜTFEN KAYIT İÇİN TESİSLERDEN BİRİNİ SEÇİN VEYA YENİ BİR TESİS EKLEYİN</span>
+            <div className="footprint flex"><span className="video-title text-center" style={{background:'linear-gradient(to right, rgb(0 255 5), rgb(13 0 254))',WebkitBackgroundClip:'text',WebkitTextFillColor: 'transparent'}}>LÜTFEN KAYIT İÇİN TESİSLERDEN BİRİNİ SEÇİN <br/>VEYA YENİ BİR TESİS EKLEYİN</span>
             </div>
           </div>
           {/* before area finish */}
@@ -1389,9 +1549,9 @@ const handleValidation = async (event)=>{
                           {
                             degis === true ? <div className="block w-full">
                               <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                              <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? null : savedDataScope3.birim} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? '' : 'birim'} id="cities" className={error ? styles.select.error : styles.select.normal}
+                              <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ?  savedData.gasType : savedDataScope3.birim} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? 'gasType' : 'birim'} id="cities" className={error ? styles.select.error : styles.select.normal}
                                 onChange={(event) => changeData(event)}>
-                                <option>{baslik3 === 'SCOPE-3' ? 'Birim girin' : 'yakit turu girin'}</option>
+                                <option>{baslik3 === 'SCOPE-3' ? 'Birim girin' : 'Gaz türü girin'}</option>
 
                                 {birim?.map((citiy, index) => (
                                   <option key={index}>{citiy}</option>
@@ -1406,7 +1566,7 @@ const handleValidation = async (event)=>{
                             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{sub.name4 === '' ? 'Miktar' : sub.name4}</label>
                             <input
                               type="text"
-                              value={baslik1 || baslik2 ? savedData.miktar : savedDataScope3.miktar}
+                              value={baslik1 || baslik2 ? savedData.miktar: savedDataScope3.miktar}
                               name='miktar'
                               className={formErrors.miktar ? styles.input.error : styles.input.normal}
                               placeholder="miktar girin"
@@ -1487,7 +1647,6 @@ const handleValidation = async (event)=>{
 
                         {
                           listData?.map((arac, index) => (
-
                             <tbody key={index}>
                               <tr className="border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -1497,7 +1656,7 @@ const handleValidation = async (event)=>{
                                 {arac.birim}
                                 </td>
                                 <td className="px-6 py-4">
-                                {arac.miktar}
+                                {arac?.miktar}
                                 </td>
                                 <td className="px-6 py-4 text-center">
                                 <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
@@ -1507,7 +1666,7 @@ const handleValidation = async (event)=>{
                                 </button>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                                <button onClick={(event)=>DeleteScope(event,arac)} className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                                     <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Sil
                                     </span>
@@ -1518,7 +1677,6 @@ const handleValidation = async (event)=>{
                           ))
                         }
                       </table> 
-                
                 </div>
                        {listData.length >=5 ?  <a href="/sumary"><button  className="w-full mt-4 relative inline-flex items-center justify-center p-2  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">Devamını gör</button>
                         </a> : null}
@@ -1528,6 +1686,53 @@ const handleValidation = async (event)=>{
         </div>
       </div>
   <ToastContainer/>
+
+  <Dialog
+        open={
+          size === "xs" ||
+          size === "sm" ||
+          size === "md" ||
+          size === "lg" ||
+          size === "xl" ||
+          size === "xxl"
+        }
+        size={size || "sm"}
+        handler={handleModal}
+      >
+        <DialogHeader className='text-center relative' style={{ display: 'block' }}>Kapsam Sil</DialogHeader>
+        <DialogBody>
+          <div className="grid grid-cols-1" >
+
+            <div>
+
+              <div className="flex flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 mb-5 text-center">
+                <span className='text-black font-bold text-red me-3'>{deletedScope?.kaynak}</span> {""} <p className='text-normal'>kapsamı silmek istediginizden emin misiniz?</p><br />
+              </div>
+              {/* <span className='mt-5 text-red-300'>NOT:Tesis ile birlikte tesise ait butun kapsamlarda silenecektir.</span> */}
+
+            </div>
+
+
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={() => handleModal(null)}
+            className="mr-1"
+          >
+            <span>İptal Et</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={WillDeletedScope}
+          >
+            <span>Sil</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }

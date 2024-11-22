@@ -7,9 +7,14 @@ import {userAuth} from "../../auth/userAuth"
 
 const TabsDefault = () => {
     const [open, setOpen] = useState();
+    const [subOpen, setSubOpen] = useState();
+
     const handleOpen = (index) => setOpen(open === index ? index : index);
+    const handleSubOpen = (index) => setSubOpen(subOpen === index ? index : index);
+
     // console.log("opennnn", open)
     const {token} = userAuth()
+    console.log("token",token)
     const [veri, setVeri] = useState(["SABIT YANMA", "HAREKETLI YANMA", "DOĞRUDAN SIZMA KAÇAK EMILSYONU"])
     const [veri2, setVeri2] = useState([])
     const [requestData,setRequestData] = useState([{}])
@@ -73,19 +78,25 @@ const TabsDefault = () => {
         handleOpen(false)
         setVeri(Data?.find((ctr) => ctr.label === event.target.textContent).subtitle)
         setState(label)
-        console.log("scopename",scopename)
+        setVeri2(null)
+        // console.log("scopename",scopename)
         // setSendingData({ScopeTitle:label})
         setRequestData({...requestData,'ScopeTitle':scopename})
-
-        if (state === "KAPSAM-1" || "KAPSAM-2") {
-            setVeri2(null)
-        }
+        setRequestData(prevState => {
+            const {TravelType, ...newItems} = prevState;    
+            return newItems;
+        });
+        console.log("new kapsam 2--------------",requestData)
+        // if (state === "KAPSAM-1" || "KAPSAM-2") {
+          
+        //     setVeri2(null)
+        // }
         // setRequestData({'ScopeTitle':state})
-        console.log("ver---------",requestData)
+        // console.log("ver---------",requestData)
 
     }
     // console.log("veri  ", state)
-    console.log("getir-----",requestData)
+    // console.log("getir-----",requestData)
 
     // setRequestData([{...requestData,'ScopeTitle':state}])
     // setRequestData({'ScopeTitle':state})
@@ -120,41 +131,55 @@ const TabsDefault = () => {
 
         // console.log("Situation--------------------",event.target.value)
         // console.log("ScopeTitle--------------------",state)
-        console.log("Request-Data=================",requestData)
+        // console.log("Request-Data=================",requestData)
       }
     //   console.log("Request-Data=================",requestData)
 
       const checkControlCarType = async(e, index) => {
-        // console.log("indexxxx", index)
-        // console.log("true---------------", )
-        // console.log('sub-title-------------------',e.target.textContent)
+
         setRequestData({...requestData,'Subtitle':e.target.textContent})
-        // console.log('sub-title-------------------',requestData)
-        // console.log(index)
+        if (index === 0 && state === 'KAPSAM-3') {
+            setVeri2(['Şahsi Araçlar'])
+            handleSubOpen(22)
+        }
+        else if (index === 1 && state === "KAPSAM-3") {
+            handleSubOpen(22)
+            setVeri2(['Şahsi Araçlar', 'Servis Araçlar', 'Müşteri Ziyaretlerİnde Kullanılan Araçlar'])
+        }
+       
+        else if (state === "KAPSAM-1") {
+            setVeri2([null])
+        }
         
-            const config = {
+        const config = {
                 headers:{
                     "Content-Type":"application/json",
                     Authorization:"Bearer: "+token
                 }
                     };
-                const addfacilitydata = await post('/getsummarydata',requestData,config)
-                console.log("RESULT----------------------------",addfacilitydata.data.data)
-                setReturnData(addfacilitydata.data.data)
-        
-
+        const addfacilitydata = await post('/getsummarydata',requestData,config)
+        console.log("RESULT----------------------------",addfacilitydata.data.data)
+        setReturnData(addfacilitydata.data.data)
         handleOpen(index)
-        if (index === 0 && state === 'KAPSAM-3') {
-            setVeri2(['Şahsi Araçlar'])
-            // console.log(index)
-        }
-        else if (index === 1 && state === "KAPSAM-3") {
-            console.log("yessss D", index)
-            setVeri2(['Şahsi Araçlar', 'Servis Araçlar', 'Müşteri Ziyaretlerİnde Kullanılan Araçlar'])
-        }
-        else if (state === "KAPSAM-1") {
-            setVeri2([null])
-        }
+      
+    }
+
+    const checkSubButtonSelect = async (e,index) =>{
+        handleSubOpen(index)
+        console.log("text---------",e.target.textContent)
+        setRequestData({...requestData,'TravelType':e.target.textContent})
+
+        const config = {
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:"Bearer: "+token
+            }
+                };
+        const addfacilitydata = await post('/getsummarysubdata',requestData,config)
+            console.log("SUB-SUB-RESULT----------------------------",addfacilitydata.data.data)
+            setReturnData(addfacilitydata.data.data)
+
+      
     }
     // console.log("requestData-------",requestData)
     // console.log("state",state)
@@ -164,13 +189,9 @@ const TabsDefault = () => {
 
 
     // const atis = async()=>{
-
-
-
     //       const loginuser = await get("/getdata")
     //     //   console.log("getget",setUsers(loginuser.data))
     //  }
-
     //   atis()
 
 
@@ -251,12 +272,12 @@ const TabsDefault = () => {
                 checksubtitle === true ? <>
                  <div className="crazy " style={{ display: 'flex' }}>
                     {veri?.map((citiy, index) => (
-                        <button onClick={(e) => checkControlCarType(e, index)} style={open === index ? { border: '1px solid #e2e2e2', padding: '10px', margin: '40px 40px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : { margin: '40px 40px', padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" key={index}>{citiy}</button>
+                        <button onClick={(e) => checkControlCarType(e, index)} style={open === index ? { padding: '10px', margin: '40px 40px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : { margin: '40px 40px', padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" key={index}>{citiy}</button>
                     ))}
                 </div>
                 <div className="crazy " style={{ display: 'flex' }}>
                     {veri2?.map((citiy, index) => (
-                        <button className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" style={{ margin: '0px 40px', padding: '10px', borderRadius: "10px" }}  key={index}>{citiy}</button>
+                        <button onClick={(e)=> checkSubButtonSelect(e,index)} style={subOpen === index ? { padding: '10px', margin: '40px 40px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : { margin: '40px 40px', padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" key={index}>{citiy}</button>
                     ))}
                 </div> 
                

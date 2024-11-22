@@ -14,24 +14,41 @@ const Facilitynote = (props: any) => {
   const [facilitycheck, setFacilitycheck] = useState(false)
   const [size, setSize] = useState(null);
   const handleOpen = (value) => setSize(value);
-  const [nameDeletedFacility, setNameDeletedFacility] = useState('')
+  const [nameDeletedFacility, setNameDeletedFacility] = useState(props.deleteData?.facilityname)
   const [idDeletedFacility, setIdDeletedFacility] = useState()
   const [data,setData] = useState()
 
 
+  // console.log("props---------",props.deletedData?.facilityname)
   const Tiklandi = () => {
-    setFacilitycheck(true)
     handleOpen('xs')
 
-    // props.onClick(true)
+    props.onClick(true)
   }
+
+  const EditFacility = (event) =>{
+    if(event.keyCode === 13){console.log("yes")}
+    if(props.deleteData.facilityname === nameDeletedFacility ){
+      props.onClick(props.deleteData._id)
+    }
+
+  }
+
+  const handleKeyDown = (event) =>{
+    if(event.keyCode=== 13){
+      console.log("yess")
+
+    }
+  }
+  // console.log("deleted-data------------", props.deleteData.facilityname)
+
+
   const deleteFacility = () => {
 
-    console.log("deleted-data------------", props.deleteData)
-    setNameDeletedFacility(props.deleteData.facilityname)
+    // console.log("deleted-data------------", props.deleteData)
     setIdDeletedFacility(props.deleteData._id)
     setData(props.deleteData._id)
-    console.log('deleted-id----------------', data)
+    // console.log('deleted-id----------------', data)
 
     const config = {
       headers: {
@@ -67,18 +84,16 @@ const Facilitynote = (props: any) => {
             className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
           >
             <i className="fa-solid fa-gear"></i>
-
           </div>
-
           {dropdownOpen && (
             <div
               className={`absolute -right-27 mt-2.5 flex h-30 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80`}
             >
               <ul className=" h-auto  overflow-y-auto pt-3">
                 <li
-                  onClick={Tiklandi}
+                  onClick={(event)=>EditFacility(event)}
                   className="flex flex-col gap-2.5  border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 text-black">
-                  <div className='flex justify-between '>
+                  <div className='flex justify-between'>
                     <div><h5>Düzenle</h5></div>
                     <div><i className="fa-solid fa-pen-to-square"></i></div>
                   </div>
@@ -87,7 +102,7 @@ const Facilitynote = (props: any) => {
                   onClick={Tiklandi}
 
                   className="flex flex-col gap-2.5  border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4 text-black">
-                  <div className='flex justify-between '>
+                  <div className='flex justify-between'>
                     <div><h5>Sil</h5></div>
                     <div><i className="fa-solid fa-trash"></i></div>
                   </div>
