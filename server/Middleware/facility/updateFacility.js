@@ -10,129 +10,28 @@ var mongoose = require('mongoose');
 // const { MongoClient,  ObjectId } = require("mongodb");
 var ObjectId = require('mongoose').Types.ObjectId; 
 
+const express = require('express');
+
+var app = express();
+  app.locals.data = {};
 
 
-
-
+globalThis.globalVariable;
 const updateFacility = asyncErrorWrapper(async (req, res, next) => {
-  const user = await Usermodels.findByIdAndUpdate(
-    req.user.id,
-    {
-      facility: [
-        {
-          scope1: {
-            name: "Scope-1",
-            states: [
-              {
-                id: 1,
-                name: "SABIT YANMA",
-                short: ["sabit"],
-                data: [
-                  { kaynak: "buzdolabi", birim: "megawatt", miktar: "1000m3" },
-                ],
-              },
-              {
-                id: 2,
-                name: "HAREKETLI YANMA",
-                short: ["hareketli"],
-                data: [
-                  { kaynak: "buzdolabi", birim: "megawatt", miktar: "1000m3" },
-                ],
-              },
-              {
-                id: 3,
-                name: "DOGRUDAN SIZMA KACAK EMISYONU",
-                short: ["dogrudan"],
-                data: [
-                  { kaynak: "buzdolabi", birim: "megawatt", miktar: "1000m3" },
-                ],
-              },
-            ],
-          },
-          scope2: {
-            states: [
-              {
-                id: 1,
-                name: "Satın Alınan Enerji",
-                data: [
-                  { name: "buzdolabi", birim: "megawatt", miktar: "1000m3" },
-                  {
-                    name: "derin dondurucu",
-                    birim: "kilowatt",
-                    miktar: "350m3",
-                  },
-                ],
-              },
-            ],
-          },
-          scope3: {
-            states: [
-              {
-                id: 1,
-                name: "Upstream Nakliye (aracın firmaya ait olması durumunda)",
-                data: [
-                  {
-                    aracturu: "otobus",
-                    yakitturu: "dizel",
-                    birim: "lt",
-                    miktar: "400",
-                  },
-                ],
-              },
-              {
-                id: 2,
-                name: "Downstream Nakliye hizmetin dışardan satın alınması durumunda)",
-                data: [
-                  {
-                    sahsiaraclar: [
-                      {
-                        aracturu: "otobus",
-                        yakitturu: "dizel",
-                        birim: "lt",
-                        miktar: "400",
-                      },
-                    ],
-                    servisaraclar: [
-                      {
-                        aracturu: "otobus",
-                        yakitturu: "dizel",
-                        birim: "lt",
-                        miktar: "400",
-                      },
-                    ],
-                    musteriziyareti: [
-                      {
-                        aracturu: "otobus",
-                        yakitturu: "dizel",
-                        birim: "lt",
-                        miktar: "400",
-                      },
-                    ],
-                    isseyahatlari: [
-                      {
-                        aracturu: "otobus",
-                        yakitturu: "dizel",
-                        birim: "lt",
-                        miktar: "400",
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        },
-      ],
-    },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+
+  // const name = 'yalan'
+  // const id = '6736457cd4aa767c3e9d8e69'
+  const {id,title} = req.body
+  let facility = await FacilityModel.findById(id)
+
+  facility.facilityname = title;
+  facility = await facility.save();
+
+
   res.status(200).json({
     success: true,
     message: "facility upload successfull",
-    data: user,
+    // data: facility,
   });
 });
 
@@ -177,6 +76,24 @@ const deleteFacility = asyncErrorWrapper(async (req, res, next) => {
     message: "facility delete successfull",
   });
 });
+
+const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
+
+  const {tesisName} = req.body;
+
+  req.app.locals.data = req.body;
+
+  const globalVariable = tesisName
+
+  console.log("get name--------",globalVariable)
+
+  res.json({
+    success:true,
+    message:'get one facility',
+    data:tesisName
+  })
+})
+
 
 const findObjectName = asyncErrorWrapper(async (req, res, next) => {
   // const result = Usermodels.find({ facility: "Scope-1"});
@@ -271,12 +188,25 @@ const filterAmountByUserId = asyncErrorWrapper(async (req,res,next)=>{
   })
 })
 
-const summaryFilterData = asyncErrorWrapper( async(req,res,next)=>{
+const summaryFilterData    = asyncErrorWrapper( async(req,res,next)=>{
 
   const {ScopeTitle,Situation,Subtitle} = req.body
   // console.log(ScopeTitle)
 
   var SummaryData = await ScopeModel.find({title:ScopeTitle,situation:Situation,subtitle:Subtitle}).exec();
+
+  res.json({
+    success:true,
+    message:'ok that right get all summary data successfully',
+    data:SummaryData
+  })
+})
+const summaryFilterSubData = asyncErrorWrapper( async(req,res,next)=>{
+
+  const {ScopeTitle,Situation,Subtitle,TravelType} = req.body
+  // console.log(req.body)
+
+  var SummaryData = await ScopeModel.find({title:ScopeTitle,situation:Situation,subtitle:Subtitle,type:TravelType}).exec();
 
   res.json({
     success:true,
@@ -366,10 +296,23 @@ const DashboardFacilityGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
 const DashboardScopeGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
-  const id = req.user.id
-  var CardScope1  = await ScopeModel.aggregate([{$match : {title: "SCOPE-1"}},{$group: {_id : id, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var CardScope2  = await ScopeModel.aggregate([{$match : {title: "SCOPE-2"}},{$group: {_id : id, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var CardScope3  = await ScopeModel.aggregate([{$match : {title: "SCOPE-3"}},{$group: {_id : id, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  const {id} = req.user.id
+  // console.log('id-----------------',req.user.id)
+  console.log("Scope-----------",JSON.stringify(req.app.locals.data.tesisName) )
+  const tesisName = req.app.locals.data.tesisName
+  // console.log("userdata",userId)
+  // 671f625e6fb5f4cad2600c7c yusuf
+  // 672c82e62190de415f3b083c ayse
+
+  // sadece tam sayilari toplama $toInt
+  // var CardScope1  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-1",tesis:'telefon'}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}} }} ])
+  // var CardScope2  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-2",tesis:'telefon'}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}} }} ])
+  // var CardScope3  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-3",tesis:'telefon'}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}} }} ])
+
+
+  var CardScope1  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-1",tesis:tesisName}},{$group: {_id : null, miktar: {$sum:"$miktar"} }} ])
+  var CardScope2  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-2",tesis:tesisName}},{$group: {_id : null, miktar: {$sum:"$miktar"} }} ])
+  var CardScope3  = await ScopeModel.aggregate([{$match : {user: new ObjectId(req.user.id),title: "SCOPE-3",tesis:tesisName}},{$group: {_id : null, miktar: {$sum:"$miktar"} }} ])
 
 
   res.json({
@@ -439,7 +382,7 @@ const newPazar = pazar.toLocaleDateString().split(".").join("/")
 // console.log(friday.toISOString().substring(0,10));
 // const fridayResult = friday.toISOString().substring(0,10)
 
-console.log(newSali)
+// console.log("sali----",newSali)
 
 
 
@@ -466,40 +409,40 @@ console.log(newSali)
 // console.log(Pazartesi,Sali,Carsamba,Persembe,Cuma,Cumartesi,Pazar);
 // console.log(weekday[0]);
 
-var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCarsamba_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafPersembe_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ocak-Mart",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCarsamba_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPersembe_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ocak-Mart",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-// var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Pazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Sali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Carsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Persembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Cuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Cumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Nisan-Haziran",tarih:Pazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Nisan-Haziran",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-// var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Pazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Sali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Carsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Persembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Cuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Cumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Temmuz_Eylul",tarih:Pazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Temmuz-Eylul",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-// var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Pazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Sali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Carsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Persembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Cuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Cumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-// var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 666', situation: "Ekim_Aralik",tarih:Pazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: 'deneme 1', situation: "Ekim-Aralik",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
 
-console.log(GrafPazartesi_Ocak_Mart[0]?.miktar)
+// console.log(GrafPazartesi_Ocak_Mart[0]?.miktar)
 // console.log(GrafSali_Ocak_Mart[0]?.miktar)
 // console.log(GrafCarsamba_Ocak_Mart[0]?.miktar)
 // console.log(GrafPersembe_Ocak_Mart[0]?.miktar)
@@ -509,21 +452,54 @@ console.log(GrafPazartesi_Ocak_Mart[0]?.miktar)
 
 
 const Ocak_Mart = [GrafPazartesi_Ocak_Mart[0]?.miktar,GrafSali_Ocak_Mart[0]?.miktar,GrafCarsamba_Ocak_Mart[0]?.miktar,GrafPersembe_Ocak_Mart[0]?.miktar,GrafCuma_Ocak_Mart[0]?.miktar,GrafCumartesi_Ocak_Mart[0]?.miktar,GrafPazar_Ocak_Mart[0]?.miktar];
-// const Nisan_Haziran = [GrafPazartesi_Nisan_Haziran,GrafSali_Nisan_Haziran,GrafCarsamba_Nisan_Haziran,GrafPersembe_Nisan_Haziran,GrafCuma_Nisan_Haziran,GrafCumartesi_Nisan_Haziran,GrafPazar_Nisan_Haziran];
-// const Temmuz_Eylul = [GrafPazartesi_Temmuz_Eylul,GrafSali_Temmuz_Eylul,GrafCarsamba_Temmuz_Eylul,GrafPersembe_Temmuz_Eylul,GrafCuma_Temmuz_Eylul,GrafCumartesi_Temmuz_Eylul,GrafPazar_Temmuz_Eylul];
-// const Ekim_Aralik = [GrafPazartesi_Ekim_Aralik,GrafSali_Ekim_Aralik,GrafCarsamba_Ekim_Aralik,GrafPersembe_Ekim_Aralik,GrafCuma_Ekim_Aralik,GrafCumartesi_Ekim_Aralik,GrafPazar_Ekim_Aralik];
+const Nisan_Haziran = [GrafPazartesi_Nisan_Haziran[0]?.miktar,GrafSali_Nisan_Haziran[0]?.miktar,GrafCarsamba_Nisan_Haziran[0]?.miktar,GrafPersembe_Nisan_Haziran[0]?.miktar,GrafCuma_Nisan_Haziran[0]?.miktar,GrafCumartesi_Nisan_Haziran[0]?.miktar,GrafPazar_Nisan_Haziran[0]?.miktar];
+const Temmuz_Eylul = [GrafPazartesi_Temmuz_Eylul[0]?.miktar,GrafSali_Temmuz_Eylul[0]?.miktar,GrafCarsamba_Temmuz_Eylul[0]?.miktar,GrafPersembe_Temmuz_Eylul[0]?.miktar,GrafCuma_Temmuz_Eylul[0]?.miktar,GrafCumartesi_Temmuz_Eylul[0]?.miktar,GrafPazar_Temmuz_Eylul[0]?.miktar];
+const Ekim_Aralik = [GrafPazartesi_Ekim_Aralik[0]?.miktar,GrafSali_Ekim_Aralik[0]?.miktar,GrafCarsamba_Ekim_Aralik[0]?.miktar,GrafPersembe_Ekim_Aralik[0]?.miktar,GrafCuma_Ekim_Aralik[0]?.miktar,GrafCumartesi_Ekim_Aralik[0]?.miktar,GrafPazar_Ekim_Aralik[0]?.miktar];
+
 
 
 
 res.json({
   success:true,
   data:
-     Ocak_Mart,
-    // Nisan_Haziran,
-    // Temmuz_Eylul,
-    // Ekim_Aralik
+    { Ocak_Mart,
+    Nisan_Haziran,
+    Temmuz_Eylul,
+    Ekim_Aralik}
   
 })
+})
+
+const ReportPeriodData = asyncErrorWrapper(async(req,res,next)=>{
+
+  var ReportPeriod_Ocak_Mart1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: 'deneme 1', situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: 'deneme 1', situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: 'deneme 1', situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik1  = await ScopeModel.aggregate([{$match : {title:'SCOPE-1',tesis: 'deneme 1', situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+
+  var ReportPeriod_Ocak_Mart2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: 'deneme 1', situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: 'deneme 1', situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: 'deneme 1', situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik2  = await ScopeModel.aggregate([{$match : {title:'SCOPE-2',tesis: 'deneme 1', situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+
+  var ReportPeriod_Ocak_Mart3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: 'deneme 1', situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: 'deneme 1', situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: 'deneme 1', situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik3  = await ScopeModel.aggregate([{$match : {title:'SCOPE-3',tesis: 'deneme 1', situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+
+
+  res.json({
+    success:true,
+    data:{
+      KAPSAM1:[ReportPeriod_Ocak_Mart1,ReportPeriod_Nisan_Haziran1,ReportPeriod_Temmuz_Eylul1,ReportPeriod_Ekim_Aralik1],
+      KAPSAM2:[ReportPeriod_Ocak_Mart2,ReportPeriod_Nisan_Haziran2,ReportPeriod_Temmuz_Eylul2,ReportPeriod_Ekim_Aralik2],
+      KAPSAM3:[ReportPeriod_Ocak_Mart3,ReportPeriod_Nisan_Haziran3,ReportPeriod_Temmuz_Eylul3,ReportPeriod_Ekim_Aralik3]
+
+    
+    }
+    
+
+  })
 })
 
 const DeletedFacility = asyncErrorWrapper(async(req,res,next)=>{
@@ -538,6 +514,35 @@ res.json({
   // data:deletedData
 })
 })
+
+const GetAllScopeByDateOfDaily = asyncErrorWrapper(async(req,res,next)=>{
+
+  var currentdate = new Date(); 
+  var datetime =    currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() 
+
+  var DailyScope = await ScopeModel.find({tesis:'telefon',tarih:datetime}).exec();
+
+  res.json({
+    success:true,
+    data:DailyScope
+  })
+})
+
+const DeletedScope = asyncErrorWrapper(async(req,res,next)=>{
+
+  const {deleteScopeId} = req.body
+console.log("deleed-id------",deleteScopeId)
+
+  const deletedData = await ScopeModel.findByIdAndDelete({_id: new ObjectId(deleteScopeId)})
+
+  res.json({
+    success:true,
+    data:deletedData
+  })
+})
+
 module.exports = {
   updateFacility,
   addedFacility,
@@ -551,5 +556,10 @@ module.exports = {
   DashboardFacilityGrafic,
   DashboardScopeGrafic,
   DashboardWeekGrafic,
-  DeletedFacility
+  DeletedFacility,
+  summaryFilterSubData,
+  ReportPeriodData,
+  GetAllScopeByDateOfDaily,
+  DeletedScope,
+  getOneFacility
 };

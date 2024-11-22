@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     type: String,
   },
   miktar: {
-    type: String,
+    type: Number,
   },
   kaynak: {
     type: String,
@@ -37,6 +37,12 @@ const UserSchema = new Schema({
     type: String,
   },
   type: {
+    type: String,
+  },
+  yakitturu: {
+    type: String,
+  },
+   plaka: {
     type: String,
   },
   user: {
