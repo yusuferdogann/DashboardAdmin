@@ -10,7 +10,10 @@ import {
 
 const PdfView = () => {
     const contentRef = useRef(null);
-    const {token} = userAuth()
+    const {token,facilitySend} = userAuth()
+
+    console.log("pisikoloji----------",facilitySend)
+
     const [reportData,setReportData] = useState()
     const [periodData,setPeriodData] = useState()
     var currentdate = new Date(); 
@@ -46,7 +49,7 @@ const PdfView = () => {
         const content = contentRef.current;
 
         const options = {
-            filename: datetime +" "+ 'Rapor.pdf',
+            filename: "TESIS:"+facilitySend?.facilityname +" "+ "TARIH:"+ datetime +" "+ 'Rapor.pdf',
             margin: 0,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 1 },
@@ -68,7 +71,7 @@ const PdfView = () => {
     var object = JSON.parse(val);
     return (
     <>
-                <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button>
+              {facilitySend?.facilityname? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Lütfen Rapor İçin Öncelikle Tesis Seçmelisiniz."}  
 
         <div style={{visibility:'hidden'}}>
 
@@ -111,10 +114,10 @@ const PdfView = () => {
                                 KAPSAM-1
                             </th>
                             <td className="px-6 py-4 tex">
-                                {periodData?.KAPSAM1[0][0].miktar}
+                                {periodData?.KAPSAM1[0][0]?.miktar ? periodData?.KAPSAM1[0][0]?.miktar : 'veri yok'}
                             </td>
                             <td className="px-6 py-4">
-                                {periodData?.KAPSAM1[1][0].miktar}
+                                {periodData?.KAPSAM1[1][0]?.miktar ? periodData?.KAPSAM1[1][0]?.miktar : 'veri yok'}
                             </td>
                             <td className="px-6 py-4">
                                 {periodData?.KAPSAM1[2][0]?.miktar ? periodData?.KAPSAM1[2][0]?.miktar : 'veri yok'}

@@ -22,7 +22,6 @@ const Facilitynote = (props: any) => {
   // console.log("props---------",props.deletedData?.facilityname)
   const Tiklandi = () => {
     handleOpen('xs')
-
     props.onClick(true)
   }
 

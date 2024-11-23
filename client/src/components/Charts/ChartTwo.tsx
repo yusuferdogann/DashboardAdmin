@@ -6,7 +6,7 @@ import { userAuth } from '../../auth/userAuth';
 
 
 const options: ApexOptions = {
-  colors: ['#00tf6h', '#00ffb3', '#00ffea', '#00a0fe'],
+  colors: ['#000000', '#00ffb3', '#00ffea', '#00a0fe'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'bar',

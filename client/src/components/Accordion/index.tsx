@@ -971,27 +971,48 @@ Data.map((value)=>{
 
   }
 
-  const funcKaynak = savedData?.kaynak;
-  const funcBirim = savedData?.birim;
-  const funcMiktar = Number(savedData?.miktar)
-  const gasType = savedData?.gasType
-  const [arrayData,setArrayData] = useState()
-  const Dok = []
-  const calculated = CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2)
-  // console.log("ne oluyo--------",funcKaynak,funcBirim,funcMiktar)
-  console.log('aciz--------------',Dok.push(CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)))
-  Dok.push(CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2))
+  // const funcKaynak = savedData?.kaynak;
+  // const funcKaynak = baslik1 || baslik2 ? savedData?.kaynak : savedDataScope3?.yakitturu;
+  // if(baslik1 === 'SCOPE-1' && savedData?.gasType){
+  //   const funcMiktar =  Number(savedData?.miktar)
+  //   const funcKaynak =  savedData?.gasType;
+  //   CalculateFuction(funcKaynak,funcMiktar)
+  //   console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+
+  // }
+  // else if(baslik2 ==='SCOPE-2'){
+  //   const funcMiktar =  Number(savedData?.miktar)
+  //   const funcKaynak =  savedData?.kaynak;
+  //   CalculateFuction(funcKaynak,funcMiktar)
+
+
+  // }
+  // else if(baslik3 === 'SCOPE-3'){
+  //   const funcMiktar =  Number(savedDataScope3?.miktar)
+  //   const funcKaynak =  savedDataScope3?.yakitturu;
+  //   CalculateFuction(funcKaynak,funcMiktar)
+
+  // }
+  // const funcBirim = savedData?.birim;
+  // const funcMiktar = baslik1 || baslik2 ? Number(savedData?.miktar) : Number(savedDataScope3?.miktar)
+  // const gasType = savedData?.gasType
+  // const [arrayData,setArrayData] = useState()
+  // const Dok = []
+  // const calculated = CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)
+  // console.log("ne oluyo--------",funcKaynak)
+  // console.log('scope3 hesap takip--------------',CalculateFuction(funcKaynak,funcMiktar))
+  // Dok.push(CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2))
   const changeData = (event, index) => {
     if(event.target.textContent==='Lütfen kayıt için dönem/ay seçinDönem olarak kayıtAy olarak kayıt'){
       setChange(Number(event.target.value))
     }
-    setArrayData(String(Dok[0]?.toFixed(2)))
+    // setArrayData(String(Dok[0]?.toFixed(2)))
 
-    console.log('aciz1111111--------------',arrayData)
+    // console.log('aciz1111111--------------',arrayData)
 
-    console.log("baslik1-----",baslik1)
-    console.log("baslik2-----",baslik2)
-    console.log("baslik3-----",baslik3)
+    // console.log("baslik1-----",baslik1)
+    // console.log("baslik2-----",baslik2)
+    // console.log("baslik3-----",baslik3)
 
     if(baslik1 || baslik2){
       setSavedData({ 
@@ -1219,15 +1240,20 @@ const handleValidation = async (event)=>{
 
          if(!dublicate){
           const fetchData = async () => {
-           if(baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2'){
+           if(baslik1 === 'SCOPE-1' && savedData?.gasType){
             
+            const funcMiktar =  savedData?.miktar
+            const funcKaynak =  savedData?.gasType;
+            CalculateFuction(funcKaynak,funcMiktar)
+            console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+
             const savedDataLast= { 
               tarih:datetime,
               title: savedData?.title, 
               subtitle: savedData?.subtitle, 
               kaynak: savedData?.kaynak, 
               birim: savedData?.birim, 
-              miktar: CalculateFuction(gasType ? gasType : funcKaynak,funcMiktar)?.toFixed(2),
+              miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
               ulke:facilitySend?.country,
               sehir:facilitySend?.city,
               ilce:facilitySend?.state,
@@ -1235,16 +1261,61 @@ const handleValidation = async (event)=>{
               situation:savedData?.situation,
               gasType:savedData?.gasType
              }
+             const dataResult = await post('/adddata',savedDataLast,config);
+             setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+ 
+             handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+             console.log("result-data--------",dataResult)
 
-
-            const dataResult = await post('/adddata',savedDataLast,config);
-            setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
-
-            handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
-            console.log("result-data--------",dataResult)
            }
+            else if(baslik2 ==='SCOPE-2'){
+              const funcMiktar =  Number(savedData?.miktar)
+              const funcKaynak =  savedData?.kaynak;
+              CalculateFuction(funcKaynak,funcMiktar)
+
+
+              
+            const savedDataLast= { 
+              tarih:datetime,
+              title: savedData?.title, 
+              subtitle: savedData?.subtitle, 
+              kaynak: savedData?.kaynak, 
+              birim: savedData?.birim, 
+              miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+              ulke:facilitySend?.country,
+              sehir:facilitySend?.city,
+              ilce:facilitySend?.state,
+              tesis:facilitySend?.facilityname,
+              situation:savedData?.situation,
+              gasType:savedData?.gasType
+             }
+             const dataResult = await post('/adddata',savedDataLast,config);
+             setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+ 
+             handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+             console.log("result-data--------",dataResult)
+          
+            }
+
+          
            else if(baslik3 === "SCOPE-3"){  
-            const dataResult = await post('/adddata',savedDataScope3,config);
+           const savedDataScope3Last =  { 
+              tarih:datetime,
+              title: savedDataScope3?.title, 
+              subtitle: savedDataScope3?.subtitle, 
+              kaynak: savedDataScope3?.kaynak, 
+              yakitturu:savedDataScope3?.yakitturu,
+              birim: savedDataScope3?.birim, 
+              miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
+              ulke:facilitySend?.country,
+              sehir:facilitySend?.city,
+              ilce:facilitySend?.state,
+              tesis:facilitySend?.facilityname,
+              situation:savedDataScope3?.situation
+             }
+            const dataResult = await post('/adddata',savedDataScope3Last,config);
+            setListData([...listData,{kaynak:savedDataScope3Last.kaynak,birim:savedDataScope3Last.birim,situation:savedDataScope3Last.situation,miktar:savedDataScope3Last.miktar}])
+
             handleSuccess('Scope3 başarıyla kayt edildi.')
             console.log("saved3-------",savedDataScope3)
             console.log("result-data",dataResult)
@@ -1305,9 +1376,9 @@ const WillDeletedScope = async() =>{
 
 
   const deletedData = async () => {
-    // props.setResultData((state) => state.filter((item) => item._id !== idDeletedFacility))
+    setListData((state) => state.filter((item) => item._id !== deleteScopeId))
     const dataResult = await post('/deletedscope', {deleteScopeId},config);
-
+    handleModal(null)
     console.log("deleted-scope-----------------",dataResult)
 
   }
@@ -1687,7 +1758,7 @@ const WillDeletedScope = async() =>{
       </div>
   <ToastContainer/>
 
-  <Dialog
+      <Dialog
         open={
           size === "xs" ||
           size === "sm" ||

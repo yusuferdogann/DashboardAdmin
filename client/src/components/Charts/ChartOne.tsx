@@ -147,7 +147,7 @@ const ChartOne: React.FC = (props) => {
 
           const fetchData = async () => {
             const dataResult = await get('/getgraficdata',config);
-            // console.log("result-data",dataResult.data.data)
+            console.log("result-data---------",dataResult?.data?.data)
             // day.push(dataResult.data.data)
             // for (let i = 0; i < result.length; i++) {
             //   const element = result[i];
@@ -160,18 +160,20 @@ const ChartOne: React.FC = (props) => {
                 {
                   name: 'Kapsam 1',
                   // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-                  data: dataResult?.data.data,
+                  data: dataResult?.data.data?.Scope1GrafikData,
                   
                 },
                 {
                   name: 'Kapsam 2',
                   // data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-                  data:[]
+                  data: dataResult?.data.data?.Scope2GrafikData,
+
                 },
                 {
                   name: 'Kapsam 3',
                   // data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
-                  data:[]
+                  data: dataResult?.data.data?.Scope3GrafikData,
+
                 },
               ],
             })
