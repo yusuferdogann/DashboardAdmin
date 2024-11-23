@@ -7,7 +7,7 @@ export const instance = axios.create({
     // baseURL:'https://dashboard-admin-43ed.vercel.app/api' 
 
     // 23.11.2024----------
-        baseURL:'https://dashboard-admin-rho-nine.vercel.app/api' 
+        baseURL:'https://dashboard-admin-rho-nine.vercel.app' 
 
     
     
