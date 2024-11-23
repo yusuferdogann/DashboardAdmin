@@ -44,10 +44,15 @@ app.use(httpContext.middleware);
 // parse application/json
 app.use(cookieParser());
 app.use(bodyParser.json())
+// app.use(cors({
+//     origin:'http://localhost:5173',
+//     credentials:true
+// }));
 app.use(cors({
-    origin:'http://localhost:5173',
+    origin:'https://dashboard-admin-ni99.vercel.app/',
     credentials:true
 }));
+
 
 const PORT =  3000;
 
