@@ -48,10 +48,7 @@ app.use(bodyParser.json())
 //     origin:'http://localhost:5173',
 //     credentials:true
 // }));
-app.use(cors({
-    origin:'https://dashboard-admin-ni99.vercel.app/',
-    credentials:true
-}));
+app.use(cors());
 
 
 const PORT =  3000;
