@@ -5,10 +5,15 @@ export const instance = axios.create({
 
     // =====son guncel api======
     // baseURL:'https://dashboard-admin-43ed.vercel.app/api' 
+
+    // 23.11.2024----------
+        baseURL:'dashboard-admin-rho-nine.vercel.app/api' 
+
+    
     
 
     // =====local api===========
-    baseURL:'http://localhost:3000/auth',
+    // baseURL:'http://localhost:3000/auth',
     
 })
 
