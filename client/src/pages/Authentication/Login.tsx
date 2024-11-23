@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     
     try {
       
-      const loginuser = await axios.post("http://localhost:3000/auth/login", value)
+      const loginuser = await axios.post("dashboard-admin-rho-nine.vercel.app/api/auth/login", value)
       const response = loginuser.data
       console.log("response-----------------------",response)
      

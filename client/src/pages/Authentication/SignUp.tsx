@@ -32,7 +32,7 @@ const handleChange = (e) =>{
         return handleError("name,email nad password are required")
     }
     try {
-        const url = "http://localhost:5000/auth/signup"
+        const url = "dashboard-admin-rho-nine.vercel.app/api/auth/signup"
         const response = await fetch(url,{
           
             method:"POST",
