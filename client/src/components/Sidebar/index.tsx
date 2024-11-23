@@ -121,7 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>
         </form>
          <div className='relative' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
-         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object.company_logo} alt="" />
+         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src='' alt="" />
          <div className='absolute top-0'>
          <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0"}}>
           <button className='flex justify-center items-center relative z-3320' style={{height:'140px',width:'245px',borderRadius:'20px'}}>{avatarURL ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
