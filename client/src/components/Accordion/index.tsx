@@ -85,7 +85,7 @@ const AccordionCustomIcon = () => {
           name: "DOGRUDAN SIZMA KACAK EMISYONU",
           short: ['dogrudan'],
           // birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
-          birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R600a','R601','R601a'],
+          birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R601','R601a'],
 
           cities: ["Su Sebili", "Buzdolabi", "Chiller", "Klima", "Yangın Söndürme Tüpü", "Endüstriyel Soğutucu"],
           units: ['kg','m3']
@@ -244,16 +244,17 @@ Data.map((value)=>{
       subtitle: '', 
       kaynak: '', 
       birim: '', 
-      miktar: Number,
+      miktar: '',
       ulke:facilitySend?.country,
       sehir:facilitySend?.city,
       ilce:facilitySend?.state,
       tesis:facilitySend?.facilityname,
       situation:'',
       gasType:''
-      
+
      }
   );
+
   const [savedDataScope3, setSavedDataScope3] = useState(
     { 
       tarih:datetime,
@@ -268,7 +269,7 @@ Data.map((value)=>{
       ilce:facilitySend?.state,
       tesis:facilitySend?.facilityname,
       situation:''
-     }
+         }
   );
   const [scope3DownTitle,setScope3DownTitle] = useState('')
 
@@ -300,6 +301,7 @@ Data.map((value)=>{
   const [car, setCar] = useState({ aracturu: '', yakitturu: '', birim: '', miktar: '' })
   const [dublicate,setDublicate] = useState(false)
   const [deletedScope,setDeletedScope] = useState()
+  const [calculateDirecly,setCalculateDirecly] = useState()
 
 
 
@@ -344,7 +346,7 @@ Data.map((value)=>{
   const [videopen, setVideopen] = useState(false)
   const [error,setError] = useState(false)
   const [change,setChange] = useState(false)
-
+  const [checkGasType,setCheckGasType] = useState()
 
   // function handleTitle(value,id){
   //   setTodos(...todos,
@@ -731,6 +733,8 @@ Data.map((value)=>{
 
   const changeState = (event, index) => {
 
+    setSubtitle(event.target.textContent)
+    console.log("subsubsub--------",subtitle)
     setDublicate(false)
 
     if (event.target.id === "SCOPE-3") {
@@ -804,6 +808,7 @@ Data.map((value)=>{
       setSub({ name1: 'Kaynak', name2: 'Birim', name3: '', name4: 'Miktar' })
 
     }
+
     else if (event.target.id === "SCOPE-1") {
 
       if (event.target.textContent[0] === "S" || "H" || "D") {
@@ -892,6 +897,7 @@ Data.map((value)=>{
       setAlldata([...alldata, { "subtitle": event.target.textContent }])
     }
   }
+  // console.log("subsubsub--------",subtitle)
 
   const handleAdd = (e) => {
     // ===============================================================================
@@ -1010,18 +1016,44 @@ Data.map((value)=>{
 
     // console.log('aciz1111111--------------',arrayData)
 
-    // console.log("baslik1-----",baslik1)
-    // console.log("baslik2-----",baslik2)
-    // console.log("baslik3-----",baslik3)
+    console.log("baslik1-----",baslik1)
+    console.log("baslik2-----",baslik2)
+    console.log("baslik3-----",baslik3)
+    console.log("subtitle-----",subtitle)
 
-    if(baslik1 || baslik2){
+
+    if(baslik1 === 'SCOPE-1' && subtitle === 'SABIT YANMA'){
+      setSavedData({ 
+        tarih:datetime,
+        title: 'SCOPE-1', 
+        subtitle: 'SABIT YANMA', 
+        kaynak: '', 
+        birim: '', 
+        miktar:savedData?.miktar,
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+      setSavedData({
+        ...savedData,
+        title: 'SCOPE-1', 
+        subtitle: 'SABIT YANMA', 
+        [event.target.name]: event.target.value,
+      });  
+      console.log("Scope-1-2-GasType-yok--------",savedData)
+
+ 
+    }
+    else if(baslik1 === 'SCOPE-1' &&  subtitle === 'HAREKETLI YANMA'){
       setSavedData({ 
         tarih:datetime,
         title: '', 
         subtitle: '', 
         kaynak: '', 
         birim: '', 
-        miktar: 3 * savedData?.miktar,
+        miktar:savedData?.miktar,
         ulke:facilitySend?.country,
         sehir:facilitySend?.city,
         ilce:facilitySend?.state,
@@ -1032,23 +1064,71 @@ Data.map((value)=>{
         ...savedData,
         [event.target.name]: event.target.value,
       });  
-      console.log("Scope-1-2---------",savedData)
+      console.log("Scope-1-2-GasType-yok--------",savedData)
+
  
     }
-    else if(baslik3==='SCOPE-3'){
-      console.log("baslik3-------------",baslik3)
+    
+    else if(baslik2 === 'SCOPE-2' ){
       setSavedData({ 
         tarih:datetime,
         title: '', 
         subtitle: '', 
         kaynak: '', 
         birim: '', 
-        miktar: '',
+        miktar:savedData?.miktar,
         ulke:facilitySend?.country,
         sehir:facilitySend?.city,
         ilce:facilitySend?.state,
         tesis:facilitySend?.facilityname,
         situation:''
+       })
+      setSavedData({
+        ...savedData,
+        [event.target.name]: event.target.value,
+      });  
+      console.log("Scope-2 elektrik--------",savedData)
+
+ 
+    }
+    else if(subtitle==='DOGRUDAN SIZMA KACAK EMISYONU'){
+
+      setSavedData({
+          tarih:datetime,
+          title: savedData?.title, 
+          subtitle: savedData?.subtitle, 
+          kaynak: savedData?.kaynak, 
+          birim: savedData?.birim, 
+          miktar: savedData?.miktar,
+          ulke:facilitySend?.country,
+          sehir:facilitySend?.city,
+          ilce:facilitySend?.state,
+          tesis:facilitySend?.facilityname,
+          situation:savedData?.situation,
+          gasType:savedData?.gasType
+      })
+      setSavedData({
+        ...savedData,
+        [event.target.name]: event.target.value,
+      });  
+      console.log("Scope-1-2-GasType-var--------",savedData)
+
+    }
+    else if(baslik3==='SCOPE-3'){
+      console.log("baslik3-------------",baslik3)
+      setSavedDataScope3({ 
+          tarih:datetime,
+          title: '', 
+          subtitle: '', 
+          kaynak: '', 
+          yakitturu:'',
+          birim: '', 
+          miktar: '',
+          ulke:facilitySend?.country,
+          sehir:facilitySend?.city,
+          ilce:facilitySend?.state,
+          tesis:facilitySend?.facilityname,
+          situation:''
        })
       setSavedDataScope3({
         ...savedDataScope3,
@@ -1171,162 +1251,535 @@ const arrayResult11 = sum11
 
 // }
 
+useEffect(()=>{
+  const config = {
+    headers:{
+        "Content-Type":"application/json",
+        Authorization:"Bearer: "+token
+      }
+    };
+  const getScopeList = async() =>{
+
+    const dataResult = await get('/getdailyscope',config);
+    // console.log("self-control-------",dataResult.data.data)
+    setListData(dataResult?.data?.data)
+  }
+
+  getScopeList()
+
+//   function getDuplicates(arr) {
+//     const seen = new Set();
+//     const duplicates = [];
+
+//     arr.forEach(item => {
+//         const identifier = `${item.name}|${item.email}`;
+//         if (seen.has(identifier)) {
+//             duplicates.push(item);
+//             setDublicate(true)
+//         } else {
+//             seen.add(identifier);
+//         }
+//     });
+//     return duplicates;
+// }
+
+// // const duplicateUsers = getDuplicates(listData);
+
+
+//   if(Object.keys(formErrors).length === 0 && isSubmit){
+//     const isEmpty = (obj) => { 
+//       return Object.keys(obj).length === 0; 
+//     }; 
+    
+    
+//     // console.log(formErrors); // true 
+//     // if(isEmpty(formErrors)){
+
+//     //   //  if(!dublicate){
+//     //     const fetchData = async () => {
+//     //      if(baslik1 === 'SCOPE-1' && subtitle === 'SABIT YANMA'){
+//     //       console.log("gasType var---------")
+//     //       const funcMiktar =  savedData?.miktar
+//     //       const funcKaynak =  savedData?.gasType;
+//     //       CalculateFuction(funcKaynak,funcMiktar)
+//     //       console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+//     //       console.log("funcKaynak---------",funcKaynak)
+//     //       console.log("funcMiktar---------",typeof(funcMiktar))
+
+//     //       const savedDataLast= { 
+//     //         tarih:datetime,
+//     //         title: savedData?.title, 
+//     //         subtitle: savedData?.subtitle, 
+//     //         kaynak: savedData?.kaynak, 
+//     //         birim: savedData?.birim, 
+//     //         miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+//     //         ulke:facilitySend?.country,
+//     //         sehir:facilitySend?.city,
+//     //         ilce:facilitySend?.state,
+//     //         tesis:facilitySend?.facilityname,
+//     //         situation:savedData?.situation,
+//     //        }
+//     //        const dataResult = await post('/adddata',savedDataLast,config);
+//     //        setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+
+//     //        handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+//     //        console.log("result-data--------",dataResult)
+
+//     //      }
+//     //      else if(subtitle==='DOGRUDAN SIZMA KACAK EMISYONU'){
+
+//     //      const savedDataGas =  { 
+//     //       tarih:datetime,
+//     //       title: savedData?.title, 
+//     //       subtitle: savedData?.subtitle, 
+//     //       kaynak: savedData?.kaynak, 
+//     //       birim: savedData?.birim, 
+//     //       miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+//     //       ulke:facilitySend?.country,
+//     //       sehir:facilitySend?.city,
+//     //       ilce:facilitySend?.state,
+//     //       tesis:facilitySend?.facilityname,
+//     //       situation:savedData?.situation,
+//     //       gasType:savedData?.gasType
+            
+//     //        }
+//     //       const funcMiktar =  savedData?.miktar
+//     //       const funcKaynak =  savedData?.kaynak;
+//     //       CalculateFuction(funcKaynak,funcMiktar)
+//     //       console.log("gasType yok---------")
+//     //       console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+//     //       console.log("funcKaynak---------",funcKaynak)
+//     //       console.log("funcMiktar---------",typeof(funcMiktar))
+//     //      }
+//     //       else if(baslik2 ==='SCOPE-2'){
+//     //         const funcMiktar =  Number(savedData?.miktar)
+//     //         const funcKaynak =  savedData?.kaynak;
+//     //         CalculateFuction(funcKaynak,funcMiktar)
+//     //       const savedDataLast= { 
+//     //         tarih:datetime,
+//     //         title: savedData?.title, 
+//     //         subtitle: savedData?.subtitle, 
+//     //         kaynak: savedData?.kaynak, 
+//     //         birim: savedData?.birim, 
+//     //         miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+//     //         ulke:facilitySend?.country,
+//     //         sehir:facilitySend?.city,
+//     //         ilce:facilitySend?.state,
+//     //         tesis:facilitySend?.facilityname,
+//     //         situation:savedData?.situation,
+//     //         gasType:savedData?.gasType
+//     //        }
+//     //        const dataResult = await post('/adddata',savedDataLast,config);
+//     //        setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+
+//     //        handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+//     //        console.log("result-data--------",dataResult)
+        
+//     //       }
+
+//     //      else if(baslik3 === "SCOPE-3"){  
+//     //      const savedDataScope3Last =  { 
+//     //         tarih:datetime,
+//     //         title: savedDataScope3?.title, 
+//     //         subtitle: savedDataScope3?.subtitle, 
+//     //         kaynak: savedDataScope3?.kaynak, 
+//     //         yakitturu:savedDataScope3?.yakitturu,
+//     //         birim: savedDataScope3?.birim, 
+//     //         miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
+//     //         ulke:facilitySend?.country,
+//     //         sehir:facilitySend?.city,
+//     //         ilce:facilitySend?.state,
+//     //         tesis:facilitySend?.facilityname,
+//     //         situation:savedDataScope3?.situation
+//     //        }
+//     //       const dataResult = await post('/adddata',savedDataScope3Last,config);
+//     //       setListData([...listData,{kaynak:savedDataScope3Last.kaynak,birim:savedDataScope3Last.birim,situation:savedDataScope3Last.situation,miktar:savedDataScope3Last.miktar}])
+
+//     //       handleSuccess('Scope3 başarıyla kayt edildi.')
+//     //       console.log("saved3-------",savedDataScope3)
+//     //       console.log("result-data",dataResult)
+//     //      }
+//     //     }
+//     //     fetchData()
+
+//     //   //  }
+//     // }
+//   }
+},[]);
+
 
 
 const handleValidation = async (event)=>{
   event.preventDefault();
-
- 
+  
   const {name,value} = event.target;
   setFormValues({...formValues,[name]:value})
 
-  // setListData({...formValues,[name]:value})
 
     setFormErrors(validate(formValues));
+    console.log("formErrors--",formErrors)
+    console.log("formValues--",formValues)
+
     setIsSubmit(true)
-    // setListData([...listData,{kaynak:formValues.kaynak,birim:formValues.birim,situation:formValues.situation,miktar:Dok[0].toFixed(2),id:uuidv4()}])
-    console.log(formErrors)
-    // console.log("data-List",listData)
-    // console.log("handle-button---------",savedData)
-    console.log("baslik1-----",baslik1)
-    console.log("baslik2-----",baslik2)
-    console.log("baslik3-----",baslik3)
+  
+
+      // if(Object.keys(formErrors).length === 0 && isSubmit){
+      //   const isEmpty = (obj) => { 
+      //     return Object.keys(obj).length === 0; 
+      //   }
+
+
+
+      // if(isEmpty(formErrors)){
+
+      if(baslik1 === 'SCOPE-1' && subtitle === 'SABIT YANMA'){
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+      //  console.log("gasType YOK---------")
+       const funcMiktar =  savedData?.miktar
+       const funcKaynak =  savedData?.kaynak;
+       CalculateFuction(funcKaynak,funcMiktar)
+      //  console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+      //  console.log("funcKaynak---------",funcKaynak)
+      //  console.log("funcMiktar---------",typeof(funcMiktar))
+
+       const savedDataLast= { 
+         tarih:datetime,
+         title: 'SCOPE-1', 
+         subtitle: 'SABIT YANMA', 
+         kaynak: savedData?.kaynak, 
+         birim: savedData?.birim, 
+         miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+         ulke:facilitySend?.country,
+         sehir:facilitySend?.city,
+         ilce:facilitySend?.state,
+         tesis:facilitySend?.facilityname,
+         situation:savedData?.situation,
+        }
+    
+      
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === ''){
+          const formValues = {
+            kaynak:'',
+            miktar:'',
+            birim:'',
+            situation:''
+          }
+          setFormErrors(validate(formValues));
+        }
+        else{
+          const dataResult = await post('/adddata',savedDataLast,config);
+          console.log("listData-Before------------------",listData)
+          setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+  
+          handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+        
+          console.log("result-data--------",dataResult)
+          setSavedData({ 
+            tarih:datetime,
+            title: 'SCOPE-1', 
+            subtitle: 'SABIT YANMA', 
+            kaynak: '', 
+            birim: '', 
+            miktar: '',
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:''
+           })
+             const formErrors= {
+            kaynak:'',
+            birim:'',
+            miktar:'',
+            situation:''
+          }
+           console.log("formValues---------",formErrors)
+        }
+    
+        
+      }
+      else if(baslik1 === 'SCOPE-1' &&  subtitle === 'HAREKETLI YANMA'){
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+      //  console.log("gasType YOK---------")
+       const funcMiktar =  savedData?.miktar
+       const funcKaynak =  savedData?.kaynak;
+       CalculateFuction(funcKaynak,funcMiktar)
+      //  console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+      //  console.log("funcKaynak---------",funcKaynak)
+      //  console.log("funcMiktar---------",typeof(funcMiktar))
+
+       const savedDataLast= { 
+         tarih:datetime,
+         title: savedData?.title, 
+         subtitle: savedData?.subtitle, 
+         kaynak: savedData?.kaynak, 
+         birim: savedData?.birim, 
+         miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+         ulke:facilitySend?.country,
+         sehir:facilitySend?.city,
+         ilce:facilitySend?.state,
+         tesis:facilitySend?.facilityname,
+         situation:savedData?.situation,
+        }
+    
+      
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === ''){
+          const formValues = {
+            kaynak:'',
+            miktar:'',
+            birim:'',
+            situation:''
+          }
+          setFormErrors(validate(formValues));
+        }
+        else{
+          const dataResult = await post('/adddata',savedDataLast,config);
+          console.log("listData-Before------------------",listData)
+          setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
+  
+          handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
+        
+          console.log("result-data--------",dataResult)
+          setSavedData({ 
+            tarih:datetime,
+            title: 'SCOPE-1', 
+            subtitle: 'HAREKETLI YANMA', 
+            kaynak: '', 
+            birim: '', 
+            miktar: '',
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:''
+           })
+       
+        }
+    
+        
+      }
+      else if(baslik1 === 'SCOPE-1' && subtitle === 'DOGRUDAN SIZMA KACAK EMISYONU'){
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+        
+          const funcMiktar =  savedData?.miktar
+          const funcKaynak =  savedData?.gasType;
+          CalculateFuction(funcKaynak,funcMiktar)
+          console.log("gasType yok---------")
+          console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+          console.log("funcKaynak---------",funcKaynak)
+          console.log("funcMiktar---------",typeof(funcMiktar))
+      if(savedData?.kaynak === 'Buzdolabi'){setCalculateDirecly(0.1 * CalculateFuction(funcKaynak,funcMiktar))}
+      if(savedData?.kaynak === 'Klima'){setCalculateDirecly(1 * CalculateFuction(funcKaynak,funcMiktar))}
+      if(savedData?.kaynak === 'Su Sebili'){setCalculateDirecly(0.1 * CalculateFuction(funcKaynak,funcMiktar))}
+      if(savedData?.kaynak === 'Endüstriyel Soğutucu'){setCalculateDirecly(7 * CalculateFuction(funcKaynak,funcMiktar))}
+      if(savedData?.kaynak === 'Chiller'){setCalculateDirecly(2 * CalculateFuction(funcKaynak,funcMiktar))}
+      const savedDataGas =  { 
+       tarih:datetime,
+       title: savedData?.title, 
+       subtitle: savedData?.subtitle, 
+       kaynak: savedData?.kaynak, 
+       birim: savedData?.birim, 
+       miktar: calculateDirecly?.toFixed(2),
+       ulke:facilitySend?.country,
+       sehir:facilitySend?.city,
+       ilce:facilitySend?.state,
+       tesis:facilitySend?.facilityname,
+       situation:savedData?.situation,
+       gasType:savedData?.gasType
+         
+        }
+
+        
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === '' || savedData.situation === '' ){
+          const formValues = {
+            kaynak:'',
+            miktar:'',
+            birim:'',
+            situation:'',
+            gasType:''
+          }
+          setFormErrors(validate(formValues));
+        }
+    
+        else{
+          
+       const dataResult = await post('/adddata',savedDataGas,config);
+       setListData([...listData,{kaynak:savedDataGas.kaynak,birim:savedDataGas.birim,situation:savedDataGas.situation,miktar:savedDataGas.miktar}])
+       handleSuccess('SCOPE 1 2 GASTYPE Veri başarıyla kayt edildi.')
+       console.log("result-data--------",dataResult)
+       setSavedData({ 
+        tarih:datetime,
+        title: 'SCOPE-1', 
+        subtitle: "DOGRUDAN SIZMA KACAK EMISYONU", 
+        kaynak: '', 
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+       })
+       
+        }
+
+      }
+       else if(baslik2 ==='SCOPE-2'){
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+         const funcMiktar = savedData?.miktar
+         const funcKaynak =  savedData?.kaynak;
+         CalculateFuction(funcKaynak,funcMiktar)
+       const savedDataScope2= { 
+         tarih:datetime,
+         title: savedData?.title, 
+         subtitle: savedData?.subtitle, 
+         kaynak: savedData?.kaynak, 
+         birim: savedData?.birim, 
+         miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
+         ulke:facilitySend?.country,
+         sehir:facilitySend?.city,
+         ilce:facilitySend?.state,
+         tesis:facilitySend?.facilityname,
+         situation:savedData?.situation,
+         
+        }
+
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === ''){
+          const formValues = {
+            kaynak:'',
+            miktar:'',
+            birim:'',
+            situation:'',
+            gasType:''
+          }
+          setFormErrors(validate(formValues));
+        }
+        
+        else{
+          
+          const dataResult = await post('/adddata',savedDataScope2,config);
+          setListData([...listData,{kaynak:savedDataScope2.kaynak,birim:savedDataScope2.birim,situation:savedDataScope2.situation,miktar:savedDataScope2.miktar}])
+  
+          handleSuccess('SCOPE 222 Veri başarıyla kayt edildi.')
+          console.log("result-data--------",dataResult)
+        
+        setSavedData({ 
+          tarih:datetime,
+          title: '', 
+          subtitle: '', 
+          kaynak: '', 
+          birim: '', 
+          miktar: '',
+          ulke:facilitySend?.country,
+          sehir:facilitySend?.city,
+          ilce:facilitySend?.state,
+          tesis:facilitySend?.facilityname,
+          situation:''
+         })
+        
+      
+      setFormValues(initialValues)
+   
+     
+        }
+
+
+
+     
+       }
+
+      else if(baslik3 === "SCOPE-3"){  
+        const config = {
+          headers:{
+              "Content-Type":"application/json",
+              Authorization:"Bearer: "+token
+            }
+          };
+         const funcMiktar = savedDataScope3?.miktar
+         const funcKaynak =  savedDataScope3?.yakitturu;
+         CalculateFuction(funcKaynak,funcMiktar)
+         console.log("gasType yok---------")
+         console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+         console.log("funcKaynak---------",funcKaynak)
+         console.log("funcMiktar---------",typeof(funcMiktar))
+      const savedDataScope3Last =  { 
+         tarih:datetime,
+         title: savedDataScope3?.title, 
+         subtitle: savedDataScope3?.subtitle, 
+         kaynak: savedDataScope3?.kaynak, 
+         yakitturu:savedDataScope3?.yakitturu,
+         birim: savedDataScope3?.birim, 
+         miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
+         ulke:facilitySend?.country,
+         sehir:facilitySend?.city,
+         ilce:facilitySend?.state,
+         tesis:facilitySend?.facilityname,
+         situation:savedDataScope3?.situation
+        }
+        console.log("scope3-formValues-------",formErrors)
+        if(savedDataScope3.kaynak ==='' || savedDataScope3.miktar ==='' || savedDataScope3.birim === ''){
+          const formValues = {
+            kaynak:'',
+            miktar:'',
+            birim:'',
+            situation:''
+          }
+          setFormErrors(validate(formValues));
+        }
+    else{
+      const dataResult = await post('/adddata',savedDataScope3Last,config);
+      setListData([...listData,{kaynak:savedDataScope3Last.kaynak,birim:savedDataScope3Last.birim,situation:savedDataScope3Last.situation,miktar:savedDataScope3Last.miktar}])
+
+      handleSuccess('Scope3 başarıyla kayt edildi.')
+      console.log("saved3-------",savedDataScope3)
+      console.log("result-data",dataResult)
+      setSavedDataScope3({ 
+        tarih:datetime,
+        title: '', 
+        subtitle: '', 
+        kaynak: '', 
+        yakitturu:'',
+        birim: '', 
+        miktar: '',
+        ulke:facilitySend?.country,
+        sehir:facilitySend?.city,
+        ilce:facilitySend?.state,
+        tesis:facilitySend?.facilityname,
+        situation:''
+      })
+    }
+      }
+
+    
+     
+
+    
    
   
   
   }
 
-  useEffect(()=>{
-    const config = {
-      headers:{
-          "Content-Type":"application/json",
-          Authorization:"Bearer: "+token
-        }
-      };
-    const getScopeList = async() =>{
 
-      const dataResult = await get('/getdailyscope',config);
-      console.log("self-control-------",dataResult)
-      setListData(dataResult.data.data)
-    }
-
-    getScopeList()
-
-    function getDuplicates(arr) {
-      const seen = new Set();
-      const duplicates = [];
-  
-      arr.forEach(item => {
-          const identifier = `${item.name}|${item.email}`;
-          if (seen.has(identifier)) {
-              duplicates.push(item);
-              setDublicate(true)
-          } else {
-              seen.add(identifier);
-          }
-      });
-      return duplicates;
-  }
-  const duplicateUsers = getDuplicates(listData);
-
-    if(Object.keys(formErrors).length === 0 && isSubmit){
-      const isEmpty = (obj) => { 
-        return Object.keys(obj).length === 0; 
-      }; 
-      
-      
-      console.log(formErrors); // true 
-      if(isEmpty(formErrors)){
-
-         if(!dublicate){
-          const fetchData = async () => {
-           if(baslik1 === 'SCOPE-1' && savedData?.gasType){
-            
-            const funcMiktar =  savedData?.miktar
-            const funcKaynak =  savedData?.gasType;
-            CalculateFuction(funcKaynak,funcMiktar)
-            console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
-
-            const savedDataLast= { 
-              tarih:datetime,
-              title: savedData?.title, 
-              subtitle: savedData?.subtitle, 
-              kaynak: savedData?.kaynak, 
-              birim: savedData?.birim, 
-              miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
-              ulke:facilitySend?.country,
-              sehir:facilitySend?.city,
-              ilce:facilitySend?.state,
-              tesis:facilitySend?.facilityname,
-              situation:savedData?.situation,
-              gasType:savedData?.gasType
-             }
-             const dataResult = await post('/adddata',savedDataLast,config);
-             setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
- 
-             handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
-             console.log("result-data--------",dataResult)
-
-           }
-            else if(baslik2 ==='SCOPE-2'){
-              const funcMiktar =  Number(savedData?.miktar)
-              const funcKaynak =  savedData?.kaynak;
-              CalculateFuction(funcKaynak,funcMiktar)
-
-
-              
-            const savedDataLast= { 
-              tarih:datetime,
-              title: savedData?.title, 
-              subtitle: savedData?.subtitle, 
-              kaynak: savedData?.kaynak, 
-              birim: savedData?.birim, 
-              miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
-              ulke:facilitySend?.country,
-              sehir:facilitySend?.city,
-              ilce:facilitySend?.state,
-              tesis:facilitySend?.facilityname,
-              situation:savedData?.situation,
-              gasType:savedData?.gasType
-             }
-             const dataResult = await post('/adddata',savedDataLast,config);
-             setListData([...listData,{kaynak:savedDataLast.kaynak,birim:savedDataLast.birim,situation:savedDataLast.situation,miktar:savedDataLast.miktar}])
- 
-             handleSuccess('SCOPE 1 2 Veri başarıyla kayt edildi.')
-             console.log("result-data--------",dataResult)
-          
-            }
-
-          
-           else if(baslik3 === "SCOPE-3"){  
-           const savedDataScope3Last =  { 
-              tarih:datetime,
-              title: savedDataScope3?.title, 
-              subtitle: savedDataScope3?.subtitle, 
-              kaynak: savedDataScope3?.kaynak, 
-              yakitturu:savedDataScope3?.yakitturu,
-              birim: savedDataScope3?.birim, 
-              miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
-              ulke:facilitySend?.country,
-              sehir:facilitySend?.city,
-              ilce:facilitySend?.state,
-              tesis:facilitySend?.facilityname,
-              situation:savedDataScope3?.situation
-             }
-            const dataResult = await post('/adddata',savedDataScope3Last,config);
-            setListData([...listData,{kaynak:savedDataScope3Last.kaynak,birim:savedDataScope3Last.birim,situation:savedDataScope3Last.situation,miktar:savedDataScope3Last.miktar}])
-
-            handleSuccess('Scope3 başarıyla kayt edildi.')
-            console.log("saved3-------",savedDataScope3)
-            console.log("result-data",dataResult)
-           }
-          }
-          fetchData()
-
-         }
-      }
-    }
-  },[formErrors]);
 
   const validate = (values)=>{
     const errors={}
@@ -1342,6 +1795,7 @@ const handleValidation = async (event)=>{
     if(!values.situation){
       errors.situation = "Bu alan boş bırakılamaz.";
     }
+  
 
     return errors;
   }
@@ -1392,7 +1846,7 @@ const WillDeletedScope = async() =>{
   // console.log("coming-data",facilitySend)
  
   // console.log("taking-data-latest",savedData)
-
+console.log(listData)
   return (
     <div>
       <Breadcrumb pageName="Hesaplama" />
@@ -1518,9 +1972,9 @@ const WillDeletedScope = async() =>{
                         ))}
                         </TabsHeader>
                         {/* <DataPicker/> */}
-                        <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar savedData={savedData} savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
-                        <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar   savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
-                        <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar savedDataScope4={savedDataScope4} setSavedDataScope4={setSavedDataScope4}/></div>
+                        <div style={{display:statescope3 === 'personal' ? 'block' : 'none'}}><PersonalCar listData={listData} setListData={setListData} savedData={savedData} savedDataScope4={savedDataScope4} setSavedDataScope3={setSavedDataScope3}/></div>
+                        <div style={{display:statescope3 === 'service' ? 'block' : 'none'}}><ServiceCar   listData={listData} setListData={setListData} savedData={savedData} savedDataScope4={savedDataScope4} setSavedDataScope3={setSavedDataScope3}/></div>
+                        <div style={{display:statescope3 === 'employee' ? 'block' : 'none'}}><EmployeeCar listData={listData} setListData={setListData} savedData={savedData} savedDataScope4={savedDataScope4} setSavedDataScope3={setSavedDataScope3}/></div>
                         <div style={{display:statescope3 === 'business' ? 'block' : 'none'}}><TravelCar travelCarControl={travelCarControl}/></div>
 
 
@@ -1620,7 +2074,7 @@ const WillDeletedScope = async() =>{
                           {
                             degis === true ? <div className="block w-full">
                               <label className="block mb-2 text-sm font-medium text-gray-600 w-full">{sub.name3 === '' ? 'bos' : sub.name3}</label>
-                              <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ?  savedData.gasType : savedDataScope3.birim} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? 'gasType' : 'birim'} id="cities" className={error ? styles.select.error : styles.select.normal}
+                              <select value={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ?  savedData.gasType : savedDataScope3.birim} name={baslik1 === 'SCOPE-1' || baslik2 === 'SCOPE-2' ? 'gasType' : 'birim'} id="cities"  className={formErrors.birim ? styles.select.error : styles.select.normal}
                                 onChange={(event) => changeData(event)}>
                                 <option>{baslik3 === 'SCOPE-3' ? 'Birim girin' : 'Gaz türü girin'}</option>
 
@@ -1628,7 +2082,7 @@ const WillDeletedScope = async() =>{
                                   <option key={index}>{citiy}</option>
                                 ))}
                               </select>
-                              {error ? <p class="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">Bu alan boş bırakılmaz.</p> : null}
+                              <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors?.birim ? 'Bu alan boş bırakılamaz.' : null}</small> 
 
 
                             </div> : null

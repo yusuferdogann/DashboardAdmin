@@ -26,7 +26,6 @@ const Facilitynote = (props: any) => {
   }
 
   const EditFacility = (event) =>{
-    if(event.keyCode === 13){console.log("yes")}
     if(props.deleteData.facilityname === nameDeletedFacility ){
       props.onClick(props.deleteData._id)
     }

@@ -27,14 +27,14 @@ const benzin33 = [43 * 0.6 *  0.00084 * 0.000001];
 
 
 // ----------kommur-------------------------------
-const komur11 =  [74100 * 48 * 0.79 * 0.000000001];
-const komur22 = [1 * 48 * 0.79  *  0.000000001];
-const komur33 = [48 * 1.5 *  0.79 * 0.000000001];
+const komur11 =  [101000 * 11.9 * 0.000001];
+const komur22 = [10 * 11.9    * 0.000001];
+const komur33 = [11.9 * 1.5  * 0.000001];
 // -----------------------------------------------
 
 // ----------bio kutle----------------------------
-const biokutle11 =  [1120000 * 48 * 0.79 * 0.000000001];
-const biokutle22 =  [1 * 30 * 0.79  *  0.000000001];
+const biokutle11 =  [112000 * 48 * 0.79 * 0.000000001];
+const biokutle22 =  [48 * 30 * 0.79  *  0.000000001];
 const biokutle33 =  [48 * 4 *  0.79 * 0.000000001];
 // -----------------------------------------------
 
@@ -172,35 +172,40 @@ export const CalculateFuction = (funcKaynak,funcMiktar) =>{
     else if(funcKaynak === 'Yangın Söndürme Tüpü'){
       return  (4 * funcMiktar )
     }
-    else if(funcKaynak === 'R32'){
-      return  (0.1 * 675 * funcMiktar )
+    else if(funcKaynak === 'R22'){
+      return  (0.001 * 1760 * funcMiktar )
     }
     else if(funcKaynak === '134a'){
-      return  (0.1  * 1300 * funcMiktar )
+      return  (0.001  * 1300 * funcMiktar )
     }
     // else if(funcKaynak === 'R600a'){
     //   return  (0.1  * 1300 * funcMiktar )
     // }
     else if(funcKaynak === 'R410a'){
-      return  (0.1  * 2088 * funcMiktar )
+      return  (0.001  * 2088 * funcMiktar )
     }
     else if(funcKaynak === 'HFC32'){
-      return  (0.1  * 675 * funcMiktar )
+      return  (0.001  * 675 * funcMiktar )
     }
     else if(funcKaynak === 'R600A'){
-      return  (3 * 1300 * funcMiktar )
+      return  (0.001 * 1300 * funcMiktar )
     }
     else if(funcKaynak === 'R601'){
-      return  (5  * 1300 * funcMiktar )
+      return  (0.001  * 1300 * funcMiktar )
     }
     else if(funcKaynak === 'R601a'){
-      return  (5  * 1300 * funcMiktar )
+      return  (0.001  * 1300 * funcMiktar )
     }
     else if(funcKaynak === 'R134a1'){
-      return  (1  * 1300 * funcMiktar )
+      return  (0.001  * 1300 * funcMiktar )
     }
     else if(funcKaynak === 'CO2'){
-      return  (1  * 1300 * funcMiktar )
+      return  (0.001  * 1300 * funcMiktar )
     }
   }
 
+// buzdolap secerken 0.1
+// su sebili 0.1
+// ciller 2
+// endustiel sogutucu 7
+// klimima 1

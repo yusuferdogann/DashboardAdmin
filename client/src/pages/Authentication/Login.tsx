@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { toast, ToastContainer } from 'react-toastify';
-import { post } from "../../server/Apiendpoint"
+import { post,login } from "../../server/Apiendpoint"
 import { handleError, handleSuccess } from '../../common/utils/helpers';
 import { Link, useNavigate } from 'react-router-dom';
 import { userAuth } from '../../auth/userAuth';
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     
     try {
       
-      const loginuser = await axios.post("/login", value)
+      const loginuser = await login("/login", value)
       const response = loginuser.data
       console.log("response-----------------------",response)
      

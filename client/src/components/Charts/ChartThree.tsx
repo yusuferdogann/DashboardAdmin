@@ -50,21 +50,21 @@ const ChartThree: React.FC = () => {
         const getDonutData = await get('/getfacilitygraficdata',config);
 
         const responseResult = dataResult
-        console.log("getFacility------------------------------",responseResult?.data.data)
+        // console.log("getFacility------------------------------",responseResult?.data.data)
         setResponseArray(responseResult?.data.data)
 
         responseArray?.map((name)=>{
-          console.log("name----",name.facilityname)
+          // console.log("name----",name.facilityname)
           setLabel(name.facilityname)
-          console.log("result-label--------",label)
+          // console.log("result-label--------",label)
 
         })
         let DonutLabel = []
         for (let i = 0; i < responseArray?.length; i++) {
           const element = responseArray[i];
-          console.log("element--------",element.facilityname)
+          // console.log("element--------",element.facilityname)
           DonutLabel.push(element.facilityname)
-          console.log("self ------",DonutLabel)
+          // console.log("self ------",DonutLabel)
           setLabel(DonutLabel)
         }
 
@@ -98,7 +98,7 @@ const ChartThree: React.FC = () => {
       
       fetchData()
 
-},[])
+},[donutData])
 const options: ApexOptions = {
   chart: {
     fontFamily: 'Satoshi, sans-serif',

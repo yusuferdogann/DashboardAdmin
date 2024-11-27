@@ -4,15 +4,10 @@ export const instance = axios.create({
     // baseURL:'https://dashboard-admin-lovat.vercel.app'
 
     // =====son guncel api======
-    // baseURL:'https://dashboard-admin-43ed.vercel.app/api' 
-
-    // 23.11.2024----------
-        baseURL:'https://dashboard-admin-rho-nine.vercel.app/auth' 
-
-    
+    baseURL:'https://dashboard-admin-weld.vercel.app/api' 
     
 
-    // =====local api===========
+    // =====local api // 24.11.2024 // ==========
     // baseURL:'http://localhost:3000/auth',
     
 })
@@ -26,7 +21,7 @@ export const instance = axios.create({
 //     }
 //     return config;
 //   });
-
+export const login = (url,data) =>instance.post(url,data)
 export const post = (url,data,config)=>instance.post(url,data,config)
 export const put = (url,data,config)=>instance.put(url,data,config)
 export const get  = (url,config)=>instance.get(url,config)

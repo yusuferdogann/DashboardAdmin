@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { userAuth } from '../../auth/userAuth';
 import { handleSuccess } from '../../common/utils/helpers';
 import { post } from '../../server/Apiendpoint';
+import {CalculateFuction} from "../../common/utils/calculateFunction"
+
 
 const ServiceCar = (props) => {
   const { facilitySend,token } = userAuth();
@@ -33,7 +35,7 @@ const ServiceCar = (props) => {
         tarih:datetime,
         title: 'SCOPE-3', 
         subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
-        plaka: '', 
+        kaynak: '', 
         yakitturu:'',
         birim: '', 
         miktar: '',
@@ -47,9 +49,9 @@ const ServiceCar = (props) => {
     );
 
     const [state, setState] = useState([])
-    const [user, setUser] = useState({ yakitturu: '', sofor: '', plaka: '' })
+    const [user, setUser] = useState({ yakitturu: '', sofor: '', kaynak: '' })
     const [load, setLoad] = useState(false)
-    const initialValues = {plaka:serviceData.plaka, yakitturu:serviceData.yakitturu, miktar: serviceData.miktar, birim:serviceData.birim, situation: serviceData.situation}
+    const initialValues = {kaynak:serviceData.kaynak, yakitturu:serviceData.yakitturu, miktar: serviceData.miktar, birim:serviceData.birim, situation: serviceData.situation}
     const [formValues,setFormValues] = useState(initialValues);
     const [formErrors,setFormErrors] = useState({});
     const [isSubmit,setIsSubmit] = useState(false)
@@ -85,7 +87,13 @@ const ServiceCar = (props) => {
       event.preventDefault();
       const {name,value} = event.target;
       // setListData({...formValues,[name]:value})
-    
+      const funcMiktar = serviceData?.miktar
+         const funcKaynak =  serviceData?.yakitturu;
+         CalculateFuction(funcKaynak,funcMiktar)
+         console.log("gasType yok---------")
+         console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+         console.log("funcKaynak---------",funcKaynak)
+         console.log("funcMiktar---------",typeof(funcMiktar))
         setFormErrors(validate(formValues));
         setIsSubmit(true)
         console.log(formErrors)
@@ -95,10 +103,54 @@ const ServiceCar = (props) => {
               Authorization:"Bearer: "+token
             }
           };
-          const dataResult = await post('/adddata',serviceData,config);
-          handleSuccess('PesonalCar Scope3 başarıyla kayt edildi.')
-          // console.log("saved3-------",savedDataScope3)
-          console.log("result-data",dataResult)
+          const serviceDataLast = { 
+            tarih:datetime,
+            title: 'SCOPE-3', 
+            subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+            kaynak: serviceData?.kaynak, 
+            yakitturu:serviceData?.yakitturu,
+            birim: serviceData?.birim, 
+            miktar: CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:serviceData?.situation,
+            type:'Şahsi Araçlar'
+           }
+
+           if(serviceDataLast.kaynak ==='' || serviceDataLast.miktar ==='' || serviceDataLast.birim === ''){
+            const formValues = {
+              kaynak:'',
+              miktar:'',
+              birim:'',
+              situation:''
+            }
+            setFormErrors(validate(formValues));
+          }
+          else{
+            const dataResult = await post('/adddata',serviceData,config);
+            props.setListData([...props.listData,{kaynak:serviceData.kaynak,birim:serviceData.birim,situation:serviceData.situation,miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2)}])
+            handleSuccess('ServisCar Scope3 başarıyla kayt edildi.')
+            // console.log("saved3-------",savedDataScope3)
+            console.log("result-data",dataResult)
+            setServiceData({ 
+              tarih:datetime,
+              title: 'SCOPE-3', 
+              subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+              kaynak: '', 
+              yakitturu:'',
+              birim: '', 
+              miktar: '',
+              ulke:facilitySend?.country,
+              sehir:facilitySend?.city,
+              ilce:facilitySend?.state,
+              tesis:facilitySend?.facilityname,
+              situation:'',
+              type:'Servis Araçlar'
+             })
+          }
+        
        
 
     
@@ -120,8 +172,8 @@ const ServiceCar = (props) => {
     
       const validate = (values)=>{
         const errors={}
-        if(!values.plaka){
-          errors.plaka = "Bu alan boş bırakılamaz.";
+        if(!values.kaynak){
+          errors.kaynak = "Bu alan boş bırakılamaz.";
         }
         if(!values.birim){
           errors.birim = "Bu alan boş bırakılamaz.";
@@ -205,24 +257,24 @@ const ServiceCar = (props) => {
          <h4 className="mt-10 font-bold">Servis Araçlar</h4>
         <div className='grid grid-cols-4 gap-3 my-5'>
         <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
             <input
               type="text"
-              name='plaka'
-              value={serviceData.plaka}
+              name='kaynak'
+              value={serviceData.kaynak}
               onChange={(event)=>changeService(event)}
-              className={formErrors.plaka ? styles.select.error : styles.select.normal}
-              placeholder="Plaka girin"
+              className={formErrors.kaynak ? styles.select.error : styles.select.normal}
+              placeholder="kaynak girin"
             />
-            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
 
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
             <select onChange={(event) => changeService(event)} value={serviceData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
-              <option>Yakıt türü seçin</option>
-              <option>Dizel</option>
-              <option>LPG</option>
+            <option>Yakıt türü seçin</option>
+              <option>Dizel Yakıt</option>
+              <option>Sıvılaştırılmış Petrol Gazları (LPG)</option>
               <option>Benzin</option>
             </select>
             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.yakitturu}</small> 
@@ -232,9 +284,7 @@ const ServiceCar = (props) => {
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Birim</label>
             <select onChange={(event) => changeService(event)} value={serviceData.birim} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
               <option>Birim seçin</option>
-              <option>Ton</option>
-              <option>lt</option>
-              <option>m3</option>
+              <option>Litre</option>
             </select>
             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.birim}</small> 
 
@@ -271,7 +321,7 @@ const ServiceCar = (props) => {
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="px-6 py-3">
-                  Plaka
+                  kaynak
                 </th>
                 <th scope="col" class="px-6 py-3">
                   Yakıt Türü
@@ -295,7 +345,7 @@ const ServiceCar = (props) => {
                       {item.user.sofor}
                     </td>
                     <td class="px-6 py-4">
-                      {item.user.plaka}
+                      {item.user.kaynak}
                     </td>
 
                     <td class="px-6 py-4 text-right">

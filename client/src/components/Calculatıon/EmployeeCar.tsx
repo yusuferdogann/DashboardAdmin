@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { userAuth } from '../../auth/userAuth';
 import { handleSuccess } from '../../common/utils/helpers';
 import { post } from '../../server/Apiendpoint';
+import {CalculateFuction} from "../../common/utils/calculateFunction"
 
-const EmployeeCar = () => {
+
+const EmployeeCar = (props) => {
 
   const { facilitySend,token } = userAuth();
 
@@ -34,7 +36,7 @@ const EmployeeCar = () => {
         tarih:datetime,
         title: 'SCOPE-3', 
         subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
-        plaka: '', 
+        kaynak: '', 
         yakitturu:'',
         birim: '', 
         miktar: '',
@@ -48,9 +50,9 @@ const EmployeeCar = () => {
     );
 
     const [state, setState] = useState([])
-    const [user, setUser] = useState({ yakitturu: '', sofor: '', plaka: '' })
+    const [user, setUser] = useState({ yakitturu: '', sofor: '', kaynak: '' })
     const [load, setLoad] = useState(false)
-    const initialValues = {plaka:employeeData.plaka, yakitturu:employeeData.yakitturu, miktar: employeeData.miktar, birim:employeeData.birim, situation: employeeData.situation}
+    const initialValues = {kaynak:employeeData.kaynak, yakitturu:employeeData.yakitturu, miktar: employeeData.miktar, birim:employeeData.birim, situation: employeeData.situation}
     const [formValues,setFormValues] = useState(initialValues);
     const [formErrors,setFormErrors] = useState({});
     const [isSubmit,setIsSubmit] = useState(false)
@@ -75,7 +77,6 @@ const EmployeeCar = () => {
       const {name,value}=event.target
       setFormValues({...formValues,[name]:value})
       console.log("employeeData",employeeData)
-
       setEmployeeData({...employeeData,[name]:value})
      
       
@@ -93,7 +94,13 @@ const EmployeeCar = () => {
       event.preventDefault();
       const {name,value} = event.target;
       // setListData({...formValues,[name]:value})
-    
+      const funcMiktar = employeeData?.miktar
+         const funcKaynak =  employeeData?.yakitturu;
+         CalculateFuction(funcKaynak,funcMiktar)
+         console.log("gasType yok---------")
+         console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
+         console.log("funcKaynak---------",funcKaynak)
+         console.log("funcMiktar---------",typeof(funcMiktar))
         setFormErrors(validate(formValues));
         setIsSubmit(true)
         console.log(formErrors)
@@ -103,10 +110,56 @@ const EmployeeCar = () => {
               Authorization:"Bearer: "+token
             }
           };
-          const dataResult = await post('/adddata',employeeData,config);
-          handleSuccess('PesonalCar Scope3 başarıyla kayt edildi.')
-          // console.log("saved3-------",savedDataScope3)
-          console.log("result-data",dataResult)
+          const employeeDataLast = { 
+            tarih:datetime,
+            title: 'SCOPE-3', 
+            subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+            kaynak: employeeData?.kaynak, 
+            yakitturu:employeeData?.yakitturu,
+            birim: employeeData?.birim, 
+            miktar: CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:employeeData?.situation,
+            type:'Müşteri Ziyaretlerİnde Kullanılan Araçlar'
+           }
+
+
+           if(employeeDataLast.kaynak ==='' || employeeDataLast.miktar ==='' || employeeDataLast.birim === ''){
+            const formValues = {
+              kaynak:'',
+              miktar:'',
+              birim:'',
+              situation:''
+            }
+            setFormErrors(validate(formValues));
+          }
+          else{
+            const dataResult = await post('/adddata',employeeDataLast,config);
+            props.setListData([...props.listData,{kaynak:employeeData.kaynak,birim:employeeData.birim,situation:employeeData.situation,miktar:CalculateFuction(funcKaynak,funcMiktar)?.toFixed(2)}])
+
+            handleSuccess('EmployeeCar Scope3 başarıyla kayt edildi.')
+            // console.log("saved3-------",savedDataScope3)
+            console.log("result-data",dataResult)
+            setEmployeeData({ 
+              tarih:datetime,
+              title: 'SCOPE-3', 
+              subtitle: 'Downstream Nakliye hizmetin dışardan satın alınması durumunda)', 
+              kaynak: '', 
+              yakitturu:'',
+              birim: '', 
+              miktar: '',
+              ulke:facilitySend?.country,
+              sehir:facilitySend?.city,
+              ilce:facilitySend?.state,
+              tesis:facilitySend?.facilityname,
+              situation:'',
+              type:'Müşteri Ziyaretlerİnde Kullanılan Araçlar'
+             })
+          }
+         
        
 
     
@@ -128,8 +181,8 @@ const EmployeeCar = () => {
     
       const validate = (values)=>{
         const errors={}
-        if(!values.plaka){
-          errors.plaka = "Bu alan boş bırakılamaz.";
+        if(!values.kaynak){
+          errors.kaynak = "Bu alan boş bırakılamaz.";
         }
         if(!values.birim){
           errors.birim = "Bu alan boş bırakılamaz.";
@@ -208,22 +261,22 @@ const EmployeeCar = () => {
         <h4 className="mt-10 font-bold">Müşteri Ziyaretleri Sonucu Oluşan Emilsyonlar</h4>
         <div className='grid grid-cols-4 gap-3 my-5'>
         <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
             <input
               type="text"
-              name='plaka'
+              name='kaynak'
               onChange={(e) => changeEmployee(e)} 
-              className={formErrors.plaka ? styles.select.error : styles.select.normal}
-              placeholder="Plaka girin"
+              className={formErrors.kaynak ? styles.select.error : styles.select.normal}
+              placeholder="kaynak girin"
             />
-            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
             <select onChange={(e) => changeEmployee(e)} value={employeeData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
               <option>Yakıt türü seçin</option>
-              <option>Dizel</option>
-              <option>LPG</option>
+              <option>Dizel Yakıt</option>
+              <option>Sıvılaştırılmış Petrol Gazları (LPG)</option>
               <option>Benzin</option>
             </select>
             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.yakitturu}</small> 
@@ -233,11 +286,9 @@ const EmployeeCar = () => {
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Birim</label>
             <select onChange={(e) => changeEmployee(e)} value={employeeData.sofor} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
               <option>Birim seçin</option>
-              <option>Ton</option>
-              <option>lt</option>
-              <option>m3</option>
+              <option>Litre</option>
             </select>
-            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.plaka}</small> 
+            <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
 
           </div>
           <div className="block w-full">
@@ -274,7 +325,7 @@ const EmployeeCar = () => {
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="px-6 py-3">
-                  Plaka
+                  kaynak
                 </th>
                 <th scope="col" class="px-6 py-3">
                   Yakıt Türü
@@ -298,7 +349,7 @@ const EmployeeCar = () => {
                       {item.user.sofor}
                     </td>
                     <td class="px-6 py-4">
-                      {item.user.plaka}
+                      {item.user.kaynak}
                     </td>
 
                     <td class="px-6 py-4 text-right">

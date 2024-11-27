@@ -124,7 +124,11 @@ const Facility = () => {
             console.log(error)
         }
 
-       
+       setData('')
+       setCountry(value);
+       setState(value);
+       setDropCity(value);
+       // =========================================
 
     }
 
@@ -177,7 +181,8 @@ const Facility = () => {
             const updateFacilityName = await put('/updateFacilityName',sendUpdateData,config)
             console.log("updated------",updateFacilityName)
      
-            setVeri(false)
+            // Tesis kayit edildikten sonra input acik geliyor
+            // setVeri(false)
         }
     }
     // console.log("veriii-----------",getVeri)
