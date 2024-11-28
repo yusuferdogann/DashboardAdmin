@@ -2,12 +2,6 @@ const asyncErrorWrapper = require("express-async-handler");
 const Usermodels = require("../../models/User");
 const ScopeModel = require("../../models/scopes");
 const FacilityModel = require("../../models/facility")
-const { data } = require("../../controllers/DataController");
-const uniqid = require("uniqid");
-const useState = require('react')
-// var ObjectId = require('mongoose').Types.ObjectId;
-var mongoose = require('mongoose');
-// const { MongoClient,  ObjectId } = require("mongodb");
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 const express = require('express');
