@@ -51,7 +51,7 @@ const ChartThree: React.FC = () => {
 
         const responseResult = dataResult
         // console.log("getFacility------------------------------",responseResult?.data.data)
-        setResponseArray(responseResult?.data.data)
+        setResponseArray(responseResult?.data?.data)
 
         responseArray?.map((name)=>{
           // console.log("name----",name.facilityname)

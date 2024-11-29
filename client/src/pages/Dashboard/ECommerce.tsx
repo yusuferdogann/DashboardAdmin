@@ -24,19 +24,14 @@ const ECommerce: React.FC = () => {
     const config = {
       headers:{
           "Content-Type":"application/json",
-          Authorization:"Bearer: "+ token
+          Authorization:"Bearer: "+token
       }
           };
 
           const fetchData = async () => {
-            try{
-              const dataResult = await get('/getcardgraficdata',config);
-            console.log("result-data",dataResult?.data.data)
-            setResult(dataResult?.data.data)
-            }
-            catch(error){
-              console.log("error var getcardgraficdata")
-            }
+            const dataResult = await get('/getcardgraficdata',config);
+            console.log("result-data",dataResult?.data?.data)
+            setResult(dataResult?.data?.data)
             // console.log("RESULT---------------",result?.CardScope3[0]?.miktar)
           }
           fetchData()

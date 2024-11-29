@@ -181,7 +181,7 @@ const ChartOne: React.FC = (props) => {
 
           }
           fetchData()
-},[])
+},[result])
 
 
   // console.log(state.series[0].data[10])

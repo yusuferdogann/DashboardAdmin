@@ -65,12 +65,12 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartTwoState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
+// interface ChartTwoState {
+//   series: {
+//     name: string;
+//     data: number[];
+//   }[];
+// }
 
 const ChartTwo: React.FC = () => {
 
@@ -109,30 +109,31 @@ const ChartTwo: React.FC = () => {
     const fetchData = async () => {
      try{
       const dataResult = await get('/getweekgraficdata',config);
+      console.log("haftalik veri----------------------",dataResult?.data?.data)
       const responseResult = dataResult;
-      setTwoGrafic(responseResult?.data.data)
+      setTwoGrafic(responseResult?.data?.data)
       setTwoGrafic({
         series: [
           {
             name: 'Ocak-Mart',
             // data: [12,null,null,null,null,null,null]
-            data:responseResult?.data.data.Ocak_Mart
+            data:responseResult?.data?.data?.Ocak_Mart
           },
           {
             name: 'Nisan-Haziran',
             // data: [13, 23, 20, 8, 13, 27, 15],
-            data:responseResult?.data.data.Nisan_Haziran
+            data:responseResult?.data?.data?.Nisan_Haziran
 
           },
           {
             name: 'Temmuz-Eylül',
             // data: [13, 23, 20, 8, 13, 27, 15],
-            data:responseResult?.data.data.Temmuz_Eylul
+            data:responseResult?.data?.data?.Temmuz_Eylul
           },
           {
             name: 'Ekim-Aralık',
             // data: [13, 23, 20, 8, 13, 27, 15],
-            data:responseResult?.data.data.Ekim_Aralik
+            data:responseResult?.data?.data?.Ekim_Aralik
 
           },
         ],
@@ -149,7 +150,7 @@ const ChartTwo: React.FC = () => {
 
       fetchData()
 
-},[])
+},[twoGrafic])
 
   
  
