@@ -3,8 +3,8 @@ import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
 import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
+// import ChatCard from '../../components/Chat/ChatCard';
+// import MapOne from '../../components/Maps/MapOne';
 import TableOne from '../../components/Tables/TableOne';
 import Image1 from "../../images/logo/co2_4038678.png"
 import Image2 from "../../images/logo/gas_3327542.png"
