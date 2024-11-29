@@ -29,9 +29,14 @@ const ECommerce: React.FC = () => {
           };
 
           const fetchData = async () => {
-            const dataResult = await get('/getcardgraficdata',config);
+            try{
+              const dataResult = await get('/getcardgraficdata',config);
             console.log("result-data",dataResult?.data.data)
             setResult(dataResult?.data.data)
+            }
+            catch(error){
+              console.log("error var getcardgraficdata")
+            }
             // console.log("RESULT---------------",result?.CardScope3[0]?.miktar)
           }
           fetchData()

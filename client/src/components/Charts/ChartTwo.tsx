@@ -107,36 +107,43 @@ const ChartTwo: React.FC = () => {
         }
             };
     const fetchData = async () => {
-        const dataResult = await get('/getweekgraficdata',config);
-        const responseResult = dataResult
-        console.log("haftalik-Grafik------------------------------",responseResult.data.data)
-        setTwoGrafic(responseResult?.data.data)
-        setTwoGrafic({
-          series: [
-            {
-              name: 'Ocak-Mart',
-              // data: [12,null,null,null,null,null,null]
-              data:responseResult?.data.data.Ocak_Mart
-            },
-            {
-              name: 'Nisan-Haziran',
-              // data: [13, 23, 20, 8, 13, 27, 15],
-              data:responseResult?.data.data.Nisan_Haziran
+     try{
+      const dataResult = await get('/getweekgraficdata',config);
+      const responseResult = dataResult;
+      setTwoGrafic(responseResult?.data.data)
+      setTwoGrafic({
+        series: [
+          {
+            name: 'Ocak-Mart',
+            // data: [12,null,null,null,null,null,null]
+            data:responseResult?.data.data.Ocak_Mart
+          },
+          {
+            name: 'Nisan-Haziran',
+            // data: [13, 23, 20, 8, 13, 27, 15],
+            data:responseResult?.data.data.Nisan_Haziran
 
-            },
-            {
-              name: 'Temmuz-Eylül',
-              // data: [13, 23, 20, 8, 13, 27, 15],
-              data:responseResult?.data.data.Temmuz_Eylul
-            },
-            {
-              name: 'Ekim-Aralık',
-              // data: [13, 23, 20, 8, 13, 27, 15],
-              data:responseResult?.data.data.Ekim_Aralik
+          },
+          {
+            name: 'Temmuz-Eylül',
+            // data: [13, 23, 20, 8, 13, 27, 15],
+            data:responseResult?.data.data.Temmuz_Eylul
+          },
+          {
+            name: 'Ekim-Aralık',
+            // data: [13, 23, 20, 8, 13, 27, 15],
+            data:responseResult?.data.data.Ekim_Aralik
 
-            },
-          ],
-        })
+          },
+        ],
+      })
+
+     }
+     catch(error){
+      console.log("erro var chartTwo")
+     }
+        // console.log("haftalik-Grafik------------------------------",responseResult?.data.data)
+        
 
       }
 
