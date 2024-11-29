@@ -386,7 +386,7 @@ const DashboardWeekGrafic = asyncErrorWrapper(async(req,res,next)=>{
   let currentDateMs = currentDate.getTime();
   let dayNumber = (currentDate.getDay() + 6) % 6;
   let result = currentDateMs - 86400000 * dayNumber; 
-  // let resultDate = new Date(result);
+  let resultDate = new Date(result);
 
 // console.log(resultDate.toDateString());
 // ====================================================================
@@ -422,13 +422,13 @@ var cuma = getRelativeDayInWeek(new Date(),5);
 var cumartesi = getRelativeDayInWeek(new Date(),6);
 var pazar = getRelativeDayInWeek(new Date(),7);
 
-const newPazartesi = pazartesi.toLocaleDateString().split(".").join("/")
-const newSali = sali.toLocaleDateString().split(".").join("/")
-const newCarsamba = carsamba.toLocaleDateString().split(".").join("/")
-const newPersembe = persembe.toLocaleDateString().split(".").join("/")
-const newCuma = cuma.toLocaleDateString().split(".").join("/")
-const newCumartesi = cumartesi.toLocaleDateString().split(".").join("/")
-const newPazar = pazar.toLocaleDateString().split(".").join("/")
+const newPazartesi = pazartesi?.toLocaleDateString().split(".").join("/")
+const newSali = sali?.toLocaleDateString().split(".").join("/")
+const newCarsamba = carsamba?.toLocaleDateString().split(".").join("/")
+const newPersembe = persembe?.toLocaleDateString().split(".").join("/")
+const newCuma = cuma?.toLocaleDateString().split(".").join("/")
+const newCumartesi = cumartesi?.toLocaleDateString().split(".").join("/")
+const newPazar = pazar?.toLocaleDateString().split(".").join("/")
 
 // console.log("PAZARTESEI------",pazar.toLocaleDateString().split(".").join("/"));
 
@@ -462,8 +462,8 @@ const newPazar = pazar.toLocaleDateString().split(".").join("/")
 
 // console.log(Pazartesi,Sali,Carsamba,Persembe,Cuma,Cumartesi,Pazar);
 // console.log(weekday[0]);
-const tesisName = req?.app?.locals?.data?.tesisName
-
+const tesisName = req.app.locals.data.tesisName
+// console.log("tesisname----------",tesisName)
 
 var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ocak - Mart",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ocak - Mart",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
@@ -481,13 +481,13 @@ var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesi
 var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Nisan - Haziran",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Nisan - Haziran",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylul",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newCuma}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Temmuz - Eylül",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
 var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ekim - Aralık",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ekim - Aralık",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
@@ -503,7 +503,7 @@ var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesis
 // console.log(GrafCarsamba_Ocak_Mart[0]?.miktar)
 // console.log(GrafPersembe_Ocak_Mart[0]?.miktar)
 // console.log(GrafCuma_Ocak_Mart[0]?.miktar)
-// console.log(GrafCumartesi_Ocak_Mart[0]?.miktar)
+// console.log("ac---------",GrafCumartesi_Ekim_Aralik[0]?.miktar)
 // console.log(GrafPazar_Ocak_Mart[0]?.miktar)
 
 
