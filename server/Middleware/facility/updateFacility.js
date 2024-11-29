@@ -78,6 +78,7 @@ const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
   req.app.locals.data = req.body;
 
 
+  // console.log("get name--------",globalVariable)
 
   res.json({
     success:true,
@@ -99,6 +100,7 @@ const findObjectName = asyncErrorWrapper(async (req, res, next) => {
   res.json({
     success: true,
     message: "yes two Object name is equal",
+    data:followedUsers
   });
 });
 
@@ -209,6 +211,7 @@ const summaryFilterSubData = asyncErrorWrapper( async(req,res,next)=>{
 
 const DashboardMounthGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
+  // const {ScopeTitle,Situation,Subtitle} = req.body
 
   const tesisName = req.app.locals.data.tesisName
 
@@ -347,6 +350,7 @@ const DashboardFacilityGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
 const DashboardScopeGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
+  // const {id} = req.user.id
   // console.log('id-----------------',req.user.id)
   // console.log("Scope-----------",JSON.stringify(req.app.locals.data.tesisName) )
   const tesisName = req.app.locals.data.tesisName
@@ -382,6 +386,7 @@ const DashboardWeekGrafic = asyncErrorWrapper(async(req,res,next)=>{
   let currentDateMs = currentDate.getTime();
   let dayNumber = (currentDate.getDay() + 6) % 6;
   let result = currentDateMs - 86400000 * dayNumber; 
+  // let resultDate = new Date(result);
 
 // console.log(resultDate.toDateString());
 // ====================================================================
@@ -457,7 +462,8 @@ const newPazar = pazar.toLocaleDateString().split(".").join("/")
 
 // console.log(Pazartesi,Sali,Carsamba,Persembe,Cuma,Cumartesi,Pazar);
 // console.log(weekday[0]);
-const tesisName = req.app.locals.data.tesisName
+const tesisName = req?.app?.locals?.data?.tesisName
+
 
 var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ocak - Mart",tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ocak - Mart",tarih:newSali}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
@@ -491,7 +497,7 @@ var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisN
 var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ekim - Aralık",tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: "Ekim - Aralık",tarih:newPazar}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-
+// console.log("cumartesi-------",GrafCumartesi_Ekim_Aralik)
 // console.log(GrafPazartesi_Ocak_Mart[0]?.miktar)
 // console.log(GrafSali_Ocak_Mart[0]?.miktar)
 // console.log(GrafCarsamba_Ocak_Mart[0]?.miktar)
@@ -560,11 +566,11 @@ const DeletedFacility = asyncErrorWrapper(async(req,res,next)=>{
 const {idDeletedFacility} = req.body
 
 // console.log("data----------",idDeletedFacility)
- await FacilityModel.findByIdAndDelete({_id: new ObjectId(idDeletedFacility)})
+const deletedData = await FacilityModel.findByIdAndDelete({_id: new ObjectId(idDeletedFacility)})
 
 res.json({
   success:true,
-  // data:deletedData
+  data:deletedData
 })
 })
 
