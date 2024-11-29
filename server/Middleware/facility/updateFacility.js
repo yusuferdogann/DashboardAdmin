@@ -77,9 +77,7 @@ const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
 
   req.app.locals.data = req.body;
 
-  const globalVariable = tesisName
 
-  // console.log("get name--------",globalVariable)
 
   res.json({
     success:true,
@@ -211,7 +209,6 @@ const summaryFilterSubData = asyncErrorWrapper( async(req,res,next)=>{
 
 const DashboardMounthGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
-  const {ScopeTitle,Situation,Subtitle} = req.body
 
   const tesisName = req.app.locals.data.tesisName
 
@@ -350,7 +347,6 @@ const DashboardFacilityGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
 const DashboardScopeGrafic = asyncErrorWrapper(async(req,res,next)=>{
 
-  const {id} = req.user.id
   // console.log('id-----------------',req.user.id)
   // console.log("Scope-----------",JSON.stringify(req.app.locals.data.tesisName) )
   const tesisName = req.app.locals.data.tesisName
@@ -386,7 +382,6 @@ const DashboardWeekGrafic = asyncErrorWrapper(async(req,res,next)=>{
   let currentDateMs = currentDate.getTime();
   let dayNumber = (currentDate.getDay() + 6) % 6;
   let result = currentDateMs - 86400000 * dayNumber; 
-  let resultDate = new Date(result);
 
 // console.log(resultDate.toDateString());
 // ====================================================================
@@ -565,7 +560,7 @@ const DeletedFacility = asyncErrorWrapper(async(req,res,next)=>{
 const {idDeletedFacility} = req.body
 
 // console.log("data----------",idDeletedFacility)
-const deletedData = await FacilityModel.findByIdAndDelete({_id: new ObjectId(idDeletedFacility)})
+ await FacilityModel.findByIdAndDelete({_id: new ObjectId(idDeletedFacility)})
 
 res.json({
   success:true,
