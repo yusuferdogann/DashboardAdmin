@@ -107,15 +107,12 @@ const ChartTwo: React.FC = () => {
         }
             };
     const fetchData = async () => {
-     try{
       const dataResult = await get('/getweekgraficdata',config);
       console.log("haftalik veri----------------------",dataResult?.data?.data)
-      const responseResult = dataResult;
-      // setTwoGrafic(responseResult?.data?.data)
-      let FirstPeriod = responseResult?.data?.data?.Ocak_Mart;
-      let SecoundPeriod = responseResult?.data?.data?.Nisan_Haziran;
-      let ThirdPeriod = responseResult?.data?.data?.Temmuz_Eylul;
-      let FourPeriod  = responseResult?.data?.data?.Ekim_Aralik;
+      let FirstPeriod = dataResult?.data?.data?.Ocak_Mart;
+      let SecoundPeriod = dataResult?.data?.data?.Nisan_Haziran;
+      let ThirdPeriod = dataResult?.data?.data?.Temmuz_Eylul;
+      let FourPeriod  = dataResult?.data?.data?.Ekim_Aralik;
 
       setTwoGrafic({
         series: [
@@ -144,18 +141,12 @@ const ChartTwo: React.FC = () => {
         ],
       })
 
-     }
-     catch(error){
-      console.log("erro var chartTwo")
-     }
-        // console.log("haftalik-Grafik------------------------------",responseResult?.data.data)
-        
-
+  
       }
 
-      fetchData()
+      fetchData();
 
-},[])
+},[twoGrafic])
 
   
  
