@@ -85,10 +85,10 @@ const ChartThree: React.FC = () => {
       // console.log("array2----",newArr2)
 
       //  console.log("bismillah----------------",lastData)
-        setReturnData(getDonutData.data.data)
-        setThreeChartData(responseResult.data.data)
+        setReturnData(getDonutData?.data?.data)
+        setThreeChartData(responseResult?.data?.data)
         setDonutData({
-          series: getDonutData?.data.data,
+          series: getDonutData?.data?.data,
         })
 
       }

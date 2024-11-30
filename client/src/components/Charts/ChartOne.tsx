@@ -104,14 +104,9 @@ const options: ApexOptions = {
   },
 };
 
-interface ChartOneState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
 
-const ChartOne: React.FC = (props) => {
+
+const ChartOne: React.FC = () => {
 
   const {token} = userAuth()
   // const [result,setResult] = useState()
@@ -119,18 +114,15 @@ const ChartOne: React.FC = (props) => {
     series: [
       {
         name: 'Kapsam 1',
-        // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
         data: [],
         
       },
       {
         name: 'Kapsam 2',
-        // data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
         data:[]
       },
       {
         name: 'Kapsam 3',
-        // data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
         data:[]
       },
     ],
@@ -148,6 +140,10 @@ const ChartOne: React.FC = (props) => {
           const fetchData = async () => {
             const dataResult = await get('/getgraficdata',config);
             console.log("result-data---------",dataResult?.data?.data)
+            let Scope1 = dataResult?.data.data?.Scope1GrafikData
+            let Scope2 = dataResult?.data.data?.Scope2GrafikData
+            let Scope3 = dataResult?.data.data?.Scope3GrafikData
+
             // day.push(dataResult.data.data)
             // for (let i = 0; i < result.length; i++) {
             //   const element = result[i];
@@ -160,19 +156,19 @@ const ChartOne: React.FC = (props) => {
                 {
                   name: 'Kapsam 1',
                   // data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-                  data: dataResult?.data.data?.Scope1GrafikData,
+                  data: Scope1,
                   
                 },
                 {
                   name: 'Kapsam 2',
                   // data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-                  data: dataResult?.data.data?.Scope2GrafikData,
+                  data: Scope2,
 
                 },
                 {
                   name: 'Kapsam 3',
                   // data: [40, 65, 16, 80, 25, 13, 72, 33, 11, 22, 81, 73],
-                  data: dataResult?.data.data?.Scope3GrafikData,
+                  data: Scope3,
 
                 },
               ],
@@ -181,7 +177,7 @@ const ChartOne: React.FC = (props) => {
 
           }
           fetchData()
-},[result])
+},[])
 
 
   // console.log(state.series[0].data[10])
