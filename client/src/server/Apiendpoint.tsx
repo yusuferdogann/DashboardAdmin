@@ -3,9 +3,10 @@ import axios from "axios"
 export const instance = axios.create({
     // baseURL:'https://dashboard-admin-lovat.vercel.app'
 
-    // =====son guncel api======
-    baseURL:'https://dashboard-admin-weld.vercel.app/auth' 
-    
+    // =====Vercel guncel api backend======
+    // baseURL:'https://dashboard-admin-weld.vercel.app/auth' 
+       // =====Render guncel api backend======
+       baseURL:'https://dashboardadmin-ck5v.onrender.com/auth' 
 
     // yaallah
 
