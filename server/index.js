@@ -6,12 +6,9 @@ const bodyParser = require("body-parser");
 const authRouter = require("./routes/AuthRouter.js")
 const ProductRouter = require("./routes/ProductRouter.js")
 const routers = require('./routes/AuthRouter.js');
-const session = require('express-session');
-const store = new session.MemoryStore();
 var httpContext = require('express-http-context');
 const customErrorHandler = require("./Middleware/errors/customErrorHandler.js");
 const cookieParser = require("cookie-parser");
-const path = require('path');
 
 
 
@@ -76,7 +73,7 @@ app.use(express.static(__dirname +'/'));
 
 
 app.listen(PORT,()=>{
-    console.log("server is running",PORT);
+    console.log("server is running",process.env.PORT || PORT);
 })
 
 module.export = app;
