@@ -4,38 +4,42 @@ import ReactApexChart from 'react-apexcharts';
 import { get } from '../../server/Apiendpoint';
 import { userAuth } from '../../auth/userAuth';
 
-
 const options: ApexOptions = {
   colors: ['#000000', '#00ffb3', '#00ffea', '#00a0fe'],
   chart: {
     fontFamily: 'Satoshi, sans-serif',
     type: 'bar',
-    height: 335,
+    height: 350,
     stacked: true,
     toolbar: {
       show: false,
     },
     zoom: {
-      enabled: false,
+      enabled: true,
     },
   },
 
   responsive: [
     {
-      breakpoint: 1536,
+      breakpoint: 1024,
       options: {
-        plotOptions: {
-          bar: {
-            borderRadius: 0,
-            columnWidth: '25%',
-          },
+        chart: {
+          height: 300,
+        },
+      },
+    },
+    {
+      breakpoint: 1366,
+      options: {
+        chart: {
+          height: 350,
         },
       },
     },
   ],
   plotOptions: {
     bar: {
-      horizontal: false,
+      horizontal: true,
       borderRadius: 0,
       columnWidth: '25%',
       borderRadiusApplication: 'end',
@@ -43,7 +47,7 @@ const options: ApexOptions = {
     },
   },
   dataLabels: {
-    enabled: false,
+    enabled: true,
   },
 
   xaxis: {
@@ -65,12 +69,7 @@ const options: ApexOptions = {
   },
 };
 
-// interface ChartTwoState {
-//   series: {
-//     name: string;
-//     data: number[];
-//   }[];
-// }
+
 
 const ChartTwo: React.FC = () => {
 
@@ -79,63 +78,58 @@ const ChartTwo: React.FC = () => {
     series: [
       {
         name: 'Ocak-Mart',
-        // data: [12,null,null,null,null,null,null]
         data:[]
       },
       {
         name: 'Nisan-Haziran',
-        // data: [13, 23, 20, 8, 13, 27, 15],
         data:[]
       },
       {
         name: 'Temmuz-Eylül',
-        // data: [13, 23, 20, 8, 13, 27, 15],
         data:[]
       },
       {
         name: 'Ekim-Aralık',
-        // data: [13, 23, 20, 8, 13, 27, 15],
         data:[]
       },
     ],
   })
   useEffect(() => {
     const config = {
-        headers:{
-            "Content-Type":"application/json",
-            Authorization:"Bearer: "+token
-        }
-            };
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+      }
+          };
     const fetchData = async () => {
-      const dataResult = await get('/getweekgraficdata',config);
-      console.log("haftalik veri----------------------",dataResult?.data?.data)
-      let FirstPeriod = dataResult?.data?.data?.Ocak_Mart;
-      let SecoundPeriod = dataResult?.data?.data?.Nisan_Haziran;
-      let ThirdPeriod = dataResult?.data?.data?.Temmuz_Eylul;
-      let FourPeriod  = dataResult?.data?.data?.Ekim_Aralik;
+      const dataGraficTwoResult = await get('/getweekgraficdata',config);
+      let FirstPeriod = dataGraficTwoResult?.data?.data?.Ocak_Mart;
+      let SecoundPeriod = dataGraficTwoResult?.data?.data?.Nisan_Haziran;
+      let ThirdPeriod = dataGraficTwoResult?.data?.data?.Temmuz_Eylul;
+      let FourPeriod  = dataGraficTwoResult?.data?.data?.Ekim_Aralik;
 
       setTwoGrafic({
         series: [
           {
             name: 'Ocak-Mart',
             // data: [12,null,null,null,null,null,null]
-            data:FirstPeriod
+            data: FirstPeriod,
           },
           {
             name: 'Nisan-Haziran',
-            // data: [13, 23, 20, 8, 13, 27, 15],
-            data:SecoundPeriod
+            // data:  [13, 23, 20, 8, 13, 27, 15],
+            data: SecoundPeriod,
 
           },
           {
             name: 'Temmuz-Eylül',
-            // data: [13, 23, 20, 8, 13, 27, 15],
-            data:ThirdPeriod
+            // data:  [13, 23, 20, 8, 13, 27, 15],
+            data: ThirdPeriod,
           },
           {
             name: 'Ekim-Aralık',
-            // data: [13, 23, 20, 8, 13, 27, 15],
-            data:FourPeriod
+            // data:  [13, 23, 20, 8, 13, 27, 15],
+            data: FourPeriod,
 
           },
         ],
@@ -146,7 +140,7 @@ const ChartTwo: React.FC = () => {
 
       fetchData();
 
-},[twoGrafic])
+},[])
 
   
  
@@ -199,7 +193,7 @@ const ChartTwo: React.FC = () => {
             options={options}
             series={twoGrafic?.series}
             type="bar"
-            height={400}
+            height={350}
     
           />
         </div>
