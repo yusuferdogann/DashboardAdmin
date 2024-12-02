@@ -16,6 +16,7 @@ const PdfView = () => {
 
     const [reportData,setReportData] = useState()
     const [periodData,setPeriodData] = useState()
+    const [checkStatus,setCheckStatus] = useState()
     var currentdate = new Date(); 
     var datetime =    currentdate.getDate() + "/"
                     + (currentdate.getMonth()+1)  + "/" 
@@ -38,7 +39,7 @@ const PdfView = () => {
                 console.log("reporttotal--------------",periodData?.KAPSAM1)
 
                 console.log("report---------------",periodData?.KAPSAM3)
-
+                setCheckStatus(reportperioddata?.status)
                 setReportData(dataResult.data.data)
                 // console.log("RESULT---------------",reportData?.CardScope3[0]?.miktar)
               }
@@ -71,7 +72,7 @@ const PdfView = () => {
     var object = JSON.parse(val);
     return (
     <>
-              {facilitySend?.facilityname? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Lütfen Rapor İçin Öncelikle Tesis Seçmelisiniz."}  
+              {facilitySend?.facilityname &&  checkStatus ? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Yukleniyor..."}  
 
         <div style={{visibility:'hidden'}}>
 
