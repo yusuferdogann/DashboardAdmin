@@ -494,6 +494,7 @@ const Ekim_Aralik = [arrayPazartesiFour,arraySaliFour,arrayCarsambaFour,arrayPer
 
 res.json({
   success:true,
+  message:'Successfly dashboard Grafic data',
   data:{Ocak_Mart,Nisan_Haziran,Temmuz_Eylul,Ekim_Aralik}
   
 })
