@@ -39,7 +39,7 @@ const options: ApexOptions = {
   ],
   plotOptions: {
     bar: {
-      horizontal: true,
+      horizontal: false,
       borderRadius: 0,
       columnWidth: '25%',
       borderRadiusApplication: 'end',
@@ -47,7 +47,7 @@ const options: ApexOptions = {
     },
   },
   dataLabels: {
-    enabled: true,
+    enabled: false,
   },
 
   xaxis: {
