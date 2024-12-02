@@ -68,12 +68,12 @@ database();
 app.use(customErrorHandler)
 // Static Files
 // app.use(express.static(path.join(__dirname,'public')));
-app.use(express.static(__dirname +'/'));
+// app.use(express.static(__dirname +'/'));
 
 
 
 app.listen(PORT,()=>{
-    console.log("server is running",process.env.PORT || PORT);
+    console.log("server is running", PORT);
 })
 
 module.export = app;
