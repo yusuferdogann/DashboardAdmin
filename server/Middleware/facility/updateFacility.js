@@ -412,6 +412,8 @@ const newPazar = pazar?.toLocaleDateString().split(".").join("/")
 
 
 console.log("pazartsi--",newPazartesi)
+console.log("pazartsi--",JSON.stringify(newPazartesi))
+
 
 const lightFirst = "Ocak - Mart";
 const lightSecound = "Nisan - Haziran";
@@ -427,7 +429,7 @@ var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisNam
 var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:newPazar}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:"02/12/2024"}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:JSON.stringify(newPazartesi)}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newSali}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
@@ -443,7 +445,7 @@ var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesis
 var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:newPazar}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:"02/12/2024"}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:JSON.stringify(newPazartesi)}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newSali}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
@@ -496,7 +498,6 @@ res.json({
   success:true,
   message:'Successfly dashboard Grafic data',
   data:{Ocak_Mart,Nisan_Haziran,Temmuz_Eylul,Ekim_Aralik}
-  
 })
 })
 
