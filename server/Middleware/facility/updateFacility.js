@@ -401,7 +401,7 @@ var cuma = getRelativeDayInWeek(new Date(),5);
 var cumartesi = getRelativeDayInWeek(new Date(),6);
 var pazar = getRelativeDayInWeek(new Date(),7);
 
-const newPazartesi = pazartesi?.toLocaleDateString().split(".").join("/")
+const newPazartesi = pazartesi?.toLocaleDateString().split(".").join("-")
 const newSali = sali?.toLocaleDateString().split(".").join("/")
 const newCarsamba = carsamba?.toLocaleDateString().split(".").join("/")
 const newPersembe = persembe?.toLocaleDateString().split(".").join("/")
@@ -411,7 +411,7 @@ const newPazar = pazar?.toLocaleDateString().split(".").join("/")
 
 
 
-console.log("pazartsi--",newPazartesi)
+console.log("pazartsi--",typeof(newPazartesi))
 console.log("pazartsi--",JSON.stringify(newPazartesi))
 
 
@@ -429,7 +429,7 @@ var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisNam
 var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:newPazar}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:JSON.stringify(newPazartesi)}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newSali}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
@@ -445,13 +445,18 @@ var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesis
 var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:newPazar}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:JSON.stringify(newPazartesi)}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newPazartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newSali}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newCarsamba}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newPersembe}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newCuma}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newCumartesi}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:newPazar}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+
+console.log("sonuc---",GrafPazartesi_Ekim_Aralik)
+console.log("sonuc sali---",GrafSali_Ekim_Aralik)
+console.log("sonuc carsamba---",GrafCarsamba_Ekim_Aralik)
+
 
 const arrayPazartesiFirst = GrafPazartesi_Ocak_Mart[0]?.miktar;
 const arraySaliFirst      = GrafSali_Ocak_Mart[0]?.miktar;
