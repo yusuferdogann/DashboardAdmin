@@ -453,8 +453,8 @@ var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisN
 var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'7/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'8/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-console.log("sonuc---",GrafPazartesi_Ekim_Aralik)
-console.log("sonuc sali---",GrafSali_Ekim_Aralik)
+console.log("sonuc------------",GrafPazartesi_Ekim_Aralik)
+console.log("sonuc sali-------",GrafSali_Ekim_Aralik)
 console.log("sonuc carsamba---",GrafCarsamba_Ekim_Aralik)
 
 
@@ -511,20 +511,20 @@ const ReportPeriodData = asyncErrorWrapper(async(req,res,next)=>{
   const tesisName = req.app.locals.data.tesisName
 
 
-  var ReportPeriod_Ocak_Mart1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Nisan_Haziran1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Temmuz_Eylul1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Ekim_Aralik1  = await ScopeModel.aggregate([{$match : {title:'SCOPE-1',tesis: tesisName, situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ocak_Mart1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Ocak - Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Nisan - Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul1 = await ScopeModel.aggregate([{$match : {title:'SCOPE-1', tesis: tesisName, situation: "Temmuz - Eylül"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik1  = await ScopeModel.aggregate([{$match : {title:'SCOPE-1',tesis: tesisName, situation: "Ekim - Aralık"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-  var ReportPeriod_Ocak_Mart2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Nisan_Haziran2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Temmuz_Eylul2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Ekim_Aralik2  = await ScopeModel.aggregate([{$match : {title:'SCOPE-2',tesis: tesisName, situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ocak_Mart2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Ocak - Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Nisan - Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul2 = await ScopeModel.aggregate([{$match : {title:'SCOPE-2', tesis: tesisName, situation: "Temmuz - Eylül"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik2  = await ScopeModel.aggregate([{$match : {title:'SCOPE-2',tesis: tesisName, situation: "Ekim - Aralık"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
-  var ReportPeriod_Ocak_Mart3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Ocak-Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Nisan_Haziran3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Nisan-Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Temmuz_Eylul3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Temmuz-Eylul"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
-  var ReportPeriod_Ekim_Aralik3  = await ScopeModel.aggregate([{$match : {title:'SCOPE-3',tesis: tesisName, situation: "Ekim-Aralik"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ocak_Mart3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Ocak - Mart"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Nisan_Haziran3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Nisan - Haziran"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Temmuz_Eylul3 = await ScopeModel.aggregate([{$match : {title:'SCOPE-3', tesis: tesisName, situation: "Temmuz - Eylül"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
+  var ReportPeriod_Ekim_Aralik3  = await ScopeModel.aggregate([{$match : {title:'SCOPE-3',tesis: tesisName, situation: "Ekim - Aralık"}},{$group: {_id : null, miktar: {$sum:{$toInt:"$miktar"}}}}])
 
 
   res.json({
