@@ -8,7 +8,11 @@ const index = (props) => {
 
     const [data, setData] = useState("")
     const { value,setFacilitSend,facilitySend } = userAuth();
-
+// 
+   useEffect(()=>{
+ const localData = JSON.parse(localStorage.getItem('facilityInformation'))
+    setFacilitSend(localData)
+   },[])
     // const [city, setCity] = useState({ value3: '', value4: '' })
     const [facility, setFacility] = useState({ value5: '', value6: '' })
     const [sweet, setSweet] = useState('')
@@ -31,6 +35,8 @@ const index = (props) => {
     // const handleSetState = (e, value) => setState(value);
     // const handleSetCity = (e, value) => setDropCity(value);
 
+
+    console.log("facility-testing------------",facilitySend)
 
 
     const styles = {

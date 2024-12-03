@@ -22,6 +22,8 @@ const ChartThree: React.FC = () => {
   const [getResponse,setGetResponse] = useState()
   const {token} = userAuth()
   const [label,setLabel] = useState()
+  const [checkLoading,setCheckLoading] = useState()
+
   
 
   let sum = 0
@@ -48,6 +50,7 @@ const ChartThree: React.FC = () => {
     const fetchData = async () => {
         const dataResult = await get('/getfacility',config);
         const getDonutData = await get('/getfacilitygraficdata',config);
+        setCheckLoading(getDonutData)
 
         const responseResult = dataResult
         // console.log("getFacility------------------------------",responseResult?.data.data)
@@ -218,12 +221,14 @@ const options: ApexOptions = {
 
       <div className="mb-2">
         <div id="chartThree" className="mx-auto flex justify-center">
-          <ReactApexChart
+         
+          {checkLoading?.status === 200 ? <ReactApexChart
             options={options}
             series={donutData?.series}
-            
             type="donut"
-          />
+            height={350}
+    
+          /> : 'Grafik Verileri Yükleniyor...'}
         </div>
       </div>
 

@@ -109,6 +109,7 @@ const options: ApexOptions = {
 const ChartOne: React.FC = () => {
 
   const {token} = userAuth()
+  const [checkLoading,setCheckLoading] = useState()
   // const [result,setResult] = useState()
   const [result,setResult] = useState({
     series: [
@@ -139,6 +140,7 @@ const ChartOne: React.FC = () => {
 
           const fetchData = async () => {
             const dataResult = await get('/getgraficdata',config);
+            setCheckLoading(dataResult)
             console.log("result-data---------",dataResult?.data?.data)
             let Scope1 = dataResult?.data.data?.Scope1GrafikData
             let Scope2 = dataResult?.data.data?.Scope2GrafikData
@@ -225,12 +227,16 @@ const ChartOne: React.FC = () => {
 
       <div>
         <div id="chartOne" className="-ml-5">
-          <ReactApexChart
+          
+
+{checkLoading?.status === 200 ? <ReactApexChart
             options={options}
             series={result?.series}
             type="area"
             height={350}
-          />
+            style={{height:'350px'}}
+    
+          /> : 'Grafik Verileri Yükleniyor...'}
         </div>
       </div>
     </div>

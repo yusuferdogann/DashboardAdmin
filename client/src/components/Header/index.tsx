@@ -11,7 +11,8 @@ import { userAuth } from '../../auth/userAuth';
 const Header = (props) => {
 
   const {token,user,setCheckSpinner,checkSpinner} = userAuth()
-
+  const localData = JSON.parse(localStorage.getItem('facilityInformation'))
+  console.log("header-test------",localData?.facilityname)
   return (
     <header className={checkSpinner ? '' : 'sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none'}>
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -67,6 +68,9 @@ const Header = (props) => {
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
+              {/* <h3>AKTİF TESİS</h3> */}
+            <i style={{ fontSize:'20px',color:localData?.facilityname === undefined ? '#adb4b6' : "#3de846" }} className=" fas fa-industry" ></i>
+            <span className='ms-3'>{localData?.facilityname ? localData?.facilityname : 'Tesis Seçilmedi'}</span>
               {/* <button className="absolute left-0 top-1/2 -translate-y-1/2">
                 <svg
                   className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"

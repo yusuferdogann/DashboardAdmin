@@ -92,6 +92,51 @@
   display: block;
   
 }
+
+/* glow button backgroud */
+
+
+.glowing-outline {
+  /* font-size: 24px; */
+  /* font-weight: bold; */
+  /* color: #ffffff; */
+  /* padding: 10px 20px; */
+  /* text-align: center; */
+  border: 3px solid transparent;
+  border-radius: 10px;
+  position: relative;
+  /* background-color: #2a2a2a; */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  transition: 0.5s;
+  
+}
+
+.glowing-outline:before,
+.glowing-outline:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 3px solid #00ff00;
+  box-shadow: 0 0 5px #00ff00, 0 0 5px #00ff00, 0 0 5px #00ff00, 0 0 5px #00ff00;
+  opacity: 0;
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.glowing-outline:before {
+  filter: blur(10px);
+}
+
+.glowing-outline:before,
+.glowing-outline:after {
+  opacity: 1;
+}
+
+/* --------------------- */
 .rcsd.rcsd-dropdown{
   width: 360px !important;
 }

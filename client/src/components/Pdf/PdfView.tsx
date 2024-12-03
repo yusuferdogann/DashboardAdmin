@@ -39,7 +39,7 @@ const PdfView = () => {
                 console.log("reporttotal--------------",periodData?.KAPSAM1)
 
                 console.log("report---------------",periodData?.KAPSAM3)
-                setCheckStatus(reportperioddata?.status)
+                setCheckStatus(reportperioddata)
                 setReportData(dataResult.data.data)
                 // console.log("RESULT---------------",reportData?.CardScope3[0]?.miktar)
               }
@@ -72,7 +72,7 @@ const PdfView = () => {
     var object = JSON.parse(val);
     return (
     <>
-              {facilitySend?.facilityname &&  checkStatus ? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Yukleniyor..."}  
+              {  checkStatus?.status === 200 ? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Yukleniyor..."}  
 
         <div style={{visibility:'hidden'}}>
 

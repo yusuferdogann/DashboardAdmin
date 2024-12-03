@@ -17,7 +17,7 @@ const ECommerce: React.FC = () => {
 
   const {token} = userAuth()
   const [result,setResult] = useState()
-  
+  const [checkLoading,setCheckLoading] = useState()
   useEffect(()=>{
     const config = {
       headers:{
@@ -30,6 +30,7 @@ const ECommerce: React.FC = () => {
             const dataResult = await get('/getcardgraficdata',config);
             console.log("result-data",dataResult?.data?.data)
             setResult(dataResult?.data?.data)
+            setCheckLoading(dataResult)
             // console.log("RESULT---------------",result?.CardScope3[0]?.miktar)
           }
           fetchData()
@@ -46,7 +47,7 @@ const ECommerce: React.FC = () => {
     <>
       <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats
-         title = {result?.CardScope1[0]?.miktar?.toFixed(2)}
+         title = {checkLoading?.status === 200 ? result?.CardScope1[0]?.miktar?.toFixed(2) : 'Yükleniyor...'}
           total="KAPSAM 1"
           color='black'
           birim=' /tonCo2e'
@@ -57,7 +58,7 @@ const ECommerce: React.FC = () => {
          <img src={Image1} alt="" />
         </CardDataStats>
         <CardDataStats 
-         title = {result?.CardScope2[0]?.miktar?.toFixed(2)}  
+         title = {checkLoading?.status === 200 ? result?.CardScope2[0]?.miktar?.toFixed(2) : 'Yükleniyor...' }  
          total="KAPSAM 2" 
         color='black'
         birim=' /tonCo2e'
@@ -69,7 +70,7 @@ const ECommerce: React.FC = () => {
         <img src={Image3} alt="" />
         </CardDataStats>
         <CardDataStats  
-          title = {result?.CardScope3[0]?.miktar?.toFixed(2)}  
+          title = {checkLoading?.status === 200 ?  result?.CardScope3[0]?.miktar?.toFixed(2) : 'Yükleniyor...'}  
         birim=' /tonCo2e'
          total="KAPSAM 3"
          color='black'

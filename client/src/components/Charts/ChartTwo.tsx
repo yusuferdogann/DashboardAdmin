@@ -74,6 +74,7 @@ const options: ApexOptions = {
 const ChartTwo: React.FC = () => {
 
   const {token} = userAuth()
+  const [checkLoading,setCheckLoading] = useState()
   const [twoGrafic,setTwoGrafic] = useState({
     series: [
       {
@@ -103,6 +104,7 @@ const ChartTwo: React.FC = () => {
           };
     const fetchData = async () => {
       const dataGraficTwoResult = await get('/getweekgraficdata',config);
+      setCheckLoading(dataGraficTwoResult)
       let FirstPeriod = dataGraficTwoResult?.data?.data?.Ocak_Mart;
       let SecoundPeriod = dataGraficTwoResult?.data?.data?.Nisan_Haziran;
       let ThirdPeriod = dataGraficTwoResult?.data?.data?.Temmuz_Eylul;
@@ -189,13 +191,13 @@ const ChartTwo: React.FC = () => {
 
       <div>
         <div id="chartTwo" className="ml-2 -mb-9">
-          <ReactApexChart
+          {checkLoading?.status === 200 ? <ReactApexChart
             options={options}
             series={twoGrafic?.series}
             type="bar"
             height={350}
     
-          />
+          /> : 'Grafik Verileri Yükleniyor...'}
         </div>
       </div>
     </div>
