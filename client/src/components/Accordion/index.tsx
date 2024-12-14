@@ -85,7 +85,9 @@ const AccordionCustomIcon = () => {
           name: "DOGRUDAN SIZMA KACAK EMISYONU",
           short: ['dogrudan'],
           // birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
-          birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R601','R601a'],
+          // birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R601','R601a'],
+          birim: [  'CO2','R134a1', 'R410a',  'HFC32', 'R601','R601a'],
+
 
           cities: ["Su Sebili", "Buzdolabi", "Chiller", "Klima", "Yangın Söndürme Tüpü", "Endüstriyel Soğutucu"],
           units: ['kg','m3']
@@ -1049,8 +1051,8 @@ Data.map((value)=>{
     else if(baslik1 === 'SCOPE-1' &&  subtitle === 'HAREKETLI YANMA'){
       setSavedData({ 
         tarih:datetime,
-        title: '', 
-        subtitle: '', 
+        title: 'SCOPE-1', 
+        subtitle: 'HAREKETLI YANMA', 
         kaynak: '', 
         birim: '', 
         miktar:savedData?.miktar,
@@ -1069,11 +1071,11 @@ Data.map((value)=>{
  
     }
     
-    else if(baslik2 === 'SCOPE-2' ){
+    else if(baslik2 === 'SCOPE-2' && subtitle === 'Satın Alınan Enerji'){
       setSavedData({ 
         tarih:datetime,
-        title: '', 
-        subtitle: '', 
+        title: 'SCOPE-2', 
+        subtitle: 'Satın Alınan Enerji', 
         kaynak: '', 
         birim: '', 
         miktar:savedData?.miktar,
@@ -1091,12 +1093,12 @@ Data.map((value)=>{
 
  
     }
-    else if(subtitle==='DOGRUDAN SIZMA KACAK EMISYONU'){
+    else if(baslik1 === 'SCOPE-1' && subtitle === 'DOGRUDAN SIZMA KACAK EMISYONU'){
 
       setSavedData({
           tarih:datetime,
-          title: savedData?.title, 
-          subtitle: savedData?.subtitle, 
+          title: 'SCOPE-1 change data', 
+          subtitle: 'DOGRUDAN SIZMA KACAK EMISYONU', 
           kaynak: savedData?.kaynak, 
           birim: savedData?.birim, 
           miktar: savedData?.miktar,
@@ -1462,7 +1464,7 @@ const handleValidation = async (event)=>{
         }
     
       
-        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === ''){
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === '' || savedData.situation === ''){
           const formValues = {
             kaynak:'',
             miktar:'',
@@ -1576,42 +1578,81 @@ const handleValidation = async (event)=>{
             }
           };
         
-          const funcMiktar =  savedData?.miktar
+          const funcMiktar =  savedData?.miktar;
           const funcKaynak =  savedData?.gasType;
           CalculateFuction(funcKaynak,funcMiktar)
-          console.log("gasType yok---------")
+          console.log("gasType var duzenlendi---------")
           console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
           console.log("funcKaynak---------",funcKaynak)
           console.log("funcMiktar---------",typeof(funcMiktar))
-      if(savedData?.kaynak === 'Buzdolabi'){setCalculateDirecly(0.1 * CalculateFuction(funcKaynak,funcMiktar))}
-      if(savedData?.kaynak === 'Klima'){setCalculateDirecly(1 * CalculateFuction(funcKaynak,funcMiktar))}
-      if(savedData?.kaynak === 'Su Sebili'){setCalculateDirecly(0.1 * CalculateFuction(funcKaynak,funcMiktar))}
-      if(savedData?.kaynak === 'Endüstriyel Soğutucu'){setCalculateDirecly(7 * CalculateFuction(funcKaynak,funcMiktar))}
-      if(savedData?.kaynak === 'Chiller'){setCalculateDirecly(2 * CalculateFuction(funcKaynak,funcMiktar))}
-      const savedDataGas =  { 
-       tarih:datetime,
-       title: savedData?.title, 
-       subtitle: savedData?.subtitle, 
-       kaynak: savedData?.kaynak, 
-       birim: savedData?.birim, 
-       miktar: calculateDirecly?.toFixed(2),
-       ulke:facilitySend?.country,
-       sehir:facilitySend?.city,
-       ilce:facilitySend?.state,
-       tesis:facilitySend?.facilityname,
-       situation:savedData?.situation,
-       gasType:savedData?.gasType
-         
+          console.log("kaynak------",savedData?.kaynak)
+      // const Buzdolabi = savedData?.kaynak 
+      // const Klima     = savedData?.kaynak 
+      // const Su_Sebili = savedData?.kaynak 
+      // const Endüstriyel_Soğutucu = savedData?.kaynak 
+      // const Chiller   = savedData?.kaynak 
+      const funcDeger = savedData?.kaynak;
+        if(funcDeger === 'Buzdolabi' || funcDeger === 'Su Sebili' ){
+          // return 0.1 * CalculateFuction(funcKaynak,funcMiktar)
+          var savedDataGas =  { 
+            gasType:savedData?.gasType,
+            tarih:datetime,
+            title: savedData?.title, 
+            subtitle: savedData?.subtitle, 
+            kaynak: savedData?.kaynak, 
+            birim: savedData?.birim, 
+            miktar:0.1 * CalculateFuction(funcKaynak,funcMiktar),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:savedData?.situation,
+           }
         }
+        if(funcDeger === 'Endüstriyel Soğutucu' ){
+          var savedDataGas =  { 
+            gasType:savedData?.gasType,
+            tarih:datetime,
+            title: savedData?.title, 
+            subtitle: savedData?.subtitle, 
+            kaynak: savedData?.kaynak, 
+            birim: savedData?.birim, 
+            miktar:7 * CalculateFuction(funcKaynak,funcMiktar),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:savedData?.situation,
+           }
+          // return 7 * CalculateFuction(funcKaynak,funcMiktar)
+        }
+        if(funcDeger === 'Chiller' ){
+          var savedDataGas =  { 
+            gasType:savedData?.gasType,
+            tarih:datetime,
+            title: savedData?.title, 
+            subtitle: savedData?.subtitle, 
+            kaynak: savedData?.kaynak, 
+            birim: savedData?.birim, 
+            miktar:2 * CalculateFuction(funcKaynak,funcMiktar),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:savedData?.situation,
+           }
+          // return 2 * CalculateFuction(funcKaynak,funcMiktar)
+        }
+      
+      
 
         
-        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === '' || savedData.situation === '' ){
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === '' || savedData.situation === '' || savedData.gasType === '' ){
           const formValues = {
             kaynak:'',
             miktar:'',
             birim:'',
-            situation:'',
-            gasType:''
+            situation:''
           }
           setFormErrors(validate(formValues));
         }
@@ -1633,13 +1674,14 @@ const handleValidation = async (event)=>{
         sehir:facilitySend?.city,
         ilce:facilitySend?.state,
         tesis:facilitySend?.facilityname,
-        situation:''
+        situation:'',
+        gasType:''
        })
        
         }
 
       }
-       else if(baslik2 ==='SCOPE-2'){
+       else if(baslik2 ==='SCOPE-2' && subtitle === "Satın Alınan Enerji"){
         const config = {
           headers:{
               "Content-Type":"application/json",
@@ -2002,7 +2044,7 @@ console.log(listData)
 
         {
           change === 4 ? <div className="donem mt-7 ">
-          <select className={styles.select.normal} name='situation' value={savedData.situation}  onChange={(event) => changeData(event)}>
+          <select className={styles.select.normal} name='situation' value={savedData?.situation}  onChange={(event) => changeData(event)}>
             <option>Lütfen kayıt için dönem girin</option>
             <option value='Ocak - Mart'>Ocak - Mart</option>
             <option value='Nisan - Haziran'>Nisan - Haziran</option>
@@ -2160,9 +2202,9 @@ console.log(listData)
                             <th scope="col" className="px-6 py-3">
                               Miktar
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center w-0">
+                            {/* <th scope="col" className="px-6 py-3 text-center w-0">
                               Düzenle
-                            </th>
+                            </th> */}
                             <th scope="col" className="px-6 py-3 text-center w-0">
                               Sil
                             </th>
@@ -2183,13 +2225,13 @@ console.log(listData)
                                 <td className="px-6 py-4">
                                 {arac?.miktar}
                                 </td>
-                                <td className="px-6 py-4 text-center">
+                                {/* <td className="px-6 py-4 text-center">
                                 <button className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                                     <span className="relative px-2 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
                                     Duzenle
                                     </span>
                                 </button>
-                                </td>
+                                </td> */}
                                 <td class="px-6 py-4 text-center">
                                 <button onClick={(event)=>DeleteScope(event,arac)} className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                                     <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">

@@ -110,6 +110,24 @@
   transition: 0.5s;
   
 }
+.logotextmini{
+  letter-spacing: 0px;
+  color: linear-gradient(to right, red, yellow);
+  background: linear-gradient(to right, #00ff8e, #00a0fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 16px;
+  font-weight: 800;
+}
+.logotext{
+  letter-spacing: 3px;
+  color: linear-gradient(to right, red, yellow);
+  background: linear-gradient(to right, #00ff8e, #00a0fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 20px;
+  font-weight: 800;
+}
 
 .glowing-outline:before,
 .glowing-outline:after {

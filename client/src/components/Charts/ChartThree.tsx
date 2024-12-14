@@ -20,7 +20,7 @@ const ChartThree: React.FC = () => {
   const [lastData,setLastData] = useState([{}])
   const [responseArray,setResponseArray] = useState()
   const [getResponse,setGetResponse] = useState()
-  const {token} = userAuth()
+  const {token,setChartThree} = userAuth()
   const [label,setLabel] = useState()
   const [checkLoading,setCheckLoading] = useState()
 
@@ -50,6 +50,8 @@ const ChartThree: React.FC = () => {
     const fetchData = async () => {
         const dataResult = await get('/getfacility',config);
         const getDonutData = await get('/getfacilitygraficdata',config);
+        // console.log("dondon--------",getDonutData?.data?.data)
+        setChartThree(getDonutData?.data?.data)
         setCheckLoading(getDonutData)
 
         const responseResult = dataResult
@@ -90,6 +92,7 @@ const ChartThree: React.FC = () => {
       //  console.log("bismillah----------------",lastData)
         setReturnData(getDonutData?.data?.data)
         setThreeChartData(responseResult?.data?.data)
+        // console.log("yess----",getDonutData?.data?.data)
         setDonutData({
           series: getDonutData?.data?.data,
         })

@@ -181,6 +181,15 @@ export const CalculateFuction = (funcKaynak,funcMiktar) =>{
     // else if(funcKaynak === 'R600a'){
     //   return  (0.1  * 1300 * funcMiktar )
     // }
+    // R134a -
+    // R134a1
+    // R410a +
+    // CO2 +
+    // R32 -
+    // HFC32 +
+    // R601 +
+    // R601a +
+
     else if(funcKaynak === 'R410a'){
       return  (0.001  * 2088 * funcMiktar )
     }

@@ -8,6 +8,7 @@ import Image from "../../images/logo/sidebarlogodd.jpg"
 import { userAuth } from '../../auth/userAuth';
 import Report from "../../images/logo/report.png"
 import { post } from '../../server/Apiendpoint';
+import LogoCarbon from "../../images/logo/logorevize.png"
 
 
 interface SidebarProps {
@@ -894,7 +895,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Auth Pages --> */}
             </ul>
           </div>
-          
+          <NavLink
+                  target="_blank"
+                  to="https://carbonistan.vercel.app/"
+                  style={{position:'absolute',bottom:'3rem'}}
+                  className={`logotext group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                 <img src={LogoCarbon} style={{width:'20px'}} alt="Logo" />
+                  CARBONİSTAN
+                </NavLink>
         </nav>
         {/* <!-- Sidebar Menu --> */}
       </div>

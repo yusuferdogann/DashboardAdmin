@@ -1,27 +1,55 @@
 import { Input } from '@material-tailwind/react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import userThree from '../images/user/profile.webp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { userAuth } from '../auth/userAuth';
-import { post } from "../server/Apiendpoint"
+import { post,get } from "../server/Apiendpoint"
 import { handleSuccess } from '../common/utils/helpers';
 
 
 const Settings = () => {
-  const {setUser,user,value} = userAuth()
+  const {user,token} = userAuth();
+  const [settingData,setSettingData] = useState<State>({});
+// console.log("user----------",user)
 
-  const [data,setData] = useState({
+useEffect(()=>{
+  
+  const fetchData = async() => {
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+      }
+          };
+          const settingComeData = await get('/getfacilityinfo',config);
+          const summarySetting = settingComeData?.data?.data;
+          // console.log("sumsumsum",summarySetting)
+          localStorage.setItem("facilityInfoDetail",JSON.stringify(summarySetting))
+          // console.log("selam settings----",settingComeData);
+          setSettingData(settingComeData)
+
+
+  }
+  fetchData()
+
+},[])
+
+const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
+
+
+let [data,setData] = useState({
     // name:user.username,
-    companyName:value.company_info[0].company_name,
-    cknNumber:value.company_info[0].cknNumber,
-    companyNumber:value.company_info[0].companyNumber,
-    companyMail:value.company_info[0].companyMail,
-    companyWebsite:value.company_info[0].companyWebsite,
-    productArea:value.company_info[0].productArea,
-    closeArea:value.company_info[0].closeArea,
-    openArea:value.company_info[0].openArea,
-    workerCount:value.company_info[0].workerCount,
-    totalArea:value.company_info[0].totalArea,
+    companyName:localData?.companyName,
+    cknNumber:localData?.cknNumber,
+    companyNumber:localData?.companyNumber,
+    companyMail:localData?.companyMail,
+    companyWebsite:localData?.companyWebsite,
+    productArea:localData?.productArea,
+    closeArea:localData?.closeArea,
+    openArea:localData?.openArea,
+    workerCount:localData?.workerCount,
+    totalArea:localData?.totalArea,
+    address:localData?.address,
   })
   const changeSave = (e)=>{
     e.preventDefault()
@@ -35,14 +63,20 @@ const Settings = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("VLUE",value)
+    const config = {
+      headers:{
+          "Content-Type":"application/json",
+          Authorization:"Bearer: "+token
+      }
+          };
     try {
-      const loginuser = await post("/settings", data)
+      const loginuser = await post("/facilityinfo",data,config)
       const response = loginuser.data
 
       if (response.success) {
 
         handleSuccess(response.message)
-        setUser(response.data.user)
+        // setUser(response.data.user)
 
       }
     } catch (error) {
@@ -64,7 +98,7 @@ const Settings = () => {
     //         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     //           <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
     //             <h3 className="font-medium text-black dark:text-white">
-    //               Şirket Bilgileri
+    //               Tesis Bilgileri
     //             </h3>
     //           </div>
     //           <div className="p-7">
@@ -75,7 +109,7 @@ const Settings = () => {
     //                     className="mb-3 block text-sm font-medium text-black dark:text-white"
     //                     htmlFor="fullName"
     //                   >
-    //                     Şirket Adı
+    //                     Tesis Adı
     //                   </label>
     //                   <div className="relative">
     //                     <span className="absolute left-4.5 top-4">
@@ -119,7 +153,7 @@ const Settings = () => {
     //                     className="mb-3 block text-sm font-medium text-black dark:text-white"
     //                     htmlFor="phoneNumber"
     //                   >
-    //                     Şirket Numarası
+    //                     Tesis Numarası
     //                   </label>
     //                   <input
     //                     className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -359,7 +393,7 @@ const Settings = () => {
     // </>
     <>
       <div className="mx-auto max-w-700">
-        <Breadcrumb pageName="Şirket Bilgileri" />
+        <Breadcrumb pageName="Tesis Bilgileri" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-12">
@@ -381,7 +415,7 @@ const Settings = () => {
                       {user?.username}
                     </span>
                     <span className="flex gap-2.5">
-                      Genel Mudur
+                      {user}
 
                     </span>
                   </div>
@@ -393,20 +427,20 @@ const Settings = () => {
               <div className="p-7 flex  " >
                <div className="sirketbilgileri basis-1/2 " >
                <div className="border-b w-125 border-stroke py-4  dark:border-strokedark">
-                <h3 className="font-bold text-black dark:text-white">
-                  ŞİRKET BİLGİLERİ
-                </h3>
+                <h1 className="font-bold text-xl text-black dark:text-white">
+                  TESİS BİLGİLERİ
+                </h1>
               </div>
                   <div className="w-5.5 sm:w-1/2">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="my-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
                     >
-                      Şirket Adı
+                      Tesis Adı
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-2">
-                        <svg
+                        {/* <svg
                           className="fill-current"
                           width="20"
                           height="20"
@@ -428,14 +462,27 @@ const Settings = () => {
                               fill=""
                             />
                           </g>
-                        </svg>
+                        </svg> */}
+                         <svg
+                  className="fill-current"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.6687 1.44374C17.1187 0.893744 16.4312 0.618744 15.675 0.618744H7.42498C6.25623 0.618744 5.25935 1.58124 5.25935 2.78437V4.12499H4.29685C3.88435 4.12499 3.50623 4.46874 3.50623 4.91562C3.50623 5.36249 3.84998 5.70624 4.29685 5.70624H5.25935V10.2781H4.29685C3.88435 10.2781 3.50623 10.6219 3.50623 11.0687C3.50623 11.4812 3.84998 11.8594 4.29685 11.8594H5.25935V16.4312H4.29685C3.88435 16.4312 3.50623 16.775 3.50623 17.2219C3.50623 17.6687 3.84998 18.0125 4.29685 18.0125H5.25935V19.25C5.25935 20.4187 6.22185 21.4156 7.42498 21.4156H15.675C17.2218 21.4156 18.4937 20.1437 18.5281 18.5969V3.47187C18.4937 2.68124 18.2187 1.95937 17.6687 1.44374ZM16.9469 18.5625C16.9469 19.2844 16.3625 19.8344 15.6406 19.8344H7.3906C7.04685 19.8344 6.77185 19.5594 6.77185 19.2156V17.875H8.6281C9.0406 17.875 9.41873 17.5312 9.41873 17.0844C9.41873 16.6375 9.07498 16.2937 8.6281 16.2937H6.77185V11.7906H8.6281C9.0406 11.7906 9.41873 11.4469 9.41873 11C9.41873 10.5875 9.07498 10.2094 8.6281 10.2094H6.77185V5.63749H8.6281C9.0406 5.63749 9.41873 5.29374 9.41873 4.84687C9.41873 4.39999 9.07498 4.05624 8.6281 4.05624H6.77185V2.74999C6.77185 2.40624 7.04685 2.13124 7.3906 2.13124H15.6406C15.9844 2.13124 16.2937 2.26874 16.5687 2.50937C16.8094 2.74999 16.9469 3.09374 16.9469 3.43749V18.5625Z"
+                    fill=""
+                  />
+                </svg>
                       </span>
                       <input
                       onChange={changeSave}
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="companyName"
-                        value={data.companyName}
+                        value={data?.companyName}
                         id="fullName"
                       />
                     </div>
@@ -452,7 +499,7 @@ const Settings = () => {
                       
                       <input
                       onChange={changeSave}
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="cknNumber"
                         id="fullName"
@@ -467,7 +514,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
                       htmlFor="phoneNumber"
                     >
-                      Şirket Numarası
+                      Telefon Numarası
                     </label>
                     <input
                     onChange={changeSave}
@@ -487,7 +534,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
                       htmlFor="emailAddress"
                     >
-                      Mail Adresi
+                      Mail
                     </label>
                     <div className="relative">
                       {/* <span className="absolute left-4.5 top-2">
@@ -516,8 +563,8 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="email"
                         name="companyMail"
                         id="emailAddress"
                         value={data.companyMail}
@@ -532,7 +579,7 @@ const Settings = () => {
                       className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
                       htmlFor="emailAddress"
                     >
-                      Web Adresi
+                      Website
                     </label>
                     <div className="relative">
                       {/* <span className="absolute left-4.5 top-2">
@@ -561,11 +608,55 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
                         id="emailAddress"
                         name='companyWebsite'
                         value={data.companyWebsite}
+                        onChange={changeSave}
+                       
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-1/2 mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
+                      htmlFor="emailAddress"
+                    >
+                      Adres
+                    </label>
+                    <div className="relative">
+                      {/* <span className="absolute left-4.5 top-2">
+                        <svg
+                          className="fill-current"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g opacity="0.8">
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
+                              fill=""
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
+                              fill=""
+                            />
+                          </g>
+                        </svg>
+                      </span> */}
+                      <input
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                        id="address"
+                        name='address'
+                        value={data.address}
                         onChange={changeSave}
                        
                       />
@@ -576,14 +667,14 @@ const Settings = () => {
                </div>
                   
               <div className='tesisbilgisi basis-1/2'>
-              <div className="border-b w-125 border-stroke py-4  dark:border-strokedark">
-                <h3 className="font-bold text-black dark:text-white">
+              <div className="border-b w-125 border-stroke  mt-7 py-4  dark:border-strokedark">
+                {/* <h3 className="font-bold text-black dark:text-white">
                   TESİS BİLGİLERİ
-                </h3>
+                </h3> */}
               </div>
                   <div className="mb-5.5">
                     <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      className="my-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
                     >
                       Üretim / Faliyet Alanı
@@ -617,9 +708,8 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                                              onChange={changeSave}
-
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        onChange={changeSave}
+                        className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="productArea"
                         id="emailAddress"
@@ -663,8 +753,8 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
                         name="closeArea"
                         id="emailAddress"
                         value={data.closeArea}
@@ -709,8 +799,8 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
                         name="openArea"
                         id="emailAddress"
                         value={data.openArea}
@@ -754,8 +844,8 @@ const Settings = () => {
                         </svg>
                       </span> */}
                       <input
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
+                      className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
                         name="workerCount"
                         id="emailAddress"
                         value={data.workerCount}
@@ -800,7 +890,7 @@ const Settings = () => {
                       </span> */}
                       <input
                         onChange={changeSave}
-                        className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="totalArea"
                         id="emailAddress"
@@ -825,7 +915,6 @@ const Settings = () => {
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                       type="submit"
-                      onClick={(e)=>changeSave(e)}
                     >
                       Kaydet
                     </button>

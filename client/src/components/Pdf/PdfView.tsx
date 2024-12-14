@@ -21,7 +21,8 @@ const PdfView = () => {
     var datetime =    currentdate.getDate() + "/"
                     + (currentdate.getMonth()+1)  + "/" 
                     + currentdate.getFullYear()  
-
+    const localData = localStorage.getItem("Facilityname")
+    console.log("localData-----",localData)
     useEffect(()=>{
         const config = {
           headers:{
@@ -74,7 +75,9 @@ const PdfView = () => {
     <>
               {  checkStatus?.status === 200 ? <Button onClick={convertToPdf} color="blue" variant="gradient">Rapor Al</Button> : "Yukleniyor..."}  
 
-        <div style={{visibility:'hidden'}}>
+        <div 
+        style={{visibility:'hidden'}}
+        >
 
 <div ref={contentRef}>
             <div >
@@ -86,7 +89,7 @@ const PdfView = () => {
                 <span className='font-bold'>Rapor Tarihi: {datetime}</span>
             </div>
             <hr className='my-4' style={{ height: '2px solid black' }} />
-            <span className='font-bold text-2xl'>ŞİRKET İSMİ: CARBONISTAN</span><h1 className='mt-2'> </h1>
+            <span className='font-bold text-xl'>Tesis İsmi: {localData}</span><h1 className='mt-2'> </h1>
             <div className="relative overflow-x-auto mt-5">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

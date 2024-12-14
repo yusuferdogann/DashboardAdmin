@@ -36,7 +36,7 @@ const index = (props) => {
     // const handleSetCity = (e, value) => setDropCity(value);
 
 
-    console.log("facility-testing------------",facilitySend)
+    // console.log("facility-testing------------",facilitySend)
 
 
     const styles = {

@@ -109,7 +109,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                Şirket Bilgileri
+                Tesis Bilgileri
               </Link>
             </li>
             {/* <li>
