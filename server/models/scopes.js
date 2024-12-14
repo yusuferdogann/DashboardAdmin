@@ -45,6 +45,9 @@ const UserSchema = new Schema({
    plaka: {
     type: String,
   },
+  gasType:{
+    type:String,
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     required: true,

@@ -21,7 +21,7 @@ const {getAccessToRoute} = require("../Middleware/authorization/auth")
 const express = require('express')
 // const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
 const updateCompanyInfo = require('../Middleware/companyInfo/companyInfo')
-const {DashboardWeekGrafic,DeletedFacility,updateFacility,addedFacility,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope,deleteFacility, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
+const {DashboardWeekGrafic,DeletedFacility,updateFacility,FacilitySaveInfo,addedFacility,GetFacilityInfo,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope,deleteFacility, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
 
 const routers = express.Router()
 
@@ -48,6 +48,8 @@ routers.get("/getfacility",getAccessToRoute,filterFacilityByUserId)
 
 routers.get("/getamount",getAccessToRoute,filterAmountByUserId)
 routers.post("/getsummarydata",getAccessToRoute,summaryFilterData)
+routers.post("/facilityinfo",getAccessToRoute,FacilitySaveInfo)
+routers.get("/getfacilityinfo",getAccessToRoute,GetFacilityInfo)
 
 routers.get("/getgraficdata",getAccessToRoute,DashboardMounthGrafic)
 
@@ -57,7 +59,7 @@ routers.get("/getcardgraficdata",getAccessToRoute,DashboardScopeGrafic)
 
 routers.get("/getweekgraficdata",getAccessToRoute,DashboardWeekGrafic)
 
-routers.post("/deletefacility",getAccessToRoute,DeletedFacility)
+routers.post("/deleftefacility",getAccessToRoute,DeletedFacility)
 routers.post("/getsummarysubdata",getAccessToRoute,summaryFilterSubData)
 
 

@@ -1,7 +1,9 @@
 const asyncErrorWrapper = require("express-async-handler");
 const Usermodels = require("../../models/User");
 const ScopeModel = require("../../models/scopes");
-const FacilityModel = require("../../models/facility")
+const FacilityModel = require("../../models/facility");
+const FacilityInfoModel = require("../../models/facilitiyInfo")
+
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 const express = require('express');
@@ -73,12 +75,12 @@ const deleteFacility = asyncErrorWrapper(async (req, res, next) => {
 
 const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
 
-  const {tesisName} = req.body;
+  const {tesisName,tesisNo} = req.body;
 
   req.app.locals.data = req.body;
 
 
-  // console.log("get name--------",globalVariable)
+  console.log("get name--------",req.body)
 
   res.json({
     success:true,
@@ -349,7 +351,10 @@ const DashboardFacilityGrafic = asyncErrorWrapper(async(req,res,next)=>{
 })
 
 const DashboardScopeGrafic = asyncErrorWrapper(async(req,res,next)=>{
+  app.locals.data = {};
 
+
+  globalThis.globalVariable;
   // const {id} = req.user.id
   // console.log('id-----------------',req.user.id)
   // console.log("Scope-----------",JSON.stringify(req.app.locals.data.tesisName) )
@@ -421,41 +426,41 @@ const lightThird = "Temmuz - Eylül";
 const lightFour = "Ekim - Aralık";
 
 
-var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'2/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'3/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'4/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'5/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'6/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'7/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'8/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'9/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'10/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCarsamba_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'11/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPersembe_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'12/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'13/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'14/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'15/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'2/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'3/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'4/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'5/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'6/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'7/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'8/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'9/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'10/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'11/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'12/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'13/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'14/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'15/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'2/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'3/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'4/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'5/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'6/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'7/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'8/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'9/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'10/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'11/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'12/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'13/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'14/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'15/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'2/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'3/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'4/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'5/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'6/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'7/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'8/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'9/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'10/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'11/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'12/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'13/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'14/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'15/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-console.log("sonuc------------",GrafPazartesi_Ekim_Aralik)
-console.log("sonuc sali-------",GrafSali_Ekim_Aralik)
-console.log("sonuc carsamba---",GrafCarsamba_Ekim_Aralik)
+// console.log("sonuc------------",GrafPazartesi_Ekim_Aralik)
+// console.log("sonuc sali-------",GrafSali_Ekim_Aralik)
+// console.log("sonuc carsamba---",GrafCarsamba_Ekim_Aralik)
 
 
 const arrayPazartesiFirst = GrafPazartesi_Ocak_Mart[0]?.miktar;
@@ -585,7 +590,66 @@ const DeletedScope = asyncErrorWrapper(async(req,res,next)=>{
   })
 })
 
+const FacilitySaveInfo = asyncErrorWrapper(async(req,res,next)=>{
+
+  const {companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address} = req.body;
+  const tesisName = req.app.locals.data.tesisName
+
+
+  console.log("tesisname---",tesisName)
+
+const FacilityIdResult = await FacilityModel.find({facilityname:tesisName})
+const resultId = FacilityIdResult[0]?._id
+  const savedData = await FacilityInfoModel.create({
+    companyName,
+    cknNumber,
+    companyNumber,
+    companyMail,
+    companyWebsite,
+    productArea,
+    closeArea,
+    openArea,
+    workerCount,
+    totalArea,
+    address,
+    facilityId:resultId
+  })
+  console.log("facility info--",resultId)
+
+  res.json({
+    success:true,
+    message:'facility info post operation successfuly',
+    data:savedData
+  })
+})
+
+const GetFacilityInfo = asyncErrorWrapper(async(req,res,next)=>{
+
+  const tesisNo = req.app.locals.data.tesisNo
+
+  const FacilityIdResult = await FacilityInfoModel.find({facilityId:tesisNo})
+
+const companyName = FacilityIdResult[0]?.companyName
+const cknNumber = FacilityIdResult[0]?.cknNumber
+const companyNumber = FacilityIdResult[0]?.companyNumber
+const companyMail = FacilityIdResult[0]?.companyMail
+const companyWebsite = FacilityIdResult[0]?.companyWebsite
+const productArea = FacilityIdResult[0]?.productArea
+const closeArea = FacilityIdResult[0]?.closeArea
+const openArea = FacilityIdResult[0]?.openArea
+const workerCount = FacilityIdResult[0]?.workerCount
+const totalArea = FacilityIdResult[0]?.totalArea
+const address = FacilityIdResult[0]?.address
+console.log("comcomcom------",companyName)
+  res.json({
+    success:true,
+    message:"ok tesisNo",
+    data:{companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address}
+  })
+})
+
 module.exports = {
+  GetFacilityInfo,
   updateFacility,
   addedFacility,
   deleteFacility,
@@ -603,5 +667,6 @@ module.exports = {
   ReportPeriodData,
   GetAllScopeByDateOfDaily,
   DeletedScope,
-  getOneFacility
+  getOneFacility,
+  FacilitySaveInfo
 };

@@ -106,8 +106,9 @@ const imageUpload = asyncErrorWrapper(async (req, res, next) => {
  
 
 const addScope = asyncErrorWrapper(async(req,res,next)=>{
-    const {yakitturu,plaka,birim,ilce,kaynak,miktar,sehir,situation,subtitle,tarih,tesis,title,ulke,type} = req.body;
+    const {yakitturu,plaka,birim,ilce,kaynak,miktar,sehir,situation,subtitle,tarih,tesis,title,ulke,type,gasType} = req.body;
     const savedData = await ScopeModel.create({
+      gasType,
       birim,
       ilce,
       kaynak,
