@@ -31,7 +31,7 @@ const Deneme = () => {
       </div>
       <h4 className="mt-4 font-bold">Şahsi Araçlar</h4>
       <div>
-        <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className=''>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Plaka</label>
             <input

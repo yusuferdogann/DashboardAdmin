@@ -156,7 +156,7 @@
 
 /* --------------------- */
 .rcsd.rcsd-dropdown{
-  width: 360px !important;
+  width: 360px ;
 }
 .ui.toast-container .toast-box {
   z-index:9999999999;
@@ -360,3 +360,31 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+@media only screen and (max-width: 567px){
+    .video-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: rgb(146, 143, 143);
+    font-size: 13px !important;
+    font-weight: 600;
+    font-family: 'Satoshi';
+  }
+  /* .rcsd.rcsd-dropdown .rcsd-input, 
+  .rcsd.rcsd-dropdown .rcsd-input input{
+    width: 70% !important;
+  }
+  .ulkesehir{
+    width:85% !important;
+  }
+  .rcsd.rcsd-dropdown > .menu{
+    width: 70% !important;
+  }  */
+  .rcsd.rcsd-dropdown{
+    width: 100% !important;
+  }
+}
+
+/* class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5" */

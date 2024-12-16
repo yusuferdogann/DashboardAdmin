@@ -1895,8 +1895,8 @@ console.log(listData)
       <Facility  />
       {/* <Language/> */}
       <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
-        <div className='grid grid-cols-3 gap-4'>
-          <div className="border border-slate-300 ">
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
+          <div className="border border-slate-300 " style={{width:'104%'}}>
             <div className="px-4">
               <div className="flex flex-col my-4">
                 <span className="title-dynamily">KAPSAM BAŞLIKLARI</span>
@@ -2083,7 +2083,7 @@ console.log(listData)
 
                       {/* form start */}
                       <form onSubmit={(event)=>handleValidation(event)}>
-                        <div className='grid grid-cols-4 gap-3 my-5'>
+                        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
                           <div className="block w-full">
                             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>{sub.name1 === '' ? 'Kaynak' : sub.name1}</label>
                             <select value={baslik1 || baslik2 ? savedData.kaynak :  savedDataScope3.kaynak} name={baslik1 || baslik2 ? "kaynak" :"kaynak"} id="cities" className={formErrors.kaynak ? styles.select.error : styles.select.normal}
@@ -2145,7 +2145,7 @@ console.log(listData)
                           </div>
                         </div>
                         <div className='flex justify-end mt-4'>
-                  <button type="submit" className="relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                  <button type="submit" className="relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-[#00ff8e] to-[#00a0fe] group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                     {
                       load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />

@@ -283,7 +283,7 @@ const AccordionCustomIcon = () => {
     <div >
       <Facility facilityData={getUlke} />
       <div className='border border-slate-300 rounded-2xl  p-5 '>
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
           <div className=" border border-slate-300 rounded-2xl bg-neutral-200">
             <div className="px-4">
               <div className="flex flex-col my-4">

@@ -200,7 +200,7 @@ const Facility = () => {
             </div> : null}
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
-            
+            {/* grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 */}
                 {
                     resultData.map((item, index) => (
                         <div >
@@ -214,7 +214,7 @@ const Facility = () => {
                                         {item._id === veri ? <input type='text' placeholder='' value={item.facilityname} onKeyDown={(event) => handleKeyDown(event)} name='facilityname' onChange={(event) => changeInputValue(event, item)} style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }} className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> : <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
                                         <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData} />
                                     </div>
-                                    <div onDoubleClick={() => getAllData(item)}>
+                                    <div onMouseDown={() => getAllData(item)}>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
                                             <div className='flex justify-between'><span className='font-normal'>Ulke:</span><span className='font-semibold'>{item.country}</span></div>
                                         </p>
@@ -285,18 +285,18 @@ const Facility = () => {
                                                 name='employeecount'
                                                 onChange={changeSave}
                                                 placeholder='Çalışan sayınızı girin'
-                                                className='w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
+                                                className='md:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
                                         </span></div>
                                     </p>
-                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
-                                        <div className='flex justify-between'><span className='font-normal'>Toplam Kapali Alan:</span><span className='font-normal'>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
+                                        <div className='flex justify-between'><span className='font-normal '>Toplam Kapali Alan:</span><span className='font-normal'>
                                             <input
                                                 type='number'
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
                                                 placeholder='Kapasitenizi girin  /m2' 
-                                                className='w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
+                                                className='md:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
                                         </span>
                                         </div>
                                     </p>
@@ -305,7 +305,7 @@ const Facility = () => {
 
                                             <div className='flex justify-between'>
                                                 <div> <span className='font-normal'>Ülke:</span><span className='font-semibold'></span></div>
-                                                <div className=''>
+                                                <div className='ulkesehir'>
                                                     <CountryDropdown
                                                         clearable
                                                         searchable
@@ -323,7 +323,7 @@ const Facility = () => {
 
                                             <div className='flex justify-between'>
                                                 <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
-                                                <div>
+                                                <div className='ulkesehir'>
                                                     <StateDropdown
                                                         clearable
                                                         placeHolder='Şehir seçin'
@@ -383,6 +383,7 @@ const Facility = () => {
                         <span>İptal Et</span>
                     </Button>
                     <Button
+                        className='relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-[#00ff8e] to-[#00a0fe] group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800'
                         variant="gradient"
                         color="green"
                         onClick={(e) => saveData(e)}
