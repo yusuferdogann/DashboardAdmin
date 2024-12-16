@@ -103,7 +103,7 @@ const AccordionCustomIcon = () => {
           id: 1,
           name: "Satın Alınan Enerji",
           cities: ["Elektrik"],
-          units: ['kWawt']
+          units: ['kW']
         },
       ],
     },
@@ -1706,7 +1706,7 @@ const handleValidation = async (event)=>{
          
         }
 
-        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === ''){
+        if(savedData.kaynak ==='' || savedData.miktar ==='' || savedData.birim === '' || savedData.situation === ''){
           const formValues = {
             kaynak:'',
             miktar:'',

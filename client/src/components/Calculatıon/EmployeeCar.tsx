@@ -259,15 +259,15 @@ const EmployeeCar = (props) => {
     </DatePicker> */}
     </div>
         <h4 className="mt-10 font-bold">Müşteri Ziyaretleri Sonucu Oluşan Emilsyonlar</h4>
-        <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
         <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
             <input
               type="text"
-              name='kaynak'
+              name='Kaynak'
               onChange={(e) => changeEmployee(e)} 
               className={formErrors.kaynak ? styles.select.error : styles.select.normal}
-              placeholder="kaynak girin"
+              placeholder="Kaynak girin"
             />
             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
           </div>

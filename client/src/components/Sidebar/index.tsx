@@ -111,7 +111,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between relative logoblock" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:image ? "" : '2px dashed white',height:"140px"}}>
+      <div className="flex items-center justify-between relative logoblock 2xsm:hidden" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:image ? "" : '2px dashed white',height:"140px"}}>
       
           
          
@@ -158,7 +158,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6 2xsm:mt-[5rem]">
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">

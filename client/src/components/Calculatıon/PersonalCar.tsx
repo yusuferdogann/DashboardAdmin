@@ -268,7 +268,7 @@ const PersonalCar = (props) => {
 
 
          <h4 className="mt-10 font-bold">Şahsi Araçlar</h4>
-        <div className='grid grid-cols-4 gap-3 my-5'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
             <input

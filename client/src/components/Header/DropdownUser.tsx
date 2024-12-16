@@ -39,7 +39,7 @@ const DropdownUser = () => {
           {/* <span className="block text-xs">FrontEnd Developer</span> */}
         </span>
 
-        <span className="h-12 w-12 rounded-full" style={{border:"1px solid #e8e8e8",overflow:"hidden"}}>
+        <span className="h-12 w-12 2xsm:h-8 2xsm:w-8 rounded-full" style={{border:"1px solid #e8e8e8",overflow:"hidden"}}>
           <img src={UserOne} alt="User"  />
         </span>
         {/* #e8e8e8 */}
