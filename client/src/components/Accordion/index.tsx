@@ -1899,14 +1899,14 @@ console.log(listData)
           <div className="border border-slate-300 " style={{width:'104%'}}>
             <div className="px-4">
               <div className="flex flex-col my-4">
-                <span className="title-dynamily">KAPSAM BAŞLIKLARI</span>
+                <span className="title-dynamily dark:text-white">KAPSAM BAŞLIKLARI</span>
                 {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
               </div>
               <hr />
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                <div className="flex">
+                <div className="flex ">
                   {open === 1 ? <div style={{ background: 'blue', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='SCOPE-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
+                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
                 </div>
 
                 <AccordionBody className='px-3' value={state}>
@@ -1930,7 +1930,7 @@ console.log(listData)
 
                 <div className="flex">
                   {open === 2 ? <div style={{ background: 'green', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='SCOPE-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 2
                   </AccordionHeader>
                 </div>
@@ -1954,7 +1954,7 @@ console.log(listData)
               <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
                 <div className="flex">
                   {open === 3 ? <div style={{ background: 'purple', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader onClick={changeCountry} value='SCOPE-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 3
                   </AccordionHeader>
                 </div>

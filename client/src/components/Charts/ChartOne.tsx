@@ -22,6 +22,9 @@ const options: ApexOptions = {
       left: 0,
       opacity: 0.1,
     },
+    zoom: {
+      enabled: false,
+    },
 
     toolbar: {
       show: false,

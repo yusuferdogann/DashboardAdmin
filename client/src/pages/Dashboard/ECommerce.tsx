@@ -45,12 +45,13 @@ const ECommerce: React.FC = () => {
 // AmountAll()
   return (
     <>
-      <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className=" grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 dark:bg-boxdark">
         <CardDataStats
          title = {checkLoading?.status === 200 ? result?.CardScope1[0]?.miktar?.toFixed(2) : 'Yükleniyor...'}
           total="KAPSAM 1"
           color='black'
           birim=' /tonCo2e'
+          // className = 'dark:border-gray-700 dark:bg-boxdark' 
 
           // rate="0.43%" 
           // levelUp

@@ -15,7 +15,7 @@ const options: ApexOptions = {
       show: false,
     },
     zoom: {
-      enabled: true,
+      enabled: false,
     },
   },
 
@@ -41,7 +41,7 @@ const options: ApexOptions = {
     bar: {
       horizontal: false,
       borderRadius: 0,
-      columnWidth: '25%',
+      columnWidth: '50%',
       borderRadiusApplication: 'end',
       borderRadiusWhenStacked: 'last',
     },
@@ -51,7 +51,9 @@ const options: ApexOptions = {
   },
 
   xaxis: {
-    categories: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'],
+    categories: ['Ocak-Mart', 'Nisan-Haziran', 'Temmuz-Eylül', 'Ekim-Aralık',''],
+    range:4
+  
   },
   legend: {
     position: 'top',
@@ -104,17 +106,18 @@ const ChartTwo: React.FC = () => {
           };
     const fetchData = async () => {
       const dataGraficTwoResult = await get('/getweekgraficdata',config);
+      console.log("karakilcik---",dataGraficTwoResult)
       setCheckLoading(dataGraficTwoResult)
       let FirstPeriod = dataGraficTwoResult?.data?.data?.Ocak_Mart;
       let SecoundPeriod = dataGraficTwoResult?.data?.data?.Nisan_Haziran;
       let ThirdPeriod = dataGraficTwoResult?.data?.data?.Temmuz_Eylul;
       let FourPeriod  = dataGraficTwoResult?.data?.data?.Ekim_Aralik;
-
+      // console.log("hece----",FourPeriod)
       setTwoGrafic({
         series: [
           {
             name: 'Ocak-Mart',
-            // data: [12,null,null,null,null,null,null]
+            // data:  [13, 23, 20, 8, 13, 27, 15],
             data: FirstPeriod,
           },
           {
