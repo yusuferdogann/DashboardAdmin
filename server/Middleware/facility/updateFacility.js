@@ -420,87 +420,80 @@ const DashboardWeekGrafic = asyncErrorWrapper(async(req,res,next)=>{
 // console.log("pazartsi--",JSON.stringify(newPazartesi))
 
 
-const lightFirst = "Ocak - Mart";
-const lightSecound = "Nisan - Haziran";
-const lightThird = "Temmuz - Eylül";
-const lightFour = "Ekim - Aralık";
+// const lightFirst = "Ocak - Mart";
+// const lightSecound = "Nisan - Haziran";
+// const lightThird = "Temmuz - Eylül";
+// const lightFour = "Ekim - Aralık";
 
 
-var GrafPazartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'16/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'17/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'18/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'19/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'20/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'21/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'16/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'17/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'18/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'19/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'20/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'21/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+// var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFirst,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Ocak_Mart  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: 'Ocak - Mart'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'16/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'17/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'18/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'19/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'20/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'21/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
-var GrafPazartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'16/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafSali_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'17/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCarsamba_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'18/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPersembe_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'19/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCuma_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'20/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafCumartesi_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'21/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
-var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+// var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightSecound,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Nisan_Haziran  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: 'Nisan - Haziran'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+
+
+// var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightThird,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Temmuz_Eylul  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: 'Temmuz - Eylül'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+
+
+
+// var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: lightFour,tarih:'22/12/2024'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
+var GrafPazar_Ekim_Aralik  = await ScopeModel.aggregate([{$match : {tesis: tesisName, situation: 'Ekim - Aralık'}},{$group: {_id : null, miktar: {$sum:"$miktar"}}}])
 
 // console.log("sonuc------------",GrafPazartesi_Ekim_Aralik)
 // console.log("sonuc sali-------",GrafSali_Ekim_Aralik)
 // console.log("sonuc carsamba---",GrafCarsamba_Ekim_Aralik)
 
-
-const arrayPazartesiFirst = GrafPazartesi_Ocak_Mart[0]?.miktar;
-const arraySaliFirst      = GrafSali_Ocak_Mart[0]?.miktar;
-const arrayCarsambaFirst  = GrafCarsamba_Ocak_Mart[0]?.miktar;
-const arrayPersembeFirst  = GrafPersembe_Ocak_Mart[0]?.miktar;
-const arrayCumaFirst      = GrafCuma_Ocak_Mart[0]?.miktar;
-const arrayCumartesiFirst = GrafCumartesi_Ocak_Mart[0]?.miktar;
+// const arrayPazartesiFirst = GrafPazartesi_Ocak_Mart[0]?.miktar;
+// const arraySaliFirst      = GrafSali_Ocak_Mart[0]?.miktar;
+// const arrayCarsambaFirst  = GrafCarsamba_Ocak_Mart[0]?.miktar;
+// const arrayPersembeFirst  = GrafPersembe_Ocak_Mart[0]?.miktar;
+// const arrayCumaFirst      = GrafCuma_Ocak_Mart[0]?.miktar;
+// const arrayCumartesiFirst = GrafCumartesi_Ocak_Mart[0]?.miktar;
 const arrayPazarFirst     = GrafPazar_Ocak_Mart[0]?.miktar;
 
-const arrayPazartesiSecound = GrafPazartesi_Nisan_Haziran[0]?.miktar;
-const arraySaliSecound      = GrafSali_Nisan_Haziran[0]?.miktar;
-const arrayCarsambaSecound  = GrafCarsamba_Nisan_Haziran[0]?.miktar;
-const arrayPersembeSecound  = GrafPersembe_Nisan_Haziran[0]?.miktar;
-const arrayCumaSecound      = GrafCuma_Nisan_Haziran[0]?.miktar;
-const arrayCumartesiSecound = GrafCumartesi_Nisan_Haziran[0]?.miktar;
+// const arrayPazartesiSecound = GrafPazartesi_Nisan_Haziran[0]?.miktar;
+// const arraySaliSecound      = GrafSali_Nisan_Haziran[0]?.miktar;
+// const arrayCarsambaSecound  = GrafCarsamba_Nisan_Haziran[0]?.miktar;
+// const arrayPersembeSecound  = GrafPersembe_Nisan_Haziran[0]?.miktar;
+// const arrayCumaSecound      = GrafCuma_Nisan_Haziran[0]?.miktar;
+// const arrayCumartesiSecound = GrafCumartesi_Nisan_Haziran[0]?.miktar;
 const arrayPazarSecound     = GrafPazar_Nisan_Haziran[0]?.miktar;
 
-const arrayPazartesiThird = GrafPazartesi_Temmuz_Eylul[0]?.miktar;
-const arraySaliThird      = GrafSali_Temmuz_Eylul[0]?.miktar;
-const arrayCarsambaThird  = GrafCarsamba_Temmuz_Eylul[0]?.miktar;
-const arrayPersembeThird  = GrafPersembe_Temmuz_Eylul[0]?.miktar;
-const arrayCumaThird      = GrafCuma_Temmuz_Eylul[0]?.miktar;
-const arrayCumartesiThird = GrafCumartesi_Temmuz_Eylul[0]?.miktar;
+// const arrayPazartesiThird = GrafPazartesi_Temmuz_Eylul[0]?.miktar;
+// const arraySaliThird      = GrafSali_Temmuz_Eylul[0]?.miktar;
+// const arrayCarsambaThird  = GrafCarsamba_Temmuz_Eylul[0]?.miktar;
+// const arrayPersembeThird  = GrafPersembe_Temmuz_Eylul[0]?.miktar;
+// const arrayCumaThird      = GrafCuma_Temmuz_Eylul[0]?.miktar;
+// const arrayCumartesiThird = GrafCumartesi_Temmuz_Eylul[0]?.miktar;
 const arrayPazarThird     = GrafPazar_Temmuz_Eylul[0]?.miktar;
 
-const arrayPazartesiFour = GrafPazartesi_Ekim_Aralik[0]?.miktar;
-const arraySaliFour      = GrafSali_Ekim_Aralik[0]?.miktar;
-const arrayCarsambaFour  = GrafCarsamba_Ekim_Aralik[0]?.miktar;
-const arrayPersembeFour  = GrafPersembe_Ekim_Aralik[0]?.miktar;
-const arrayCumaFour      = GrafCuma_Ekim_Aralik[0]?.miktar;
-const arrayCumartesiFour = GrafCumartesi_Ekim_Aralik[0]?.miktar;
+// const arrayPazartesiFour = GrafPazartesi_Ekim_Aralik[0]?.miktar;
+// const arraySaliFour      = GrafSali_Ekim_Aralik[0]?.miktar;
+// const arrayCarsambaFour  = GrafCarsamba_Ekim_Aralik[0]?.miktar;
+// const arrayPersembeFour  = GrafPersembe_Ekim_Aralik[0]?.miktar;
+// const arrayCumaFour      = GrafCuma_Ekim_Aralik[0]?.miktar;
+// const arrayCumartesiFour = GrafCumartesi_Ekim_Aralik[0]?.miktar;
 const arrayPazarFour     = GrafPazar_Ekim_Aralik[0]?.miktar;
 
 
-const Ocak_Mart     = [arrayPazartesiFirst,arraySaliFirst,arrayCarsambaFirst,arrayPersembeFirst,arrayCumaFirst,arrayCumartesiFirst,arrayPazarFirst];
-const Nisan_Haziran = [arrayPazartesiSecound,arraySaliSecound,arrayCarsambaSecound,arrayPersembeSecound,arrayCumaSecound,arrayCumartesiSecound,arrayPazarSecound];
-const Temmuz_Eylul = [arrayPazartesiThird,arraySaliThird,arrayCarsambaThird,arrayPersembeThird,arrayCumaThird,arrayCumartesiThird,arrayPazarThird];
-const Ekim_Aralik = [arrayPazartesiFour,arraySaliFour,arrayCarsambaFour,arrayPersembeFour,arrayCumaFour,arrayCumartesiFour,arrayPazarFour];
+// const Ocak_Mart     = [arrayPazartesiFirst,arraySaliFirst,arrayCarsambaFirst,arrayPersembeFirst,arrayCumaFirst,arrayCumartesiFirst,arrayPazarFirst];
+// const Nisan_Haziran = [arrayPazartesiSecound,arraySaliSecound,arrayCarsambaSecound,arrayPersembeSecound,arrayCumaSecound,arrayCumartesiSecound,arrayPazarSecound];
+// const Temmuz_Eylul = [arrayPazartesiThird,arraySaliThird,arrayCarsambaThird,arrayPersembeThird,arrayCumaThird,arrayCumartesiThird,arrayPazarThird];
+// const Ekim_Aralik = [arrayPazartesiFour,arraySaliFour,arrayCarsambaFour,arrayPersembeFour,arrayCumaFour,arrayCumartesiFour,arrayPazarFour];
 
+const Ocak_Mart     = [arrayPazarFirst,null,null,null,null,null,null];
+const Nisan_Haziran = [null,arrayPazarSecound,null,null,null,null,null];
+const Temmuz_Eylul  = [null,null,arrayPazarThird,null,null,null,null];
+const Ekim_Aralik   = [null,null,null,arrayPazarFour,null,null,null];
+
+// const Ocak_Mart = [arrayPazarFirst];
+// const Nisan_Haziran = [arrayPazarSecound];
+// const Temmuz_Eylul = [arrayPazarThird];
+// const Ekim_Aralik = [arrayPazarFour];
 
 
 
