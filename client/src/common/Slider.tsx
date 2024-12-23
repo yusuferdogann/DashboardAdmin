@@ -64,7 +64,7 @@ if(currentIndex>cards.length-3) {
           {
             newArr1.length===0 ? <div style={{height:"200px"}} className='h-full'><span className='text-center h-full flex  justify-center items-center text-lg '>Tesis bilgileri şuan için yok. Lütfen yeni bir tesis ekleyin</span></div> :
 
-            <div className="flex 2xsm:block grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
+            <div className="md:flex   grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5 ">
             {newArr1?.slice(currentIndex, currentIndex + 4).map((card, index) => (
                           
                            <div>

@@ -3,10 +3,8 @@ import html2pdf from 'html2pdf.js';
 import { userAuth } from "../../auth/userAuth"
 import { get } from '../../server/Apiendpoint';
 import CoverImage from '../../images/cover/revizecover.jpg'
-import {
-    Button,
-   
-  } from "@material-tailwind/react";
+import {Button} from "@material-tailwind/react";
+import { handleErrorForFacility } from '../../common/utils/helpers'
 
 const PdfView = () => {
     const contentRef = useRef(null);
@@ -24,6 +22,9 @@ const PdfView = () => {
     const localData = localStorage.getItem("Facilityname")
     console.log("localData-----",localData)
     useEffect(()=>{
+        if(localData === '' ||  !localData){
+            handleErrorForFacility("Lütfen rapor almak istediğiniz tesisi seçin") 
+        }
         const config = {
           headers:{
               "Content-Type":"application/json",
