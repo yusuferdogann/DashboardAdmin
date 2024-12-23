@@ -5,15 +5,21 @@ import { useEffect, useState } from 'react';
 import { userAuth } from '../auth/userAuth';
 import { post,get } from "../server/Apiendpoint"
 import { handleSuccess } from '../common/utils/helpers';
+import { handleErrorForFacility } from '../common/utils/helpers'
+
 
 
 const Settings = () => {
   const {user,token} = userAuth();
+  const [checkInput,setCheckInput] = useState(false)
   const [settingData,setSettingData] = useState<State>({});
-// console.log("user----------",user)
+  const localFacility = localStorage.getItem('Facilityname')
+console.log("user----------",localFacility)
 
 useEffect(()=>{
-  
+  if(localFacility){
+    setCheckInput(true)
+  }
   const fetchData = async() => {
     const config = {
       headers:{
@@ -52,12 +58,16 @@ let [data,setData] = useState({
     address:localData?.address,
   })
   const changeSave = (e)=>{
-    e.preventDefault()
-   setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-    console.log("result",data)
+
+     
+     e.preventDefault()
+     setData({
+        ...data,
+        [e.target.name]: e.target.value,
+      });
+      console.log("result",data)
+  
+
   }
   
   const handleSubmit = async (e) => {
@@ -85,6 +95,13 @@ let [data,setData] = useState({
     }
   };
 
+  const InputControl = () =>{
+    if(localFacility === '' || !localFacility){
+      handleErrorForFacility('Değişiklik yapmak için önce tesis seçmelisiniz.')
+      setCheckInput(false)
+    }
+    
+  }
 
 
 
@@ -424,14 +441,14 @@ let [data,setData] = useState({
               {/* Profil bilgileri */}
 
               
-              <div className="p-7 flex  " >
+              <div className="p-7 flex grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5 " >
                <div className="sirketbilgileri basis-1/2 " >
                <div className="border-b w-125 border-stroke py-4  dark:border-strokedark">
                 <h1 className="font-bold text-xl text-black dark:text-white">
                   TESİS BİLGİLERİ
                 </h1>
               </div>
-                  <div className="w-5.5 sm:w-1/2">
+                  <div className=" sm:w-1/2">
                     <label
                       className="my-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
@@ -484,11 +501,12 @@ let [data,setData] = useState({
                         name="companyName"
                         value={data?.companyName}
                         id="fullName"
+                        onMouseEnter={InputControl}
                       />
                     </div>
                   </div>
 
-                  <div className="w-5.5 sm:w-1/2 py-3">
+                  <div className=" sm:w-1/2 py-3">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
@@ -905,7 +923,7 @@ let [data,setData] = useState({
                
               </div>
               {/* BUTTON */}
-              <div className="flex justify-end gap-4.5 p-4">
+            {checkInput ?   <div className="flex justify-end gap-4.5 p-4">
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
@@ -918,7 +936,7 @@ let [data,setData] = useState({
                     >
                       Kaydet
                     </button>
-                  </div>
+                  </div> : null}
                   {/* BUTTON */}
             </div>
             </form>

@@ -14,9 +14,12 @@ module.exports = withMT({
       satoshi: ['Satoshi', 'sans-serif'],
     },
     screens: {
-      '2xsm': '375px',
+     '2xsm': '375px',
       xsm: '425px',
       sm:'430px',
+      md:'768px',
+      "max-sm":'640px',
+      lg:'1024px',
       '3xl': '2000px',
       ...defaultTheme.screens,
     },

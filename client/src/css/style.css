@@ -360,7 +360,9 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
-
+.summarybutton{
+  margin: 20px 20px;
+}
 @media only screen and (max-width: 567px){
     .video-title{
     display: flex;
@@ -371,6 +373,14 @@ span.flatpickr-weekday,
     font-size: 13px !important;
     font-weight: 600;
     font-family: 'Satoshi';
+  }
+  .summarybutton{
+    margin: 15px 0 !important;
+  }
+  .summarysubbutton{
+    display: block !important;
+    margin: 15px auto;
+    width: 80% !important;
   }
   /* .rcsd.rcsd-dropdown .rcsd-input, 
   .rcsd.rcsd-dropdown .rcsd-input input{

@@ -169,9 +169,9 @@ export const CalculateFuction = (funcKaynak,funcMiktar) =>{
     else if(funcKaynak === 'Elektrik'){
        return ((funcMiktar  / 1000) * 0.6345)
     }
-    else if(funcKaynak === 'Yangın Söndürme Tüpü'){
-      return  (4 * funcMiktar )
-    }
+    // else if(funcKaynak === 'Yangın Söndürme Tüpü'){
+    //   return  (4 * funcMiktar )
+    // }
     else if(funcKaynak === 'R22'){
       return  (0.001 * 1760 * funcMiktar )
     }

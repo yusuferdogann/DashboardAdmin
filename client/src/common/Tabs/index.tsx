@@ -265,19 +265,18 @@ const TabsDefault = () => {
                             {label}
                         </Tab>
                     ))}
-                   
                 </TabsHeader>
                 
                {
                 checksubtitle === true ? <>
-                 <div className="crazy " style={{ display: 'flex' }}>
+                 <div className="crazy xsm:margin-0  xl:flex  xsm:w-[100%]" >
                     {veri?.map((citiy, index) => (
-                        <button onClick={(e) => checkControlCarType(e, index)} style={open === index ? { padding: '10px', margin: '40px 40px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : { margin: '40px 40px', padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" key={index}>{citiy}</button>
+                        <button onClick={(e) => checkControlCarType(e, index)} style={open === index ? { padding: '10px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : {  padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] summarybutton bg-white duration-300 xsm:w-full 2xsm:m-[10px 0]  2xsm:w-full ease-in-out" key={index}>{citiy}</button>
                     ))}
                 </div>
-                <div className="crazy " style={{ display: 'flex' }}>
+                <div className="crazy ">
                     {veri2?.map((citiy, index) => (
-                        <button onClick={(e)=> checkSubButtonSelect(e,index)} style={subOpen === index ? { padding: '10px', margin: '40px 40px', borderRadius: "10px", color: 'white', background: '#c2c2c2' } : { margin: '40px 40px', padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] bg-white duration-300  ease-in-out" key={index}>{citiy}</button>
+                        <button onClick={(e)=> checkSubButtonSelect(e,index)} style={subOpen === index ? { padding: '10px',  borderRadius: "10px", color: 'white', background: '#c2c2c2' } : {  padding: '10px', borderRadius: "10px" }} className="table-backshadow hover:bg-[#6a6a6a1c] summarysubbutton bg-white duration-300 xsm:w-full  2xsm:w-full ease-in-out" key={index}>{citiy}</button>
                     ))}
                 </div> 
                

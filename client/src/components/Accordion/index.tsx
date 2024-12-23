@@ -1584,8 +1584,8 @@ const handleValidation = async (event)=>{
           console.log("gasType var duzenlendi---------")
           console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
           console.log("funcKaynak---------",funcKaynak)
-          console.log("funcMiktar---------",typeof(funcMiktar))
-          console.log("kaynak------",savedData?.kaynak)
+          // console.log("funcMiktar---------",typeof(funcMiktar))
+          // console.log("kaynak------",savedData?.kaynak)
       // const Buzdolabi = savedData?.kaynak 
       // const Klima     = savedData?.kaynak 
       // const Su_Sebili = savedData?.kaynak 
