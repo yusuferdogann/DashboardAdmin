@@ -14,12 +14,17 @@ const Settings = () => {
   const [checkInput,setCheckInput] = useState(false)
   const [settingData,setSettingData] = useState<State>({});
   const localFacility = localStorage.getItem('Facilityname')
+  const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
+
 console.log("user----------",localFacility)
 
 useEffect(()=>{
-  if(localFacility){
-    setCheckInput(true)
-  }
+  if(localFacility === '' ||  !localFacility){
+    handleErrorForFacility("Lütfen önce bilgilerini girmek istediğiniz tesisi seçin.") 
+}
+else{
+  setCheckInput(true)
+}
   const fetchData = async() => {
     const config = {
       headers:{
@@ -40,7 +45,6 @@ useEffect(()=>{
 
 },[])
 
-const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
 
 
 let [data,setData] = useState({

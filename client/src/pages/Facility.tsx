@@ -274,36 +274,36 @@ const Facility = () => {
                 <DialogBody>
                     <div className="grid grid-cols-1" >
                         <div>
-                            <div className="flex flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
+                            <div className="flex 2xsm:mt-[-12%] xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
                                 <div className="flex flex-col justify-between p-4 w-full leading-normal" >
 
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
-                                        <div className='flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
+                                        <div className='2xsm:block  xsm:flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
                                             <input
                                                 type='number'
                                                 value={data.employeecount}
                                                 name='employeecount'
                                                 onChange={changeSave}
                                                 placeholder='Çalışan sayınızı girin'
-                                                className='md:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
+                                                className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
                                         </span></div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
-                                        <div className='flex justify-between'><span className='font-normal '>Toplam Kapali Alan:</span><span className='font-normal'>
+                                        <div className='2xsm:block xsm:flex justify-between'><span className='font-normal '>Toplam Kapali Alan:</span><span className='font-normal'>
                                             <input
                                                 type='number'
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
                                                 placeholder='Kapasitenizi girin  /m2' 
-                                                className='md:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
+                                                className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
                                         </span>
                                         </div>
                                     </p>
                                     <div className="" >
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                            <div className='flex justify-between'>
+                                            <div className='2xsm:block  xsm:flex justify-between'>
                                                 <div> <span className='font-normal'>Ülke:</span><span className='font-semibold'></span></div>
                                                 <div className='ulkesehir'>
                                                     <CountryDropdown
@@ -321,7 +321,7 @@ const Facility = () => {
                                         </p>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                            <div className='flex justify-between'>
+                                            <div className='2xsm:block  xsm:flex justify-between'>
                                                 <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
                                                 <div className='ulkesehir'>
                                                     <StateDropdown
@@ -337,7 +337,7 @@ const Facility = () => {
                                         </p>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                            <div className='flex justify-between'>
+                                            <div className='2xsm:block  xsm:flex justify-between'>
                                                 <div> <span className='font-normal'>İlçe:</span><span className='font-semibold'></span></div>
                                                 <div>
                                                     <CityDropdown
@@ -363,7 +363,7 @@ const Facility = () => {
                                                     className='w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
 
                                             </div>
-                                            <p className='mt-3'><i className="fa-solid fa-triangle-exclamation me-3 text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
+                                            <p className='mt-3 2xsm:text-sm xsm:text-2xl'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
                                         </p>
                                     </div>
                                 </div>
@@ -373,7 +373,7 @@ const Facility = () => {
 
                     </div>
                 </DialogBody>
-                <DialogFooter>
+                <DialogFooter className='2xsm:mt-[-12%] xsm:mt-0'>
                     <Button
                         variant="text"
                         color="red"
