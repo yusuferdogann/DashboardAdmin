@@ -111,7 +111,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between relative logoblock 2xsm:hidden" style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:image ? "" : '2px dashed white',height:"140px"}}>
+      <div className="flex items-center justify-between relative logoblock " style={{width:"240px",margin:'1.5rem',borderRadius:'20px',border:object?.company_logo ? "" : '2px dashed white',height:"140px"}}>
       
           
          
@@ -123,10 +123,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>
         </form>
          <div className='relative' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
-         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src='' alt="" />
-         <div className='absolute top-0'>
-         <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0"}}>
-          <button className='flex justify-center items-center relative z-3320' style={{height:'140px',width:'245px',borderRadius:'20px'}}>{avatarURL ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
+         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object?.company_logo} alt="" />
+         <div className='absolute top-0' >
+         <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0",background:'red'}}>
+          <button className='flex justify-center items-center relative z-[99999]' style={{height:'140px',width:'238px',borderRadius:'20px',background:'#ff000000'}}>{object?.company_logo ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
         </Tooltip>
          </div>
          </div>

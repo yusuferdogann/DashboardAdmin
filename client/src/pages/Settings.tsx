@@ -16,7 +16,7 @@ const Settings = () => {
   const localFacility = localStorage.getItem('Facilityname')
   const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
 
-console.log("user----------",localFacility)
+console.log("user----------",localData)
 
 useEffect(()=>{
   if(localFacility === '' ||  !localFacility){
@@ -36,7 +36,7 @@ else{
           const summarySetting = settingComeData?.data?.data;
           // console.log("sumsumsum",summarySetting)
           localStorage.setItem("facilityInfoDetail",JSON.stringify(summarySetting))
-          // console.log("selam settings----",settingComeData);
+          console.log("selam settings----",settingComeData);
           setSettingData(settingComeData)
 
 
@@ -63,7 +63,6 @@ let [data,setData] = useState({
   })
   const changeSave = (e)=>{
 
-     
      e.preventDefault()
      setData({
         ...data,

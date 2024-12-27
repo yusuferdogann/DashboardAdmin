@@ -10,11 +10,12 @@ const PdfView = () => {
     const contentRef = useRef(null);
     const {token,facilitySend} = userAuth()
 
-    console.log("pisikoloji----------",facilitySend)
+    // console.log("pisikoloji----------",facilitySend)
 
     const [reportData,setReportData] = useState()
     const [periodData,setPeriodData] = useState()
     const [checkStatus,setCheckStatus] = useState()
+    const [resportAdress,setReportAdress] = useState()
     var currentdate = new Date(); 
     var datetime =    currentdate.getDate() + "/"
                     + (currentdate.getMonth()+1)  + "/" 
@@ -37,8 +38,12 @@ const PdfView = () => {
 
                 const reportperioddata = await get('/reportperioddata',config);
 
+                const settingComeData = await get('/getfacilityinfo',config);
+
                 setPeriodData(reportperioddata.data.data)
                 console.log("reporttotal--------------",periodData?.KAPSAM1)
+                console.log("adress geldi---------------",settingComeData?.data?.data)
+                setReportAdress(settingComeData?.data?.data)
 
                 console.log("report---------------",periodData?.KAPSAM3)
                 setCheckStatus(reportperioddata)
@@ -176,9 +181,9 @@ const PdfView = () => {
             <hr className='mt-10' />
             <div className='html2pdf_page-break'></div>
             <div className='mt-15'>
-                <span className='block'><span className='font-bold'>Adres:  </span>Şemsitebrizi, Vali İzzetbey Cd. No:2, 42030 Karatay/Konya</span>
-                <span className='block'><span className='font-bold'>Site:  </span> www.carbonistan.com</span>
-                <span className='block'><span className='font-bold'>Tel:  </span> 555 555 55 55</span>
+                <span className='block'><span className='font-bold'>Adres:  </span>{resportAdress?.address}</span>
+                <span className='block'><span className='font-bold'>Site:  </span> {resportAdress?.companyWebsite}</span>
+                <span className='block'><span className='font-bold'>Tel:  </span> {resportAdress?.companyNumber}</span>
             </div>
            </div>
             </div>

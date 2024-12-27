@@ -1643,6 +1643,23 @@ const handleValidation = async (event)=>{
            }
           // return 2 * CalculateFuction(funcKaynak,funcMiktar)
         }
+        if(funcDeger === 'Klima' || funcDeger === 'Yangın Söndürme Tüpü' ){
+          var savedDataGas =  { 
+            gasType:savedData?.gasType,
+            tarih:datetime,
+            title: savedData?.title, 
+            subtitle: savedData?.subtitle, 
+            kaynak: savedData?.kaynak, 
+            birim: savedData?.birim, 
+            miktar:1 * CalculateFuction(funcKaynak,funcMiktar),
+            ulke:facilitySend?.country,
+            sehir:facilitySend?.city,
+            ilce:facilitySend?.state,
+            tesis:facilitySend?.facilityname,
+            situation:savedData?.situation,
+           }
+          // return 2 * CalculateFuction(funcKaynak,funcMiktar)
+        }
       
       
 

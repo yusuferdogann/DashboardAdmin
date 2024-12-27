@@ -31,12 +31,22 @@ const Facility = () => {
     const { value, setFacilitSend, token, setFacilityRes } = userAuth();
     const [sendUpdateData, setSendUpdateData] = useState({ id: '', title: '' })
     const [tesisName, setTesisName] = useState()
+    const [changeData, setChangeData] = useState({facilityname:''})
+
+
+    // console.log("res------",facilitySend)
+    // console.log("senddd------",facilityRes)
 
 
     const handleOpen = (value) => setSize(value);
     const navigate = useNavigate();
 
+    function timeout(ms){
+        return new Promise((resolve)=>setTimeout(resolve,ms))
+    }
+
     useEffect(() => {
+        let isCancelled = false;
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -44,17 +54,23 @@ const Facility = () => {
             }
         };
         const fetchData = async () => {
+            await timeout(1000)
+          if(!isCancelled){
             const dataResult = await get('/getfacility', config);
             const responseResult = dataResult
-            console.log("getFacility------------------------------", responseResult.data.data)
+            // console.log("getFacility------------------------------", responseResult.data.data)
             setResultData(responseResult.data.data)
             setFacilityRes(responseResult.data.data)
+          }
 
         }
 
-        fetchData()
+        fetchData();
+        return () => {
+            isCancelled = true;
+        }
 
-    }, [])
+    }, [resultData])
 
 
     const [veri, setVeri] = useState()
@@ -74,8 +90,10 @@ const Facility = () => {
     const getData = (data) => {
         setUpdateId(data)
         setVeri(data)
+        console.log("datasss---",data)
+        changeData.facilityname = data?.facilityname
     }
-
+    console.log("sev-------",changeData)
     const [data, setData] = useState({
         facilityname: '',
         employeecount: '',
@@ -159,30 +177,40 @@ const Facility = () => {
 
     }
 
-    const [changeData, setChangeData] = useState({ facilityname: '' })
-
+    // console.log("look----",changeData)
     const changeInputValue = (event, item) => {
-        const { name, value } = event.target;
+        // const { name, value } = event.target;
+        setChangeData(item.facilityname)
+
         const changeData = item
-        setChangeData({ ...changeData, [name]: value })
+        setChangeData({ 
+            ...changeData, 
+            [event.target.name]: event.target.value}
+        )
     }
-    const handleKeyDown = async (event) => {
+    const handleKeyDown = async (item,event) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer: " + token
+                Authorization: "Bearer: " +token
             }
         };
+        setChangeData(item.facilityname)
         if (event.key === 'Enter') {
             console.log("ss------------------", updateId)
-            setSendUpdateData({ ...sendUpdateData, title: 'verver', id: updateId })
+            console.log("id------------------", sendUpdateData.id)
+            console.log("item------------------", item)
+
+
+            setSendUpdateData({ ...sendUpdateData, title: changeData.facilityname, id: updateId?._id })
             console.log("sendingUpdate-------------", sendUpdateData)
-            // const senddata = 'baslangic updated'
             const updateFacilityName = await put('/updateFacilityName', sendUpdateData, config)
             console.log("updated------", updateFacilityName)
 
+
+
             // Tesis kayit edildikten sonra input acik geliyor
-            // setVeri(false)
+            setVeri(false)
         }
     }
     // console.log("veriii-----------",getVeri)
@@ -190,7 +218,7 @@ const Facility = () => {
     // hazir veri
     setFacilitSend(getVeri)
     const LocalStorage = localStorage.getItem("Facilityname");
-    console.log("lOca------", LocalStorage)
+    // console.log("lOca------", LocalStorage)
     return (
         < >
             <Breadcrumb pageName="Tesisler" />
@@ -211,7 +239,17 @@ const Facility = () => {
                                 <i style={{ fontSize: '50px' }} className="fa-solid fa-industry px-3"></i>
                                 <div key={index} className="flex flex-col justify-between p-4 w-90  leading-normal">
                                     <div className='flex justify-between  items-center'>
-                                        {item._id === veri ? <input type='text' placeholder='' value={item.facilityname} onKeyDown={(event) => handleKeyDown(event)} name='facilityname' onChange={(event) => changeInputValue(event, item)} style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }} className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> : <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
+                                        {item._id === veri?._id ? 
+                                        <input 
+                                        type='text' 
+                                        placeholder='' 
+                                        value={changeData?.facilityname} 
+                                        onKeyDown={(event) => handleKeyDown(item,event)} 
+                                        name='facilityname' 
+                                        onChange={(event) => changeInputValue(event, item)} 
+                                        style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }} 
+                                        className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> : 
+                                        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
                                         <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData} />
                                     </div>
                                     <div onMouseDown={() => getAllData(item)}>
@@ -233,12 +271,10 @@ const Facility = () => {
                         </div>
                     ))
                 }
-
-
                 <div>
                     <a href="#" className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                         {/* <i style={{ fontSize: '50px' }} class="fa-solid fa-industry px-3"></i> */}
-                        <div className="flex flex-col justify-between h-[230px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
+                        <div className="flex flex-col justify-between h-[190px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
                             <div className='absolute top-0'>
                                 <Tooltip content="Tesis Ekleyin" placement="right" style={{ color: "red", zIndex: "0" }}>
                                     <button className='flex justify-center items-center relative z-3320' style={{ height: '140px', width: '240px', borderRadius: '20px' }}></button>

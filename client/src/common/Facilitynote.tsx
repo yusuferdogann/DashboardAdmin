@@ -27,9 +27,11 @@ const Facilitynote = (props: any) => {
 
   const EditFacility = (event) =>{
     if(props.deleteData.facilityname === nameDeletedFacility ){
-      props.onClick(props.deleteData._id)
-    }
+      props.onClick(props.deleteData)
+      // console.log("duzenle icerde",props.deleteData)
 
+    }
+    console.log("duzenle selam")
   }
 
   const handleKeyDown = (event) =>{
@@ -58,15 +60,9 @@ const Facilitynote = (props: any) => {
     const fetchData = async () => {
       props.setResultData((state) => state.filter((item) => item._id !== idDeletedFacility))
       const dataResult = await post('/deletefacility', {idDeletedFacility},config);
-
       console.log("deleted-dAta-------", dataResult)
-
-
     }
     fetchData()
-
-
-
   }
 
   return (
