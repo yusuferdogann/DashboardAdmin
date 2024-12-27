@@ -13,13 +13,15 @@ var app = express();
 
 
 globalThis.globalVariable;
-const updateFacility = asyncErrorWrapper(async (req, res, next) => {
+const updatedFacility = asyncErrorWrapper(async (req, res, next) => {
 
   // const name = 'yalan'
   // const id = '6736457cd4aa767c3e9d8e69'
   const {id,title} = req.body
-  let facility = await FacilityModel.findById(id)
+  console.log("id---",id)
 
+  let facility = await FacilityModel.findById(id)
+  console.log("facility---",facility)
   facility.facilityname = title;
   facility = await facility.save();
 
@@ -65,13 +67,13 @@ const addedFacility = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
-const deleteFacility = asyncErrorWrapper(async (req, res, next) => {
-  // Usermodels.updateMany({_id:req.user.id}, { $pull: {facility:{ facilityId: "" }} }).exec();
-  res.status(200).json({
-    success: true,
-    message: "facility delete successfull",
-  });
-});
+// const deleteFacility = asyncErrorWrapper(async (req, res, next) => {
+//   // Usermodels.updateMany({_id:req.user.id}, { $pull: {facility:{ facilityId: "" }} }).exec();
+//   res.status(200).json({
+//     success: true,
+//     message: "facility delete successfull",
+//   });
+// });
 
 const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
 
@@ -643,9 +645,9 @@ console.log("comcomcom------",companyName)
 
 module.exports = {
   GetFacilityInfo,
-  updateFacility,
+  updatedFacility,
   addedFacility,
-  deleteFacility,
+  // deleteFacility,
   findObjectName,
   getAllFacility,
   filterFacilityByUserId,
