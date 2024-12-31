@@ -7,7 +7,7 @@ import zIndex from '@mui/material/styles/zIndex';
 import Image from "../../images/logo/sidebarlogodd.jpg"
 import { userAuth } from '../../auth/userAuth';
 import Report from "../../images/logo/report.png"
-import { post } from '../../server/Apiendpoint';
+import { post,get } from '../../server/Apiendpoint';
 import LogoCarbon from "../../images/logo/logorevize.png"
 
 
@@ -24,6 +24,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const sidebar = useRef<any>(null);
   const { value ,token,user} = userAuth();
   // console.log("VALUEEE",value)
+  const [updatelogo,setUpdateLogo] = useState(false)
   const fileUploadRef = useRef();
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
@@ -32,6 +33,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const [avatarURL,setAvatarURL] = useState('')
   const [image,setImage] = useState("")
+  const [comeImage,setComeImage] = useState()
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -47,19 +49,35 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   });
-  var val = localStorage.getItem('detail');
+  var val = localStorage.getItem('facilityInformation');
   var object = JSON.parse(val);
   
 // console.log("data-----------------",object.company_logo)
   // close if the esc key is pressed
   useEffect(() => {
+
+    const fetchdata = async() =>{
+      const config = {
+        headers:{
+            "Content-Type":"application/json",
+            Authorization:"Bearer: "+token
+          }
+        };
+        const dataResult = await get('/getlogo',config);
+        console.log("DATA-IMAGE-----------",dataResult)
+        setComeImage(dataResult)
+    }
+
+    fetchdata();
+    
+
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!sidebarOpen || keyCode !== 27) return;
       setSidebarOpen(false);
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  },[updatelogo]);
 
   useEffect(() => {
     localStorage.setItem('sidebar-expanded', sidebarExpanded.toString());
@@ -86,8 +104,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     var reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = async ()=>{
-      console.log(reader.result)
+      // console.log(reader.result)
       setImage(reader.result)
+      
       const config = {
         headers:{
             "Content-Type":"application/json",
@@ -96,6 +115,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         };
         const dataResult = await post('/uploadimage',({base64:reader.result}),config);
         console.log("DATA-IMAGE-----------",dataResult)
+        setUpdateLogo(true)
+        console.log("deneme geliyor-------------",comeImage)
+        let loggedInUser = JSON.parse(localStorage.getItem('facilityInformation'));
+      loggedInUser.company_logo = reader.result;
+      localStorage.setItem('facilityInformation', JSON.stringify(loggedInUser));
     }
     reader.onerror = error =>{
       console.log("error",error)
@@ -122,8 +146,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         </div>
         <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>
         </form>
-         <div className='relative' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
-         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object?.company_logo} alt="" />
+         <div className='relative 2xsm:mt-[11rem] xsm:mt-0' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
+         <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object?.company_logo } alt="" />
          <div className='absolute top-0' >
          <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0",background:'red'}}>
           <button className='flex justify-center items-center relative z-[99999]' style={{height:'140px',width:'238px',borderRadius:'20px',background:'#ff000000'}}>{object?.company_logo ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
@@ -137,7 +161,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-controls="sidebar"
           aria-expanded={sidebarOpen}
-          className="block lg:hidden"
+          // className="block lg:hidden"
+           className="hidden"
+
         >
           <svg
             className="fill-current"
@@ -899,8 +925,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <NavLink
                   target="_blank"
                   to="https://carbonistan.vercel.app/"
-                  style={{position:'absolute',bottom:'3rem'}}
-                  className={`logotext group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  style={{position:'absolute'}}
+                  className={`2xsm:bottom-0 xsm:bottom-[3rem] logotext group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                     pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >

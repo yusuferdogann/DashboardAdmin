@@ -92,8 +92,9 @@ const Facility = () => {
         setVeri(data)
         console.log("datasss---",data)
         changeData.facilityname = data?.facilityname
+        setChangeData(data?.facilityname)
     }
-    console.log("sev-------",changeData)
+    // console.log("sev-------",changeData)
     const [data, setData] = useState({
         facilityname: '',
         employeecount: '',
@@ -206,11 +207,13 @@ const Facility = () => {
             console.log("sendingUpdate-------------", sendUpdateData)
             const updateFacilityName = await put('/updateFacilityName', sendUpdateData, config)
             console.log("updated------", updateFacilityName)
-
-
-
             // Tesis kayit edildikten sonra input acik geliyor
             setVeri(false)
+        }
+        if(event.key === 'Escape'){
+            setVeri(true)
+            console.log("escape---------")
+
         }
     }
     // console.log("veriii-----------",getVeri)
@@ -250,7 +253,7 @@ const Facility = () => {
                                         style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }} 
                                         className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> : 
                                         <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
-                                        <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData} />
+                                        <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData}  />
                                     </div>
                                     <div onMouseDown={() => getAllData(item)}>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">

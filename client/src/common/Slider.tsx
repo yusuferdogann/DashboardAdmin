@@ -69,7 +69,7 @@ if(currentIndex>cards.length-3) {
                           
                            <div>
                           
-                           <a href="#"  style={{width:'94%'}} className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
+                           <a href="#"   className="flex 2xsm:w-[100%] xsm:w-[94%] flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                                <div className="flex flex-col justify-between p-4 w-90 leading-normal">
                                    <div className='flex   items-center'>
                                    <i style={{ fontSize: '20px' }} className="fa-solid fa-industry me-3"></i>

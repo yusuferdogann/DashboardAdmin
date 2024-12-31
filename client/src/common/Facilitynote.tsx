@@ -14,21 +14,28 @@ const Facilitynote = (props: any) => {
   const [facilitycheck, setFacilitycheck] = useState(false)
   const [size, setSize] = useState(null);
   const handleOpen = (value) => setSize(value);
-  const [nameDeletedFacility, setNameDeletedFacility] = useState(props.deleteData?.facilityname)
+  const [nameDeletedFacility, setNameDeletedFacility] = useState(props.deleteData?._id)
   const [idDeletedFacility, setIdDeletedFacility] = useState()
   const [data,setData] = useState()
 
 
-  // console.log("props---------",props.deletedData?.facilityname)
+  useEffect(()=>{
+    console.log("silinecek id --------------",props.deleteData._id)
+    setIdDeletedFacility(props.deleteData._id)
+  },[])
+  // console.log("props---------",props.deletedData)
   const Tiklandi = () => {
     handleOpen('xs')
     props.onClick(true)
   }
 
   const EditFacility = (event) =>{
-    if(props.deleteData.facilityname === nameDeletedFacility ){
+    console.log("props---------",props.deletedData)
+
+    if(props.deleteData._id === nameDeletedFacility ){
       props.onClick(props.deleteData)
-      // console.log("duzenle icerde",props.deleteData)
+      console.log("duzenle icerde",props.deleteData)
+      // props.setChangeData(props.deleteData.facilityname)
 
     }
     console.log("duzenle selam")
@@ -46,7 +53,7 @@ const Facilitynote = (props: any) => {
   const deleteFacility = () => {
 
     // console.log("deleted-data------------", props.deleteData)
-    setIdDeletedFacility(props.deleteData._id)
+    // setIdDeletedFacility(props.deleteData._id)
     setData(props.deleteData._id)
     // console.log('deleted-id----------------', data)
 
@@ -58,8 +65,10 @@ const Facilitynote = (props: any) => {
     };
 
     const fetchData = async () => {
-      props.setResultData((state) => state.filter((item) => item._id !== idDeletedFacility))
       const dataResult = await post('/deletefacility', {idDeletedFacility},config);
+      props.setResultData((state) => state.filter((item) => item._id !== props.deleteData._id))
+
+      handleOpen(null)
       console.log("deleted-dAta-------", dataResult)
     }
     fetchData()
@@ -73,6 +82,7 @@ const Facilitynote = (props: any) => {
             onClick={() => {
               setNotifying(false);
               setDropdownOpen(!dropdownOpen);
+              setIdDeletedFacility(props.deleteData._id)
             }}
 
             className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"

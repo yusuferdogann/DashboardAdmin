@@ -15,8 +15,9 @@ const Settings = () => {
   const [settingData,setSettingData] = useState<State>({});
   const localFacility = localStorage.getItem('Facilityname')
   const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
+  const localFacilityDetail = JSON.parse(localStorage.getItem("facilityInformation"))
 
-console.log("user----------",localData)
+console.log("user----------",localFacilityDetail)
 
 useEffect(()=>{
   if(localFacility === '' ||  !localFacility){
@@ -54,7 +55,7 @@ let [data,setData] = useState({
     companyNumber:localData?.companyNumber,
     companyMail:localData?.companyMail,
     companyWebsite:localData?.companyWebsite,
-    productArea:localData?.productArea,
+    // productArea:localData?.productArea,
     closeArea:localData?.closeArea,
     openArea:localData?.openArea,
     workerCount:localData?.workerCount,
@@ -502,7 +503,7 @@ let [data,setData] = useState({
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="companyName"
-                        value={data?.companyName}
+                        value={data?.companyName ? data?.companyName : localFacilityDetail.facilityname}
                         id="fullName"
                         onMouseEnter={InputControl}
                       />
@@ -693,7 +694,7 @@ let [data,setData] = useState({
                   TESİS BİLGİLERİ
                 </h3> */}
               </div>
-                  <div className="mb-5.5">
+                  {/* <div className="mb-5.5">
                     <label
                       className="my-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
@@ -703,7 +704,7 @@ let [data,setData] = useState({
                       <div className="w-full sm:w-1/2 mb-5.5">
                   
                     <div className="relative">
-                      {/* <span className="absolute left-4.5 top-2">
+                      <span className="absolute left-4.5 top-2">
                         <svg
                           className="fill-current"
                           width="20"
@@ -727,7 +728,7 @@ let [data,setData] = useState({
                             />
                           </g>
                         </svg>
-                      </span> */}
+                      </span>
                       <input
                         onChange={changeSave}
                         className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -739,7 +740,7 @@ let [data,setData] = useState({
                       />
                     </div>
                   </div>
-                  </div>
+                  </div> */}
                   <div className="w-full sm:w-1/2 mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
@@ -778,7 +779,7 @@ let [data,setData] = useState({
                       type="text"
                         name="closeArea"
                         id="emailAddress"
-                        value={data.closeArea}
+                        value={data?.closeArea ? data?.closeArea : localFacilityDetail.totalArea}
                         onChange={changeSave}
 
                        
@@ -869,7 +870,7 @@ let [data,setData] = useState({
                       type="text"
                         name="workerCount"
                         id="emailAddress"
-                        value={data.workerCount}
+                        value={data?.workerCount ? data?.workerCount : localFacilityDetail.employeecount}
                         onChange={changeSave}
                       
                         
