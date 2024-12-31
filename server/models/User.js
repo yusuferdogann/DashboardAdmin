@@ -10,11 +10,9 @@ const UserSchema = new Schema({
     unique: true,
   },
   company_info: [],
+  
   facility: [],
-  company_logo: {
-    type: String,
-    default:"default.jpg"
-  },
+
   username: {
     type: String,
     required: true,

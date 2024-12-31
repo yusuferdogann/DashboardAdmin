@@ -14,14 +14,14 @@
 // module.exports = router;
 
 
-const {register,login,  getUser,logout, imageUpload, addScope}= require('../controllers/AuthController')
+const {register,login,  getUser,logout,addScope}= require('../controllers/AuthController')
 const {data,getdata} = require('../controllers/DataController')
 const {getAccessToRoute} = require("../Middleware/authorization/auth")
 
 const express = require('express')
 // const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
 const updateCompanyInfo = require('../Middleware/companyInfo/companyInfo')
-const {DashboardWeekGrafic,DeletedFacility,updatedFacility,FacilitySaveInfo,addedFacility,GetFacilityInfo,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
+const {DashboardWeekGrafic,DeletedFacility,imageUpload,updatedFacility,FacilitySaveInfo,getLogo,addedFacility,GetFacilityInfo,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
 
 const routers = express.Router()
 
@@ -45,7 +45,7 @@ routers.get('/allfacility',getAccessToRoute,getAllFacility)
 routers.post("/adddata",getAccessToRoute,addScope)
 
 routers.get("/getfacility",getAccessToRoute,filterFacilityByUserId)
-
+routers.get("/getlogo",getAccessToRoute,getLogo)
 routers.get("/getamount",getAccessToRoute,filterAmountByUserId)
 routers.post("/getsummarydata",getAccessToRoute,summaryFilterData)
 routers.post("/facilityinfo",getAccessToRoute,FacilitySaveInfo)

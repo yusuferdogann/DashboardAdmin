@@ -48,7 +48,7 @@ const addedFacility = asyncErrorWrapper(async (req, res, next) => {
   // Usermodels.findByIdAndUpdate(id, { $push: { facility: item } }).exec();
 
 
-  const { city, country, employeecount, facilityname, state, totalarea} = req.body
+  const { city, country, employeecount, facilityname, state, totalarea,company_logo} = req.body
   const facility = await FacilityModel.create({
     city,
     country,
@@ -56,6 +56,7 @@ const addedFacility = asyncErrorWrapper(async (req, res, next) => {
     facilityname,
     state,
     totalarea,
+    company_logo,
     userId:req.user.id
   })
 
@@ -91,6 +92,37 @@ const getOneFacility = asyncErrorWrapper(async(req,res,next)=>{
   })
 })
 
+const imageUpload = asyncErrorWrapper(async (req, res, next) => {
+
+  // console.log(req.body)
+  const id = req.user.id
+  const tesisName = req.app.locals.data.tesisName
+
+
+  const {base64} = req.body
+
+  // <SORGU - UPDATE - calisan 27.12.2024>
+  //  const deneme = FacilityModel.findByIdAndUpdate(id,{company_logo:base64 } ).exec();
+
+  // const user =  await Usermodels.findByIdAndUpdate(req.user.id,{"company_logo" : req.body}).exec()
+
+  const user = await FacilityModel.find({userId: id,facilityname:tesisName});
+
+  console.log("image-----",tesisName)
+
+  if(user){
+     FacilityModel.findOneAndUpdate({facilityname:tesisName},{company_logo:base64 } ).exec();
+    console.log("------updated-------")
+  }
+
+
+   res.status(200).json({
+     success: true,
+     message: "Image upload successfull",
+ 
+   });
+ });
+ 
 
 const findObjectName = asyncErrorWrapper(async (req, res, next) => {
   // const result = Usermodels.find({ facility: "Scope-1"});
@@ -164,6 +196,24 @@ const filterFacilityByUserId = asyncErrorWrapper(async (req,res,next)=>{
   })
 })
 
+
+const getLogo = asyncErrorWrapper(async (req,res,next)=>{
+
+  // const tesisNo = req.app.locals.data.tesisNo
+
+  const logodata = await FacilityModel.find({facilityname:'deneme 1'}).exec();
+
+  const result = logodata?.company_logo
+  // console.log("logo--------",logodata)
+
+  res
+  .json({
+    success:true,
+    message:"ok filter of user ID",
+    data:result
+  })
+
+})
 const filterAmountByUserId = asyncErrorWrapper(async (req,res,next)=>{
   // iki sorgu arasinda daglar kadar fark var <SORGU-1>
   // var filterfacility = await ScopeModel.find({user:id},{title:"Scope-2"}).select("miktar ");
@@ -648,6 +698,8 @@ module.exports = {
   updatedFacility,
   addedFacility,
   // deleteFacility,
+  getLogo,
+  imageUpload,
   findObjectName,
   getAllFacility,
   filterFacilityByUserId,

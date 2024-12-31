@@ -14,9 +14,13 @@ const FacilitySchema = new Schema({
     type: String,
     trim: true,
   },
-    facilityname: {
+  facilityname: {
     type: String,
     required: true,
+  },
+  company_logo: {
+    type: String,
+    default:"default.jpg"
   },
   state: {
     type: String,

@@ -2,6 +2,7 @@ const Usermodels = require("../models/User");
 const ScopeModel = require("../models/scopes");
 const express = require("express");
 const CustomError = require("../helpers/error/CustomError");
+const FacilityModel = require("../models/facility")
 const asyncErrorWrapper = require("express-async-handler");
 const { sendJwtToClient,getAccessTokenFromHeader } = require("../helpers/authorization/tokenHelpers");
 const {
@@ -85,24 +86,24 @@ const addFacility = async (req, res) => {
 // });
 
 
-const imageUpload = asyncErrorWrapper(async (req, res, next) => {
+// const imageUpload = asyncErrorWrapper(async (req, res, next) => {
 
-  // console.log(req.body)
-  const id = req.user.id
+//   // console.log(req.body)
+//   const id = req.user.id
 
-  const {base64} = req.body
+//   const {base64} = req.body
 
-  // <SORGU - UPDATE>
-   const deneme = Usermodels.findByIdAndUpdate(id,{company_logo:base64 } ).exec();
+//   // <SORGU - UPDATE>
+//    const deneme = Usermodels.findByIdAndUpdate(id,{company_logo:base64 } ).exec();
 
-  // const user =  await Usermodels.findByIdAndUpdate(req.user.id,{"company_logo" : req.body}).exec()
+//   // const user =  await Usermodels.findByIdAndUpdate(req.user.id,{"company_logo" : req.body}).exec()
 
-   res.status(200).json({
-     success: true,
-     message: "Image upload successfull",
-     data:deneme
-   });
- });
+//    res.status(200).json({
+//      success: true,
+//      message: "Image upload successfull",
+//      data:deneme
+//    });
+//  });
  
 
 const addScope = asyncErrorWrapper(async(req,res,next)=>{
@@ -147,4 +148,4 @@ const getUser = (req, res, next) => {
   // return next(new CustomError("BIR HATA OUSTUR",400))
   //   return next(new CustomError("BIR HATA OUSTU"));
 };
-module.exports = { register, login, addFacility, getUser, logout,imageUpload,addScope};
+module.exports = { register, login, addFacility, getUser, logout,addScope};
