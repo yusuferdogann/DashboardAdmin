@@ -637,14 +637,14 @@ const DeletedScope = asyncErrorWrapper(async(req,res,next)=>{
 
 const FacilitySaveInfo = asyncErrorWrapper(async(req,res,next)=>{
 
-  const {companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address} = req.body;
-  const tesisName = req.app.locals.data.tesisName
+  const {companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address,facilityId} = req.body;
+  // const tesisName = req.app.locals.data.tesisName
 
 
-  console.log("tesisname---",tesisName)
+  // console.log("tesisname---",tesisName)
 
-const FacilityIdResult = await FacilityModel.find({facilityname:tesisName})
-const resultId = FacilityIdResult[0]?._id
+// const FacilityIdResult = await FacilityModel.find({facilityId:id})
+// const resultId = FacilityIdResult[0]?._id
   const savedData = await FacilityInfoModel.create({
     companyName,
     cknNumber,
@@ -657,9 +657,9 @@ const resultId = FacilityIdResult[0]?._id
     workerCount,
     totalArea,
     address,
-    facilityId:resultId
+    facilityId
   })
-  console.log("facility info--",resultId)
+  // console.log("facility info--",resultId)
 
   res.json({
     success:true,
@@ -693,11 +693,49 @@ console.log("comcomcom------",companyName)
   })
 })
 
+
+const FacilityUpdateInfo = asyncErrorWrapper(async(req,res,next)=>{
+
+  const {companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address,id} = req.body
+  console.log("id---",id)
+
+  let facility = await FacilityInfoModel.updateMany(
+    {facilityId:id},
+    {$set:{companyName:companyName,cknNumber:cknNumber,companyNumber:companyNumber,companyMail:companyMail,companyWebsite:companyWebsite,productArea:productArea,closeArea:closeArea,openArea:openArea,workerCount:workerCount,totalArea:totalArea,address:address}})
+  console.log("facility new api---",facility)
+
+  // facility.companyName = companyName;
+  // facility.cknNumber = cknNumber;
+  // facility.companyName = companyNumber;
+  // facility.companyMail = companyMail;
+  // facility.companyWebsite = companyWebsite;
+  // facility.productArea = productArea;
+  // facility.closeArea = closeArea;
+  // facility.openArea = openArea;
+  // facility.workerCount = workerCount;
+  // facility.totalArea = totalArea;
+  // facility.address = address;
+  // facility.companyName = companyName;
+
+
+  // facility = await facility.save();
+
+
+  res.status(200).json({
+    success: true,
+    message: "facility upload successfull",
+    // data: facility,
+  });
+
+})
+
+
 module.exports = {
   GetFacilityInfo,
   updatedFacility,
   addedFacility,
   // deleteFacility,
+  FacilityUpdateInfo,
   getLogo,
   imageUpload,
   findObjectName,

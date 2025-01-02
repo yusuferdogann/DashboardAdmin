@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const FacilityInfoSchema = new Schema({
     companyName: {
     type: String,
-    required: true,
+    // required: true,
   },
   cknNumber: {
     type: String,
-    required: true,
+    // required: true,
   },
   companyNumber: {
     type: String,
@@ -16,7 +16,7 @@ const FacilityInfoSchema = new Schema({
   },
   companyMail: {
     type: String,
-    required: true,
+    // required: true,
   },
   companyWebsite: {
     type: String,
@@ -24,27 +24,27 @@ const FacilityInfoSchema = new Schema({
   },
   productArea: {
     type: String,
-    required: true,
+    // required: true,
   },
   closeArea: {
     type: String,
-    required: true,
+    // required: true,
   },
   openArea: {
     type: String,
-    required: true,
+    // required: true,
   },
   workerCount: {
     type: String,
-    required: true,
+    // required: true,
   },
   totalArea: {
     type: String,
-    required: true,
+    // required: true,
   },
   address: {
     type: String,
-    required: true,
+    // required: true,
   },
   facilityId:{
     type:Schema.Types.ObjectId,
