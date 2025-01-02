@@ -75,7 +75,9 @@ const PdfView = () => {
 
         html2pdf().set(options).from(content).save();
     };
-    var val = localStorage.getItem('detail');
+    // var val = localStorage.getItem('detail');
+    var val = localStorage.getItem('facilityInformation');
+
     var object = JSON.parse(val);
     return (
     <>

@@ -3,7 +3,7 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import userThree from '../images/user/profile.webp';
 import { useEffect, useState } from 'react';
 import { userAuth } from '../auth/userAuth';
-import { post,get } from "../server/Apiendpoint"
+import { post,get,put } from "../server/Apiendpoint"
 import { handleSuccess } from '../common/utils/helpers';
 import { handleErrorForFacility } from '../common/utils/helpers'
 
@@ -13,12 +13,14 @@ const Settings = () => {
   const {user,token} = userAuth();
   const [checkInput,setCheckInput] = useState(false)
   const [settingData,setSettingData] = useState<State>({});
+  const [checkOnChange,setCheckOnChange] = useState(false);
+  // const [data,setData] = useState({})
   const localFacility = localStorage.getItem('Facilityname')
-  const localData = JSON.parse(localStorage.getItem("facilityInfoDetail"));
+  const localData           = JSON.parse(localStorage.getItem("facilityInfoDetail"));
   const localFacilityDetail = JSON.parse(localStorage.getItem("facilityInformation"))
 
-console.log("user----------",localFacilityDetail)
-
+console.log("user----------",localFacilityDetail._id)
+  const tesisNumber = localFacilityDetail._id
 useEffect(()=>{
   if(localFacility === '' ||  !localFacility){
     handleErrorForFacility("Lütfen önce bilgilerini girmek istediğiniz tesisi seçin.") 
@@ -36,9 +38,10 @@ else{
           const settingComeData = await get('/getfacilityinfo',config);
           const summarySetting = settingComeData?.data?.data;
           // console.log("sumsumsum",summarySetting)
-          localStorage.setItem("facilityInfoDetail",JSON.stringify(summarySetting))
+          localStorage.getItem("facilityInfoDetail",JSON.stringify(summarySetting))
           console.log("selam settings----",settingComeData);
-          setSettingData(settingComeData)
+          const resultInfo = settingComeData?.data?.data
+          setData(resultInfo)
 
 
   }
@@ -48,32 +51,50 @@ else{
 
 
 
-let [data,setData] = useState({
-    // name:user.username,
-    companyName:localData?.companyName,
-    cknNumber:localData?.cknNumber,
-    companyNumber:localData?.companyNumber,
-    companyMail:localData?.companyMail,
-    companyWebsite:localData?.companyWebsite,
-    // productArea:localData?.productArea,
-    closeArea:localData?.closeArea,
-    openArea:localData?.openArea,
-    workerCount:localData?.workerCount,
-    totalArea:localData?.totalArea,
-    address:localData?.address,
+const [data,setData] = useState({
+    companyName:" ",
+    cknNumber:"",
+    companyNumber:"",
+    companyMail:"",
+    companyWebsite:"",
+    productArea:"",
+    closeArea:"",
+    openArea:"",
+    workerCount:"",
+    totalArea:"",
+    address:"",
+    id:tesisNumber
   })
-  const changeSave = (e)=>{
-
-     e.preventDefault()
+  console.log("data--network--",data)
+  const changeSave = (event)=>{
+    // setCheckOnChange(true)
+    //  e.preventDefault()
      setData({
+        companyName:'',
+        cknNumber:'',
+        companyNumber:'',
+        companyMail:'',
+        companyWebsite:'',
+        productArea:'',
+        closeArea:'',
+        openArea:'',
+        workerCount:'',
+        totalArea:'',
+        address:'',
+        id:tesisNumber
+  })
+
+      console.log("daata-----",data)
+      setData({
         ...data,
-        [e.target.name]: e.target.value,
+        [event.target.name]: event.target.value,
       });
-      console.log("result",data)
   
+      console.log("icerde",data)
 
   }
-  
+  // console.log("result",data)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("VLUE",value)
@@ -107,6 +128,35 @@ let [data,setData] = useState({
     
   }
 
+  const handleUpdateFacilityInfo = async (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer: " +token
+      }
+  };
+    setData({
+      ...data, 
+      companyName:data?.companyName,
+      cknNumber:data?.cknNumber,
+      companyNumber:data?.companyNumber,
+      companyMail:data?.companyMail,
+      companyWebsite:data?.companyWebsite,
+      productArea:data?.productArea,
+      closeArea:data?.closeArea,
+      openArea:data?.openArea,
+      workerCount:data?.workerCount,
+      totalArea:data?.totalArea,
+      address:data?.address,
+      id:tesisNumber
+    })
+    const updateFacilityInfo = await put('/facilityinfoupdate', data, config)
+    console.log("updated------", updateFacilityInfo)
+
+  
+  }
 
 
   return (
@@ -418,7 +468,7 @@ let [data,setData] = useState({
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-12">
-          <form onSubmit={handleSubmit}>
+          <form >
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               {/* Profil bilgileri */}
               <div >
@@ -443,7 +493,7 @@ let [data,setData] = useState({
                 </div>
               </div>
               {/* Profil bilgileri */}
-
+              V5=UuBHVQRh4
               
               <div className="p-7 flex grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5 " >
                <div className="sirketbilgileri basis-1/2 " >
@@ -503,9 +553,9 @@ let [data,setData] = useState({
                         className="w-full rounded border border-stroke bg-gray py-1 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="companyName"
-                        value={data?.companyName ? data?.companyName : localFacilityDetail.facilityname}
-                        id="fullName"
+                        value={data.companyName}
                         onMouseEnter={InputControl}
+                        disabled
                       />
                     </div>
                   </div>
@@ -520,7 +570,7 @@ let [data,setData] = useState({
                     <div className="relative">
                       
                       <input
-                      onChange={changeSave}
+                      onChange={(event)=>changeSave(event)}
                       className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
                         name="cknNumber"
@@ -694,7 +744,7 @@ let [data,setData] = useState({
                   TESİS BİLGİLERİ
                 </h3> */}
               </div>
-                  {/* <div className="mb-5.5">
+                  <div className="mb-5.5">
                     <label
                       className="my-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="Username"
@@ -705,7 +755,7 @@ let [data,setData] = useState({
                   
                     <div className="relative">
                       <span className="absolute left-4.5 top-2">
-                        <svg
+                        {/* <svg
                           className="fill-current"
                           width="20"
                           height="20"
@@ -727,7 +777,7 @@ let [data,setData] = useState({
                               fill=""
                             />
                           </g>
-                        </svg>
+                        </svg> */}
                       </span>
                       <input
                         onChange={changeSave}
@@ -740,7 +790,7 @@ let [data,setData] = useState({
                       />
                     </div>
                   </div>
-                  </div> */}
+                  </div>
                   <div className="w-full sm:w-1/2 mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white mt-2"
@@ -779,7 +829,7 @@ let [data,setData] = useState({
                       type="text"
                         name="closeArea"
                         id="emailAddress"
-                        value={data?.closeArea ? data?.closeArea : localFacilityDetail.totalArea}
+                        value={data.closeArea}
                         onChange={changeSave}
 
                        
@@ -870,7 +920,7 @@ let [data,setData] = useState({
                       type="text"
                         name="workerCount"
                         id="emailAddress"
-                        value={data?.workerCount ? data?.workerCount : localFacilityDetail.employeecount}
+                        value={data.workerCount}
                         onChange={changeSave}
                       
                         
@@ -917,6 +967,7 @@ let [data,setData] = useState({
                         name="totalArea"
                         id="emailAddress"
                         value={data.totalArea}
+
                        
                       />
                     </div>
@@ -934,12 +985,25 @@ let [data,setData] = useState({
                     >
                       İptal
                     </button>
+                   
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                      type="submit"
-                    >
-                      Kaydet
-                    </button>
+                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    type="submit"
+                    onClick={handleUpdateFacilityInfo}
+                  >
+                    Guncelle
+                  </button> 
+                  {/* <button
+                  //   className="flex justify-center rounded bg-success py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  //   type="submit"
+                  //   onClick={handleUpdateFacilityInfo}
+                    
+                  // >
+                  //   Güncelle
+                  // </button> */}
+                   
+
+                    {/* checkOnChange */}
                   </div> : null}
                   {/* BUTTON */}
             </div>

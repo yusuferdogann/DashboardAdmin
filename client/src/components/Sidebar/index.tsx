@@ -141,7 +141,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
          
        
         <form id='form' encType='multipart/form-data' action="">
-        <div className='absolute top-0 right-0 z-999  text-bodydark1 duration-300 ease-in-out hover:bg-white dark:hover:bg-white bg-[#d3d3d3] dark:bg-meta-4 logohover' style={{padding:"10px",borderRadius:'50%',margin:".75rem"}}>
+        <div className='absolute 2xsm:top-[5rem] xsm:mt-0 top-0 right-0 z-999  text-bodydark1 duration-300 ease-in-out hover:bg-white dark:hover:bg-white bg-[#d3d3d3] dark:bg-meta-4 logohover' style={{padding:"10px",borderRadius:'50%',margin:".75rem"}}>
          <button type='submit' onClick={handleImageUpload}> <i style={{fontSize:'35x',color:"black"}} className="fa-regular fa-image"></i></button>
         </div>
         <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>

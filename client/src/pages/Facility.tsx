@@ -107,32 +107,124 @@ const Facility = () => {
         e.preventDefault()
         setData({
             ...data,
-
             [e.target.name]: e.target.value,
             country: country?.native,
             city: state?.name,
             state: dropcity?.name,
         });
+        // console.log("data----regaip",veri)
+        setGetVeri({
+            facilityname: data?.facilityname,
+            country: '',
+            employeecount: data?.employeecount,
+            state: '',
+            totalarea: data?.totalarea,
+        })
         console.log("result", data)
     }
+
+ // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
+ const getAllData = async (item) => {
+    //    setGetVeri(item)
+    // console.log("GETveri-----",getVeri)
+    // const informationData = {
+    //     address:'',
+    //     cknNumber:'',
+    //     closeArea:'',
+    //     companyMail:'',
+    //     companyName:item.facilityname,
+    //     companyNumber:'',
+    //     companyWebsite:'',
+    //     openArea:'',
+    //     productArea:'',
+    //     totalArea:item.totalarea,
+    //     workerCount:item.employeecount
+    // }
+    // localStorage.setItem("facilityInfoDetail",JSON.stringify(informationData))
+    localStorage.setItem("facilityInformation", JSON.stringify(item))
+    const localData = JSON.parse(localStorage.getItem('facilityInformation'))
+    console.log("localData-----", localData)
+    // setGetVeri(localData)
+    setTesisName(item.facilityname)
+    var tesisNo = localData?._id
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer: " +token
+        }
+    };
+    const GetOnefacility = await post('/getonefacility', { tesisName,tesisNo }, config)
+
+    console.log('getfacility name-----------------', GetOnefacility)
+    if (GetOnefacility?.data.data) {
+        setCheckSpinner(true)
+        localStorage.setItem("Facilityname", item.facilityname)
+
+        setTimeout(() => {
+            navigate('/calculation')
+        }, 750)
+    }
+    // console.log("getVeri-guncel---------------------",item)
+
+}
+
+
     // Post isleminin olacagi alan
     const saveData = async (e) => {
+
+
         e.preventDefault();
         handleOpen(null)
-
+    
 
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer: " + token
+                Authorization: "Bearer: " +token
             }
         };
         try {
-            const addfacilitydata = await post('/addfacility', data, config)
+            const addfacilitydata = await post('/addfacility', data, config);
+
+            console.log("added-facility-data-------",addfacilitydata)
+
+            const tesisNo = addfacilitydata?.data?.data?._id;
+            const tesisName = addfacilitydata?.data?.data?.facilityname;
+            const tesisCount = addfacilitydata?.data?.data?.employeecount;
+            const tesisArea = addfacilitydata?.data?.data?.totalarea;
+
+
+          
+           setTimeout( async ()=>{
+            const informationData = {
+                companyName:tesisName,
+                cknNumber:'',
+                companyNumber:'',
+                companyMail:'',
+                companyWebsite:'',
+                productArea:'',
+                closeArea:'',
+                openArea:'',
+                workerCount:tesisCount,
+                totalArea:tesisArea,
+                address:'',
+                facilityId:tesisNo
+            }
+            localStorage.setItem("facilityInfoDetail",JSON.stringify(informationData))
+
+            const loginuser = await post("/facilityinfo",informationData,config)
+            console.log("facilityInfo------",loginuser)
+
+           },1000)
+
             setResultData([...resultData, { facilityname: data.facilityname, country: data.country, employeecount: data.employeecount, state: data.state, totalarea: data.totalarea, }])
             // window.location.reload()
-            const response = addfacilitydata
-            console.log("facility-data", response)
+           
+
+            // const response = addfacilitydata
+            // console.log("yeni-tesis-no--------", addfacilitydata?.data?.data?._id)
+
 
         } catch (error) {
             console.log(error)
@@ -146,37 +238,7 @@ const Facility = () => {
 
     }
 
-    // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
-    const getAllData = async (item) => {
-        //    setGetVeri(item)
-        // console.log("GETveri-----",getVeri)
-        localStorage.setItem("facilityInformation", JSON.stringify(item))
-        const localData = JSON.parse(localStorage.getItem('facilityInformation'))
-        console.log("localData-----", localData)
-        setGetVeri(localData)
-        setTesisName(item.facilityname)
-        var tesisNo = localData?._id
-
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer: " +token
-            }
-        };
-        const GetOnefacility = await post('/getonefacility', { tesisName,tesisNo }, config)
-
-        console.log('getfacility name-----------------', GetOnefacility)
-        if (GetOnefacility?.data.data) {
-            setCheckSpinner(true)
-            localStorage.setItem("Facilityname", item.facilityname)
-
-            setTimeout(() => {
-                navigate('/calculation')
-            }, 750)
-        }
-        // console.log("getVeri-guncel---------------------",item)
-
-    }
+   
 
     // console.log("look----",changeData)
     const changeInputValue = (event, item) => {
