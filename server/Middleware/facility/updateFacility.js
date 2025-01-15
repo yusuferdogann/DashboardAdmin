@@ -5,6 +5,7 @@ const FacilityModel = require("../../models/facility");
 const FacilityInfoModel = require("../../models/facilitiyInfo")
 
 var ObjectId = require('mongoose').Types.ObjectId; 
+const pool = require("../../config/database");
 
 const express = require('express');
 
@@ -21,7 +22,7 @@ const updatedFacility = asyncErrorWrapper(async (req, res, next) => {
   console.log("id---",id)
 
   let facility = await FacilityModel.findById(id)
-  console.log("facility---",facility)
+  // console.log("facility---",facility)
   facility.facilityname = title;
   facility = await facility.save();
 
@@ -184,7 +185,7 @@ const filterFacilityByUserId = asyncErrorWrapper(async (req,res,next)=>{
   // const veriall = await FacilityModel.findById(userId, { $where: { facility: item } }).exec();
 
 
-  const veriall = await FacilityModel.find({userId:id}).exec();
+  const veriall = await FacilityModel.find({userId:id});
 
 
 
@@ -697,12 +698,17 @@ console.log("comcomcom------",companyName)
 const FacilityUpdateInfo = asyncErrorWrapper(async(req,res,next)=>{
 
   const {companyName,cknNumber,companyNumber,companyMail,companyWebsite,productArea,closeArea,openArea,workerCount,totalArea,address,id} = req.body
+  const tesisNo = req.app.locals.data
+
   console.log("id---",id)
+  console.log("tesisNo-update--",tesisNo)
+
+  
 
   let facility = await FacilityInfoModel.updateMany(
     {facilityId:id},
     {$set:{companyName:companyName,cknNumber:cknNumber,companyNumber:companyNumber,companyMail:companyMail,companyWebsite:companyWebsite,productArea:productArea,closeArea:closeArea,openArea:openArea,workerCount:workerCount,totalArea:totalArea,address:address}})
-  console.log("facility new api---",facility)
+  // console.log("facility new api---",facility)
 
   // facility.companyName = companyName;
   // facility.cknNumber = cknNumber;
