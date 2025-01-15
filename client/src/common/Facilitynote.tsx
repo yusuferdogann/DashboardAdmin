@@ -135,9 +135,9 @@ const Facilitynote = (props: any) => {
             <div>
 
               <div className="flex flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 mb-5 text-center">
-                <span className='text-black font-bold text-red me-3'>{nameDeletedFacility}</span> {" "} <p className='text-normal'>tesisini silmek istediginizden emin misiniz?</p><br />
+                <span className='text-black font-bold text-red me-3'>{props.deleteData.facilityname}</span> {" "} <p className='text-normal'>tesisini silmek istediginizden emin misiniz?</p><br />
               </div>
-              <span className='mt-5 text-red-300'>NOT:Tesis ile birlikte tesise ait butun kapsamlarda silenecektir.</span>
+              <span className='mt-5 text-red-300'>NOT:Tesis ile birlikte tesise ait bütün kapsam bilgileri de silenecektir.</span>
 
             </div>
 

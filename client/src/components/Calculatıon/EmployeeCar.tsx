@@ -75,9 +75,10 @@ const EmployeeCar = (props) => {
       }
       // console.log(change)
       const {name,value}=event.target
-      setFormValues({...formValues,[name]:value})
-      console.log("employeeData",employeeData)
+      
       setEmployeeData({...employeeData,[name]:value})
+      console.log("employeeData",employeeData)
+      setFormValues({...formValues,[name]:value})
      
       
 
@@ -96,8 +97,9 @@ const EmployeeCar = (props) => {
       // setListData({...formValues,[name]:value})
       const funcMiktar = employeeData?.miktar
          const funcKaynak =  employeeData?.yakitturu;
+         const realKaynak = employeeData?.kaynak;
          CalculateFuction(funcKaynak,funcMiktar)
-         console.log("gasType yok---------")
+         console.log("Real Kaynak---------",realKaynak)
          console.log("func---====",CalculateFuction(funcKaynak,funcMiktar))
          console.log("funcKaynak---------",funcKaynak)
          console.log("funcMiktar---------",typeof(funcMiktar))
@@ -258,22 +260,22 @@ const EmployeeCar = (props) => {
       <div style={{ color: "red" }}>Don't forget to check the weather!</div>
     </DatePicker> */}
     </div>
-        <h4 className="mt-10 font-bold">Müşteri Ziyaretleri Sonucu Oluşan Emilsyonlar</h4>
+        <h4 className="my-10 font-bold">Müşteri Ziyaretleri Sonucu Oluşan Emilsyonlar</h4>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
         <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Kaynak</label>
             <input
               type="text"
-              name='Kaynak'
-              onChange={(e) => changeEmployee(e)} 
+              name='kaynak'
+              onChange={(event) => changeEmployee(event)} 
               className={formErrors.kaynak ? styles.select.error : styles.select.normal}
               placeholder="Kaynak girin"
             />
             <small className="mt-2 text-sm text-red-600 dark:text-red-500 font-medium">{formErrors.kaynak}</small> 
           </div>
           <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
-            <select onChange={(e) => changeEmployee(e)} value={employeeData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakıt Türü</label>
+            <select onChange={(event) => changeEmployee(event)} value={employeeData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
               <option>Yakıt türü seçin</option>
               <option>Dizel Yakıt</option>
               <option>Sıvılaştırılmış Petrol Gazları (LPG)</option>
@@ -284,7 +286,7 @@ const EmployeeCar = (props) => {
           </div>
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Birim</label>
-            <select onChange={(e) => changeEmployee(e)} value={employeeData.sofor} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
+            <select onChange={(event) => changeEmployee(event)} value={employeeData.sofor} name='birim' id="cities" className={formErrors.birim ? styles.select.error : styles.select.normal}>
               <option>Birim seçin</option>
               <option>Litre</option>
             </select>
@@ -294,7 +296,7 @@ const EmployeeCar = (props) => {
           <div className="block w-full">
             <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Miktar</label>
             <input 
-            onChange={(e) => changeEmployee(e)} 
+            onChange={(event) => changeEmployee(event)} 
             value={employeeData.miktar} 
             name='miktar' 
             type="text" 

@@ -43,7 +43,7 @@ const index = (props) => {
       <div className="flex flex-col my-4">
         {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
         <div>
-        { change===false ? <i class="fa-solid fa-triangle-exclamation text-2xl" style={{color:"#d46c6c"}}></i> : null}
+        { change===false ? <i className="fa-solid fa-triangle-exclamation text-2xl" style={{color:"#d46c6c"}}></i> : null}
         <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
         </div>
         <div className="mt-7">

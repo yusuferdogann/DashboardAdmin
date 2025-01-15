@@ -5,8 +5,10 @@ import Facilitynone from '../common/Facilitynote';
 import { post, get, put } from '../server/Apiendpoint';
 import { userAuth } from '../auth/userAuth';
 import { CountryDropdown, StateDropdown, CityDropdown, LanguageDropdown, PhoneInput, } from "react-country-state-dropdown";
-import { NavLink, useNavigate, Link } from 'react-router-dom';
+import { NavLink, useNavigate, Link ,useLocation} from 'react-router-dom';
 import Settings from './Settings';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 
@@ -25,7 +27,7 @@ const Facility = () => {
     // =========================================
 
 
-    const [size, setSize] = React.useState(null);
+    const [size, setSize] = useState(null);
     const [resultData, setResultData] = useState([])
 
     const { value, setFacilitSend, token, setFacilityRes } = userAuth();
@@ -40,7 +42,9 @@ const Facility = () => {
 
     const handleOpen = (value) => setSize(value);
     const navigate = useNavigate();
+    const location = useLocation();
 
+    console.log("yol-------",location.pathname)
     function timeout(ms){
         return new Promise((resolve)=>setTimeout(resolve,ms))
     }
@@ -57,6 +61,7 @@ const Facility = () => {
             await timeout(1000)
           if(!isCancelled){
             const dataResult = await get('/getfacility', config);
+            setCheckLoading(dataResult)
             const responseResult = dataResult
             // console.log("getFacility------------------------------", responseResult.data.data)
             setResultData(responseResult.data.data)
@@ -101,6 +106,7 @@ const Facility = () => {
         totalarea: '',
     })
     const [checkSpinner, setCheckSpinner] = useState(false)
+    const [checkLoading,setCheckLoading] = useState()
 
     // Tesis Ekle kisminda calisan kisim
     const changeSave = (e) => {
@@ -122,6 +128,7 @@ const Facility = () => {
         })
         console.log("result", data)
     }
+    const LocalStorage = localStorage.getItem("Facilityname");
 
  // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
  const getAllData = async (item) => {
@@ -141,9 +148,16 @@ const Facility = () => {
     //     workerCount:item.employeecount
     // }
     // localStorage.setItem("facilityInfoDetail",JSON.stringify(informationData))
-    localStorage.setItem("facilityInformation", JSON.stringify(item))
-    const localData = JSON.parse(localStorage.getItem('facilityInformation'))
-    console.log("localData-----", localData)
+    const itemData = JSON.stringify(item)
+    const getItem  = localStorage.getItem('facilityInformation')
+    // if(LocalStorage === item.facilityname){
+    //     localStorage.setItem("facilityInformation", itemData)
+    // }
+
+    const localData = JSON.parse(getItem)
+    console.log("localData--------", item.facilityname)
+    console.log("LocalStorage-----", LocalStorage)
+
     // setGetVeri(localData)
     setTesisName(item.facilityname)
     var tesisNo = localData?._id
@@ -159,6 +173,7 @@ const Facility = () => {
     console.log('getfacility name-----------------', GetOnefacility)
     if (GetOnefacility?.data.data) {
         setCheckSpinner(true)
+        localStorage.setItem("facilityInformation", itemData)
         localStorage.setItem("Facilityname", item.facilityname)
 
         setTimeout(() => {
@@ -260,12 +275,13 @@ const Facility = () => {
         };
         setChangeData(item.facilityname)
         if (event.key === 'Enter') {
+            const sendingId = updateId
             console.log("ss------------------", updateId)
             console.log("id------------------", sendUpdateData.id)
             console.log("item------------------", item)
 
 
-            setSendUpdateData({ ...sendUpdateData, title: changeData.facilityname, id: updateId?._id })
+            setSendUpdateData({ ...sendUpdateData, title: changeData.facilityname, id: updateId._id })
             console.log("sendingUpdate-------------", sendUpdateData)
             const updateFacilityName = await put('/updateFacilityName', sendUpdateData, config)
             console.log("updated------", updateFacilityName)
@@ -282,7 +298,6 @@ const Facility = () => {
 
     // hazir veri
     setFacilitSend(getVeri)
-    const LocalStorage = localStorage.getItem("Facilityname");
     // console.log("lOca------", LocalStorage)
     return (
         < >
@@ -336,7 +351,8 @@ const Facility = () => {
                         </div>
                     ))
                 }
-                <div>
+
+                {checkLoading?.status === 200 ?    <div>
                     <a href="#" className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                         {/* <i style={{ fontSize: '50px' }} class="fa-solid fa-industry px-3"></i> */}
                         <div className="flex flex-col justify-between h-[190px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
@@ -348,7 +364,8 @@ const Facility = () => {
                             <div style={{ transform: 'translate(-50%,-50%)', top: '50%', left: '50%', fontSize: '40px' }} className='absolute  translate-x-1/2  translate-y-2/4' > +</div>
                         </div>
                     </a>
-                </div>
+                </div> : <Skeleton height={'190px'} baseColor='#ebebeb'/> }
+             
             </div>
 
 

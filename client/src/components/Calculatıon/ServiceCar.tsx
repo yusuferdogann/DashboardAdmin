@@ -254,10 +254,10 @@ const ServiceCar = (props) => {
       <div style={{ color: "red" }}>Don't forget to check the weather!</div>
     </DatePicker> */}
     </div>
-         <h4 className="mt-10 font-bold">Servis Araçlar</h4>
+         <h4 className="my-10 font-bold">Servis Araçlar</h4>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
         <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>kaynak</label>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Kaynak</label>
             <input
               type="text"
               name='kaynak'
@@ -270,7 +270,7 @@ const ServiceCar = (props) => {
 
           </div>
           <div className="block w-full">
-            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakit Turu</label>
+            <label className="block mb-2 text-sm font-medium text-gray-600 w-full" style={{ display: 'block' }}>Yakıt Türü</label>
             <select onChange={(event) => changeService(event)} value={serviceData.yakitturu} name='yakitturu' id="cities" className={formErrors.yakitturu ? styles.select.error : styles.select.normal}>
             <option>Yakıt türü seçin</option>
               <option>Dizel Yakıt</option>

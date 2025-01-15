@@ -34,6 +34,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [avatarURL,setAvatarURL] = useState('')
   const [image,setImage] = useState("")
   const [comeImage,setComeImage] = useState()
+  const [tesisName,setTesisName] = useState()
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -51,8 +52,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   });
   var val = localStorage.getItem('facilityInformation');
   var object = JSON.parse(val);
-  
+  // setTesisName(object.tesisName)
 // console.log("data-----------------",object.company_logo)
+console.log("right-------",object?.facilityname)
   // close if the esc key is pressed
   useEffect(() => {
 
@@ -139,22 +141,30 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       
           
          
-       
-        <form id='form' encType='multipart/form-data' action="">
+       <div>
+       <form id='form' encType='multipart/form-data' action="">
+       {
+        object?.facilityname === undefined ? <div></div> :
         <div className='absolute 2xsm:top-[5rem] xsm:mt-0 top-0 right-0 z-999  text-bodydark1 duration-300 ease-in-out hover:bg-white dark:hover:bg-white bg-[#d3d3d3] dark:bg-meta-4 logohover' style={{padding:"10px",borderRadius:'50%',margin:".75rem"}}>
-         <button type='submit' onClick={handleImageUpload}> <i style={{fontSize:'35x',color:"black"}} className="fa-regular fa-image"></i></button>
-        </div>
+        <button type='submit' onClick={handleImageUpload}> <i style={{fontSize:'35x',color:"black"}} className="fa-regular fa-image"></i></button>
+       </div> 
+       }
         <input type="file"  id='file' ref={fileUploadRef} onChange={(e)=>convertToBase64(e)} hidden/>
         </form>
          <div className='relative 2xsm:mt-[11rem] xsm:mt-0' style={{borderRadius:"20px",height:"142px",zIndex:'234'}}>
          <img className='z-99'  style={{borderRadius:"20px",height:"142px",zIndex:'234',width:"250px",position:'relative'}} src={object?.company_logo } alt="" />
-         <div className='absolute top-0' >
-         <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0",background:'red'}}>
-          <button className='flex justify-center items-center relative z-[99999]' style={{height:'140px',width:'238px',borderRadius:'20px',background:'#ff000000'}}>{object?.company_logo ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
-        </Tooltip>
-         </div>
+        {
+          object?.facilityname === undefined ? <div></div> :
+          <div className='absolute top-0' >
+            <Tooltip content="Logo Ekleyin" placement="right"  style={{color:"red",zIndex:"0",background:'red'}}>
+            <button className='flex justify-center items-center relative z-[99999]' style={{height:'140px',width:'238px',borderRadius:'20px',background:'#ff000000'}}>{object?.company_logo ? '' : <span style={{color:"white",fontSize:'35px'}}>+</span>}</button>
+            </Tooltip>
+          </div>
+        }
+       </div>
          </div>
       
+         {/* object?.facilityname !== null & location.pathname === '/facility' */}
 
         <button
           ref={trigger}
@@ -190,7 +200,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
               MENU
             </h3>
-            <div class="border-b border-stroke py-1 mb-4  dark:border-strokedark"></div>
+            <div className="border-b border-stroke py-1 mb-4  dark:border-strokedark"></div>
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
@@ -594,7 +604,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('get-report') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                <i class="fa-regular fa-file" style={{color:'#b5bbc7'}}></i>
+                <i className="fa-regular fa-file" style={{color:'#b5bbc7'}}></i>
                   Rapor Al
                 </NavLink>
               </li>
@@ -605,7 +615,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     pathname.includes('sumary') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <i class="fa-solid fa-desktop"></i>
+                  <i className="fa-solid fa-desktop"></i>
                   Özet
                 </NavLink>
               </li>

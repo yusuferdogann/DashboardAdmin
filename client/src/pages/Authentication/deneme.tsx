@@ -103,7 +103,7 @@ export default class App extends React.Component {
               noValidate
               sx={{ mt: 1 }}
             >
-              <div class="container, width:100%">
+              <div className="container, width:100%">
                 <div>
                   <div>
                     <div>

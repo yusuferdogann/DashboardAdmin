@@ -93,7 +93,7 @@ const PdfView = () => {
            
            <div style={{margin:'5rem'}}>
            <div className='flex justify-between'>
-                <div><img width={100} style={{ borderRadius: '10px', margin: 0 }} src={object.company_logo} alt="" /></div>
+                <div><img width={100} style={{ borderRadius: '10px', margin: 0 }} src={object?.company_logo} alt="" /></div>
                 <span className='font-bold'>Rapor Tarihi: {datetime}</span>
             </div>
             <hr className='my-4' style={{ height: '2px solid black' }} />
