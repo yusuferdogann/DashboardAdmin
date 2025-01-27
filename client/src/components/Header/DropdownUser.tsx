@@ -19,9 +19,12 @@ const DropdownUser = () => {
     
     },500)
         setTimeout(()=>{
-          navigate('/login')
+          // navigate('/login')
+          window.location.assign('https://www.slave.carbonistan.com/login')
           window.localStorage.clear();
-          window.location.reload()
+          // window.location.reload()
+
+        
         },2000)
       }
   return (

@@ -66,8 +66,9 @@ const Login: React.FC = () => {
         setUser(response.data.user)
 
         setTimeout(()=>{
-          navigate("/facility")
-          window.location.reload()
+          // navigate("/facility")
+          // window.location.assign('https://slave.carbonistan.com/facility')
+            window.location.assign('https://www.slave.carbonistan.com/facility')
         },2000)
       }
       else{

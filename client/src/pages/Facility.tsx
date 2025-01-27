@@ -310,7 +310,7 @@ const Facility = () => {
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
             {/* grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 */}
                 {
-                    resultData.map((item, index) => (
+                    resultData?.map((item, index) => (
                         <div >
                             {/* group relative flex items-center gap-2.5 rounded-sm
                         py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out

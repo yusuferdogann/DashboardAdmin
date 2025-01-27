@@ -54,7 +54,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   var object = JSON.parse(val);
   // setTesisName(object.tesisName)
 // console.log("data-----------------",object.company_logo)
-console.log("right-------",object?.facilityname)
+// console.log("right-------",object?.facilityname)
   // close if the esc key is pressed
   useEffect(() => {
 

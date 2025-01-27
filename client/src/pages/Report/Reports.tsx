@@ -6,8 +6,8 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import Breadcrumb from "../components/Breadcrumbs/Breadcrumb";
-import PdfView from "../components/Pdf/PdfView";
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
+import PdfView from "../../components/Pdf/PdfView";
  
 export default function DialogSizes() {
   const [size, setSize] = React.useState(null);

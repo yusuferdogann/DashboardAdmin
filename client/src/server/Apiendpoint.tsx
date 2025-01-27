@@ -6,9 +6,12 @@ export const instance = axios.create({
     // =====Vercel guncel api backend======
     // baseURL:'https://dashboard-admin-weld.vercel.app/auth' 
        // =====Render guncel api backend======
-       baseURL:'https://dashboardadmin-deis.onrender.com/auth' 
+    //    baseURL:'https://dashboardadmin-deis.onrender.com/auth' 
 
-    // yaallah
+    // ===== slave.carbonistan ===============
+    // https://slave.carbonistan.com/
+    baseURL:'https://slave.carbonistan.com/auth',
+    
 
     // =====local api // 24.11.2024 // ==========
     // baseURL:'http://localhost:3000/auth',
