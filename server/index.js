@@ -48,11 +48,12 @@ app.use(bodyParser.json())
 app.use(cors());
 
 
+
 const PORT =  3000;
 
 
-app.post("/yusuf",(req,res)=>{
-    console.log(req.body)
+app.get("/yusuf",(req,res)=>{
+    res.send("selam")
 })
 
 
@@ -72,8 +73,12 @@ app.use(customErrorHandler)
 
 
 
-app.listen(PORT,()=>{
-    console.log("server is running", PORT);
+//app.listen(()=>{
+//    console.log("server is running", 3001);
+//})
+app.listen(3000,()=>{
+    console.log("server is running");
 })
+
 
 module.export = app;
