@@ -67,7 +67,7 @@ const Login: React.FC = () => {
 
         setTimeout(()=>{
           // navigate("/facility")
-          // window.location.assign('https://slave.carbonistan.com/facility')
+          // window.location.assign('http://localhost:5173/facility')
             window.location.assign('https://www.slave.carbonistan.com/facility')
         },2000)
       }

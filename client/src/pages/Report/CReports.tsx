@@ -2,7 +2,16 @@ import Streams from "../../components/CReports/Eminst/Streams"
 import Aggregated from "../../components/CReports/InstData/Aggregated"
 import Purchased from "../../components/CReports/InstData/Purchased"
 import Verifier from "../../components/CReports/InstData/Verifier"
-
+import LastReport from "../../components/CReports/LastReport"
+import Level1 from "../../components/CReports/LastReport/Level1"
+import Level2 from "../../components/CReports/LastReport/Level2"
+import Level3 from "../../components/CReports/LastReport/Level3"
+import Level4 from "../../components/CReports/LastReport/Level4"
+import Level5 from "../../components/CReports/LastReport/Level5"
+import Level6 from "../../components/CReports/LastReport/Level6"
+import Level7 from "../../components/CReports/LastReport/Level7"
+import Level8 from "../../components/CReports/LastReport/Level8"
+import ExcelEditor from "../../components/Excel/yeni2"
 const CReports = () => {
   return (
     <div>
@@ -11,8 +20,20 @@ const CReports = () => {
      {/* <Aggregated/> */}
     {/* <Purchased/> */}
 
-    <Streams/>
-     
+    {/* <Streams/> */}
+     {/* <LastReport/> */}
+     {/* <Level1/> */}
+     {/* <Level2/> */}
+     {/* <Level3/> */}
+     {/* <Level4/> */}
+     {/* <Level5/> */}
+     {/* <Level6/> */}
+     <ExcelEditor/>
+     {/* elektrik */}
+     {/* <Level7/> */}
+
+     {/* uretim */}
+     {/* <Level8/> */}
     </div>
   )
 }
