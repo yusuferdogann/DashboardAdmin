@@ -10,7 +10,7 @@ export const instance = axios.create({
 
     // ===== slave.carbonistan ===============
     // https://slave.carbonistan.com/
-    baseURL:'https://slave.carbonistan.com/auth',
+    baseURL:'https://app.carbonistan.com/auth',
     
 
     // =====local api // 24.11.2024 // ==========
