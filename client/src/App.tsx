@@ -77,17 +77,9 @@ function App() {
           :
           <DefaultLayout>
             <Routes>
+             
               <Route
-                index
-                element={
-                  <>
-                    <PageTitle title="Dashboard " />
-                    <ECommerce />
-                  </>
-                }
-              />
-              <Route
-                path='dashboard'
+                path='/dashboard'
                 element={
                   <>
                     <PageTitle title="Dashboard " />
