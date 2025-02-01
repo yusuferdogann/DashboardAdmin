@@ -18,17 +18,11 @@ const DropdownUser = () => {
       handleSuccess('Çıkış işlemi başarılı')
     
     },500)
-        setTimeout(()=>{
-          navigate('/login')
-          window.location.reload();
-          // window.location.assign('https://www.slave.carbonistan.com/login')
-          // window.location.assign('http://localhost:5173/login')
+    setTimeout(() => {
+      window.location.href = "/login";
+      window.localStorage.clear();
 
-          window.localStorage.clear();
-          // window.location.reload()
-
-        
-        },2000)
+    }, 2000);
       }
   return (
   <div className={checkSpinner ? 'relatie' : 'z-9999 relative'} >
