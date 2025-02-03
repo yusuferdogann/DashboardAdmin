@@ -2,25 +2,29 @@ import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import tr from "date-fns/locale/tr"; // Türkçe dil dosyasını import et
+
 
 const ExcelEditor = () => {
   const [file, setFile] = useState(null);
   const [sheetNames, setSheetNames] = useState([]); // Sayfa isimleri
   const [selectedSheet, setSelectedSheet] = useState(""); // Seçilen sayfa
   const [inputValues, setInputValues] = useState({
-    H65: "",
-    B1: "",
-    C1: "",
-    D1: "",
-    E1: "",
-    F1: "",
-    G1: "",
-    H1: "",
-    I1: "",
+    F40: "",
+    G40: "",
+    F46: "",
+    H46: "",
+    D49: "",
+    D50: "",
+    E49: "",
+    E50: "",
+    F52: "",
   }); // 9 input için değerler
   const [selectValues, setSelectValues] = useState({
-    J1: "",
-    K1: "",
+    I9: null,
+    L9: null,
   }); // 2 select için değerler
 
   // Excel dosyasını okuma fonksiyonu
@@ -36,9 +40,10 @@ const ExcelEditor = () => {
       const binaryString = e.target.result;
       const workbook = XLSX.read(binaryString, { type: "binary" });
 
-      // Sayfa isimlerini al
-      setSheetNames(workbook.SheetNames);
-      setSelectedSheet(workbook.SheetNames[0]); // İlk sayfayı seçili yap
+      // Sadece 4. sayfayı göster
+      const sheetNames = workbook.SheetNames.slice(4, 5); // Dördüncü sayfayı seç
+      setSheetNames(sheetNames);
+      setSelectedSheet(workbook.SheetNames[4]); // İlk sayfayı seçili yap
     };
   };
 
@@ -76,7 +81,15 @@ const ExcelEditor = () => {
           const value = inputValues[cell];
           if (value) {
             const excelCell = sheet.getCell(cell);
-            excelCell.value = value;
+            // Tarihi dd/mm/yyyy formatında yazdır
+            const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+            const day = String(dateObj.getDate()).padStart(2, "0");
+            const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Aylar 0-11 arası olduğu için +1 ekliyoruz
+            const year = dateObj.getFullYear();
+            const formattedDate = `${day}/${month}/${year}`; // dd/mm/yyyy formatı
+
+
+            excelCell.value = formattedDate; // Excel doğru tarihi görür
             excelCell.font = { bold: true, color: { argb: "FF0000" } }; // Kırmızı ve kalın yap
             excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
           }
@@ -87,7 +100,15 @@ const ExcelEditor = () => {
           const value = selectValues[cell];
           if (value) {
             const excelCell = sheet.getCell(cell);
-            excelCell.value = value;
+            // Tarihi dd/mm/yyyy formatında yazdır
+            const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+            const day = String(dateObj.getDate()).padStart(2, "0");
+            const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Aylar 0-11 arası olduğu için +1 ekliyoruz
+            const year = dateObj.getFullYear();
+            const formattedDate = `${day}/${month}/${year}`; // dd/mm/yyyy formatı
+
+
+            excelCell.value = formattedDate; // Excel doğru tarihi görür
             excelCell.font = { bold: true, color: { argb: "0000FF" } }; // Mavi ve kalın yap
             excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
           }
@@ -115,7 +136,7 @@ const ExcelEditor = () => {
         // Yeni Excel dosyasını oluştur ve indir
         const updatedBuffer = await workbook.xlsx.writeBuffer();
         const updatedBlob = new Blob([updatedBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-        
+
         // Dosyayı hemen indir ve aç
         const fileUrl = URL.createObjectURL(updatedBlob);
         const link = document.createElement('a');
@@ -138,17 +159,17 @@ const ExcelEditor = () => {
     });
   };
 
-  // Select değeri değiştiğinde state'i güncelleme
-  const handleSelectChange = (e, cell) => {
+  // DatePicker değeri değiştiğinde state'i güncelleme
+  const handleDateChange = (date, cell) => {
     setSelectValues({
       ...selectValues,
-      [cell]: e.target.value,
+      [cell]: date,
     });
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Excel Düzenleyici</h2>
+    <div style={{ padding: "20px" }} className="mt-10 border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white">
+      {/* <h2>Excel Düzenleyici</h2> */}
 
       {/* Dosya Yükleme */}
       <input type="file" accept=".xlsx" onChange={handleFileUpload} />
@@ -158,7 +179,7 @@ const ExcelEditor = () => {
       {sheetNames.length > 0 && (
         <>
           <label htmlFor="sheet-select">Sayfa Seç:</label>
-          <select id="sheet-select" value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)}>
+          <select  className='ms-4 w-full rounded border ms-4 border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary' id="sheet-select" value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)} style={{width:"8%"}}>
             {sheetNames.map((sheet) => (
               <option key={sheet} value={sheet}>
                 {sheet}
@@ -168,125 +189,158 @@ const ExcelEditor = () => {
           <br /><br />
         </>
       )}
+      {/* 2 DatePicker alanı */}
+      <div className="flex p-7 items-center border-b  border-stroke py-4  dark:border-strokedark">
+        <label htmlFor="J1" >Rapor Başlangıç Tarihi:</label>
+        <DatePicker
+          selected={selectValues["I9"]}
+          onChange={(date) => handleDateChange(date, "I9")}
+          dateFormat="dd/MM/yyyy"
+          className="w-full rounded border ms-4 border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+          locale={tr}
 
-      {/* 9 input alanı */}
-      <div>
-        <label htmlFor="H65">H65 Hücresine Yeni Değer:</label>
-        <input
-          id="H65"
-          type="text"
-          value={inputValues["H65"]}
-          onChange={(e) => handleInputChange(e, "H65")}
-          placeholder="Yeni Değer için H65"
         />
-        <br /><br />
-        
-        <label htmlFor="B1">B1 Hücresine Yeni Değer:</label>
-        <input
-          id="B1"
-          type="text"
-          value={inputValues["B1"]}
-          onChange={(e) => handleInputChange(e, "B1")}
-          placeholder="Yeni Değer için B1"
+
+
+        <label htmlFor="L9" className="ms-7">Rapor Bitiş Tarihi:</label>
+        <DatePicker
+          selected={selectValues["L9"]}
+          onChange={(date) => handleDateChange(date, "L9")}
+          dateFormat="dd/MM/yyyy"
+          className="w-full rounded ms-4 border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+          locale={tr}
+
         />
-        <br /><br />
-        
-        <label htmlFor="C1">C1 Hücresine Yeni Değer:</label>
-        <input
-          id="C1"
-          type="text"
-          value={inputValues["C1"]}
-          onChange={(e) => handleInputChange(e, "C1")}
-          placeholder="Yeni Değer için C1"
-        />
-        <br /><br />
-        
-        <label htmlFor="D1">D1 Hücresine Yeni Değer:</label>
-        <input
-          id="D1"
-          type="text"
-          value={inputValues["D1"]}
-          onChange={(e) => handleInputChange(e, "D1")}
-          placeholder="Yeni Değer için D1"
-        />
-        <br /><br />
-        
-        <label htmlFor="E1">E1 Hücresine Yeni Değer:</label>
-        <input
-          id="E1"
-          type="text"
-          value={inputValues["E1"]}
-          onChange={(e) => handleInputChange(e, "E1")}
-          placeholder="Yeni Değer için E1"
-        />
-        <br /><br />
-        
-        <label htmlFor="F1">F1 Hücresine Yeni Değer:</label>
-        <input
-          id="F1"
-          type="text"
-          value={inputValues["F1"]}
-          onChange={(e) => handleInputChange(e, "F1")}
-          placeholder="Yeni Değer için F1"
-        />
-        <br /><br />
-        
-        <label htmlFor="G1">G1 Hücresine Yeni Değer:</label>
-        <input
-          id="G1"
-          type="text"
-          value={inputValues["G1"]}
-          onChange={(e) => handleInputChange(e, "G1")}
-          placeholder="Yeni Değer için G1"
-        />
-        <br /><br />
-        
-        <label htmlFor="H1">H1 Hücresine Yeni Değer:</label>
-        <input
-          id="H1"
-          type="text"
-          value={inputValues["H1"]}
-          onChange={(e) => handleInputChange(e, "H1")}
-          placeholder="Yeni Değer için H1"
-        />
-        <br /><br />
-        
-        <label htmlFor="I1">I1 Hücresine Yeni Değer:</label>
-        <input
-          id="I1"
-          type="text"
-          value={inputValues["I1"]}
-          onChange={(e) => handleInputChange(e, "I1")}
-          placeholder="Yeni Değer için I1"
-        />
-        <br /><br />
+
       </div>
 
-      {/* 2 select alanı */}
-      <div>
-        <label htmlFor="J1">J1 Hücresine Seçim Yapın:</label>
-        <select id="J1" value={selectValues["J1"]} onChange={(e) => handleSelectChange(e, "J1")}>
-          <option value="">Seçim Yapın</option>
-          <option value="Seçenek 1">Seçenek 1</option>
-          <option value="Seçenek 2">Seçenek 2</option>
-          <option value="Seçenek 3">Seçenek 3</option>
-        </select>
-        <br /><br />
-        
-        <label htmlFor="K1">K1 Hücresine Seçim Yapın:</label>
-        <select id="K1" value={selectValues["K1"]} onChange={(e) => handleSelectChange(e, "K1")}>
-          <option value="">Seçim Yapın</option>
-          <option value="Seçenek 1">Seçenek 1</option>
-          <option value="Seçenek 2">Seçenek 2</option>
-          <option value="Seçenek 3">Seçenek 3</option>
-        </select>
-        <br /><br />
+      <div className="p-7 flex grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-2 2xl:gap-7.5 " >
+
+
+        {/* 9 input alanı */}
+
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="F40">Doğalgaz Toplam Kullanım:</label>
+          <input
+            id="F40"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            type="text"
+            value={inputValues["F40"]}
+            onChange={(e) => handleInputChange(e, "F40")}
+          />
+        </div>
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="G40">Üreim Yüzdesi(Doğalgaz):</label>
+          <input
+            id="G40"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["G40"]}
+            onChange={(e) => handleInputChange(e, "G40")}
+          />
+          <br />
+        </div>
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="F46">Üretim Yüzdesi(Elektrik):</label>
+          <input
+            id="F46"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["F46"]}
+            onChange={(e) => handleInputChange(e, "F46")}
+          />
+        </div>
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="H46">Toplam Elektrik Kullanımı:</label>
+          <input
+            id="H46"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["H46"]}
+            onChange={(e) => handleInputChange(e, "H46")}
+          />
+        </div>
+
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="D49">üretilen 1.Ürün:</label>
+          <input
+            id="D49"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["D49"]}
+            onChange={(e) => handleInputChange(e, "D49")}
+          />
+        </div>
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="D50">üretilen 2.Ürün:</label>
+          <input
+            id="D50"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["D50"]}
+            onChange={(e) => handleInputChange(e, "D50")}
+          />
+        </div>
+
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="E49">Satılan 1.Ürün:</label>
+          <input
+            id="E49"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["E49"]}
+            onChange={(e) => handleInputChange(e, "E49")}
+          />
+        </div>
+
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="E50">Satılan 2.Ürün:</label>
+          <input
+            id="E50"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["E50"]}
+            onChange={(e) => handleInputChange(e, "E50")}
+          />
+        </div>
+
+        <div className="sm:w-1/2 py-3">
+          <label htmlFor="F52">Elekrik Emisyon Faktörü:</label>
+          <input
+            id="F52"
+            type="text"
+            className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            value={inputValues["F52"]}
+            onChange={(e) => handleInputChange(e, "F52")}
+          />
+        </div>
+
+
+
       </div>
 
       {/* Güncelleme Butonu */}
-      <button onClick={updateExcel} disabled={!file || !selectedSheet}>
+      {/* <button onClick={updateExcel} disabled={!file || !selectedSheet}>
         Excel Güncelle & İndir
-      </button>
+      </button> */}
+
+      <div className="flex justify-end gap-4.5 p-4">
+        <button
+          className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+          type="submit"
+          onClick={updateExcel} disabled={!file || !selectedSheet}
+        >
+          Excel Guncelle & Indir
+        </button>
+      </div>
     </div>
   );
 };

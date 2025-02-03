@@ -21,12 +21,46 @@ import Login from './pages/Authentication/Login';
 import { userAuth } from './auth/userAuth';
 import Facility from './pages/Facility';
 import Reports from './pages/Report/Reports';
+import {jwtDecode} from "jwt-decode"; // npm install jwt-decode
 
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const { token, checkSpinner } = userAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      const token = localStorage.getItem("access_token");
+
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          const currentTime = Math.floor(Date.now() / 1000);
+
+          // Token süresi dolmuşsa logout yap ve yönlendir
+          if (decodedToken.exp < currentTime) {
+            localStorage.clear();
+            navigate("/login");
+          }
+        } catch (error) {
+          console.error("Token çözümleme hatası:", error);
+          localStorage.clear();
+          navigate("/login");
+        }
+      } else {
+        navigate("/login"); // Eğer token yoksa login'e yönlendir
+      }
+    };
+
+    // Her 5 saniyede bir token süresini kontrol et
+    const interval = setInterval(() => {
+      checkTokenExpiration();
+    }, 2000); // 2000ms = 2 saniye
+
+    return () => clearInterval(interval); // Component unmount olursa interval'i temizle
+  }, [navigate]);
+
 
 
 

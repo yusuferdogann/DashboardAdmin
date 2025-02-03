@@ -106,7 +106,7 @@ const ExcelExportHelper = ({ data }) => {
         C: "Kaynak Akışları",
         D: "Activity Data(AD)",
         E: "AD Unit",
-        F: "Fatura Değeri(m3)",
+        F: "Doğalgaz Kullanım(m3)",
         G: "Üretim Yüzdesi",
       },
     ];
