@@ -80,39 +80,47 @@ const ExcelEditor = () => {
         Object.keys(inputValues).forEach((cell) => {
           const value = inputValues[cell];
           if (value) {
-            const excelCell = sheet.getCell(cell);
-            // Tarihi dd/mm/yyyy formatında yazdır
-            const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
-            const day = String(dateObj.getDate()).padStart(2, "0");
-            const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Aylar 0-11 arası olduğu için +1 ekliyoruz
-            const year = dateObj.getFullYear();
-            const formattedDate = `${day}/${month}/${year}`; // dd/mm/yyyy formatı
-
-
-            excelCell.value = formattedDate; // Excel doğru tarihi görür
-            excelCell.font = { bold: true, color: { argb: "FF0000" } }; // Kırmızı ve kalın yap
-            excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
+            const excelCell = sheet.getCell(cell); // excelCell'i burada tanımla
+        
+            if (value instanceof Date && !isNaN(value)) {
+              const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+              const day = String(dateObj.getDate()).padStart(2, "0");
+              const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+              const year = dateObj.getFullYear();
+              const formattedDate = `${day}/${month}/${year}`;
+        
+              excelCell.value = formattedDate; // Excel'e tarih formatında yaz
+              excelCell.font = { bold: true, color: { argb: "0000FF" } }; // Mavi ve kalın yap
+              excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
+            } else {
+              excelCell.value = value; // Eğer tarih değilse, direkt değeri yaz
+            }
           }
         });
+        
 
         // Select değerleriyle hücreleri güncelle
-        Object.keys(selectValues).forEach((cell) => {
-          const value = selectValues[cell];
+        Object.keys(inputValues).forEach((cell) => {
+          const value = inputValues[cell];
           if (value) {
-            const excelCell = sheet.getCell(cell);
-            // Tarihi dd/mm/yyyy formatında yazdır
-            const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
-            const day = String(dateObj.getDate()).padStart(2, "0");
-            const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Aylar 0-11 arası olduğu için +1 ekliyoruz
-            const year = dateObj.getFullYear();
-            const formattedDate = `${day}/${month}/${year}`; // dd/mm/yyyy formatı
-
-
-            excelCell.value = formattedDate; // Excel doğru tarihi görür
-            excelCell.font = { bold: true, color: { argb: "0000FF" } }; // Mavi ve kalın yap
-            excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
+            const excelCell = sheet.getCell(cell); // excelCell'i burada tanımla
+        
+            if (value instanceof Date && !isNaN(value)) {
+              const dateObj = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+              const day = String(dateObj.getDate()).padStart(2, "0");
+              const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+              const year = dateObj.getFullYear();
+              const formattedDate = `${day}/${month}/${year}`;
+        
+              excelCell.value = formattedDate; // Excel'e tarih formatında yaz
+              excelCell.font = { bold: true, color: { argb: "0000FF" } }; // Mavi ve kalın yap
+              excelCell.alignment = { vertical: "middle", horizontal: "center" }; // Orta hizalama
+            } else {
+              excelCell.value = value; // Eğer tarih değilse, direkt değeri yaz
+            }
           }
         });
+        
 
         // Sayfa şifreleme işlemi (VERİ_GİRİŞİ sayfası)
         if (sheet.name === "VERİ GİRİŞİ") {
@@ -179,7 +187,7 @@ const ExcelEditor = () => {
       {sheetNames.length > 0 && (
         <>
           <label htmlFor="sheet-select">Sayfa Seç:</label>
-          <select  className='ms-4 w-full rounded border ms-4 border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary' id="sheet-select" value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)} style={{width:"8%"}}>
+          <select className='ms-4 w-full rounded border ms-4 border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary' id="sheet-select" value={selectedSheet} onChange={(e) => setSelectedSheet(e.target.value)} style={{ width: "8%" }}>
             {sheetNames.map((sheet) => (
               <option key={sheet} value={sheet}>
                 {sheet}
