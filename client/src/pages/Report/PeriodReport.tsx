@@ -1,0 +1,114 @@
+import React from 'react'
+
+const PeriodReport = () => {
+  return (
+    <div> <div style={{ visibility: 'hidden' }}>
+                    <div ref={contentRef}>
+                        <div >
+                            <div className='beforeClass' style={{ height: "100%", width: '100%', objectFit: 'contain' }}><img src={CoverImage} alt="" /></div>
+    
+                            <div style={{ margin: '5rem' }}>
+                                <div className='flex justify-between'>
+                                    <div><img width={100} style={{ borderRadius: '10px', margin: 0 }} src={object?.company_logo} alt="" /></div>
+                                    <span className='font-bold'>Rapor Tarihi: {datetime}</span>
+                                </div>
+                                <hr className='my-4' style={{ height: '2px solid black' }} />
+                                <span className='font-bold text-xl'>Tesis İsmi: {localData}</span><h1 className='mt-2'> </h1>
+                                <div className="relative overflow-x-auto mt-5">
+                                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Kapsam başlıkları
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Ocak-MART
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Nisan-Haziran
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Temmuz-Eylul
+                                                </th>
+                                                <th scope="col" className="px-6 py-3">
+                                                    Ekim-Aralik
+                                                </th>
+    
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    KAPSAM-1
+                                                </th>
+                                                <td className="px-6 py-4 tex">
+                                                    {periodData?.KAPSAM1[0][0]?.miktar ? periodData?.KAPSAM1[0][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM1[1][0]?.miktar ? periodData?.KAPSAM1[1][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM1[2][0]?.miktar ? periodData?.KAPSAM1[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM1[3][0]?.miktar ? periodData?.KAPSAM1[3][0]?.miktar : 'veri yok'}
+                                                </td>
+                                            </tr>
+                                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    KAPSAM-2
+                                                </th>
+                                                <td className="px-6 py-4 tex">
+                                                    {periodData?.KAPSAM2[0][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM2[0][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM2[2][0]?.miktar ? periodData?.KAPSAM2[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM2[3][0]?.miktar ? periodData?.KAPSAM2[3][0]?.miktar : 'veri yok'}
+                                                </td>
+                                            </tr>
+                                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                    KAPSAM-3
+                                                </th>
+                                                <td className="px-6 py-4 tex">
+                                                    {periodData?.KAPSAM3[0][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM3[0][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM3[2][0]?.miktar ? periodData?.KAPSAM3[2][0]?.miktar : 'veri yok'}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    {periodData?.KAPSAM3[3][0]?.miktar ? periodData?.KAPSAM3[3][0]?.miktar : 'veri yok'}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {/* <hr className='mt-10' /> */}
+                                <h2 className='mt-20 font-bold text-large'>TOPLAM KARBON EMİLSYONLARI:</h2>
+                                <h3 className='font-bold text-large mt-3 mb-2'>KAPSAM-1:  {reportData?.CardScope1[0]?.miktar ? reportData?.CardScope1[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+                                <h3 className='font-bold text-large mb-2'>KAPSAM-2:  {reportData?.CardScope2[0]?.miktar ? reportData?.CardScope2[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+                                <h3 className='font-bold text-large'>KAPSAM-3:  {reportData?.CardScope3[0]?.miktar ? reportData?.CardScope3[0]?.miktar.toFixed(2) : 'veri yok'} /tonCo2e</h3>
+                                <hr className='mt-10' />
+                                <div className='html2pdf_page-break'></div>
+                                <div className='mt-15'>
+                                    <span className='block'><span className='font-bold'>Adres:  </span>{resportAdress?.address}</span>
+                                    <span className='block'><span className='font-bold'>Site:  </span> {resportAdress?.companyWebsite}</span>
+                                    <span className='block'><span className='font-bold'>Tel:  </span> {resportAdress?.companyNumber}</span>
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div> </div>
+  )
+}
+
+export default PeriodReport

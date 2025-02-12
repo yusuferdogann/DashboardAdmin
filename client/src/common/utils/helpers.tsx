@@ -14,6 +14,13 @@ export const handleError = (msg:String)=>{
     })
 }
 
+export const handleErrorCBAM = (msg:String)=>{
+    toast.warning(msg,{
+        position:"top-right"
+    })
+}
+
+
 
 export const handleErrorForFacility = (msg:String)=>{
     toast.warning(msg,{

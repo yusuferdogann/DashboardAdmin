@@ -1,6 +1,8 @@
 import React, { useState, ReactNode, useEffect } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
+// import Sidebar from '../components/Sidebar/indexdeneme';
+
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader';
 

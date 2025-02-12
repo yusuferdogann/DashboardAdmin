@@ -5,11 +5,13 @@ import Facilitynone from '../common/Facilitynote';
 import { post, get, put } from '../server/Apiendpoint';
 import { userAuth } from '../auth/userAuth';
 import { CountryDropdown, StateDropdown, CityDropdown, LanguageDropdown, PhoneInput, } from "react-country-state-dropdown";
-import { NavLink, useNavigate, Link ,useLocation} from 'react-router-dom';
+import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import Settings from './Settings';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { toast } from 'react-toastify'; // ✅ React-Toastify import
 
 
 
@@ -20,6 +22,8 @@ const Facility = () => {
     const [state, setState] = useState(null);
     const [dropcity, setDropCity] = useState(null);
     const [language, setLanguage] = useState(null);
+    const [selectedCountry, setSelectedCountry] = useState("");
+
 
     const handleSetCountry = (e, value) => setCountry(value);
     const handleSetState = (e, value) => setState(value);
@@ -33,21 +37,76 @@ const Facility = () => {
     const { value, setFacilitSend, token, setFacilityRes } = userAuth();
     const [sendUpdateData, setSendUpdateData] = useState({ id: '', title: '' })
     const [tesisName, setTesisName] = useState()
-    const [changeData, setChangeData] = useState({facilityname:''})
+    const [changeData, setChangeData] = useState({ facilityname: '' })
 
+    const [open, setOpen] = useState(false);
+    const [location, setLocation] = useState({ latitude: null, longitude: null });
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     // console.log("res------",facilitySend)
     // console.log("senddd------",facilityRes)
+    const handleCountryChangeCode = (country) => {
+        console.log("Seçilen Ülke Nesnesi: ", country?.target?.dataset?.iso3); // Nesneyi konsola yazdırıyoruz
+        // country.name veya country.code gibi alanları kullanarak doğru değeri alabiliriz
+        setSelectedCountry(country?.target?.dataset?.iso3); // Ülkenin kodunu state'e kaydediyoruz
+    };
 
+    // const handleOpen = (value) => setSize(value);
 
-    const handleOpen = (value) => setSize(value);
     const navigate = useNavigate();
-    const location = useLocation();
+    const locationmap = useLocation();
 
-    console.log("yol-------",location.pathname)
-    function timeout(ms){
-        return new Promise((resolve)=>setTimeout(resolve,ms))
+    console.log("yol-------", locationmap.pathname)
+    function timeout(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
     }
+
+    // Konum bilgilerini almak için getLocation fonksiyonu
+    const getLocation = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            // Konum bilgilerini güncelleme
+            setData(prevData => ({
+                ...prevData,
+                latitude,
+                longitude,
+            }));
+        });
+    };
+  
+
+    const checkFacilityLimit = async () => {
+        try {
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer: " +token
+                }
+            };
+    
+            const response = await post('/checkFacilityLimit', {}, config);
+    
+            if (response.data.facilityLimit <= 0) {
+                toast.warning("Limitiniz doldu! Yeni tesis ekleyemezsiniz.");
+                return false; // Modal açılmasını engelle
+            }
+    
+            return true; // Limit uygunsa devam et
+        } catch (error) {
+            console.error("Facility limit kontrol edilirken hata oluştu:", error);
+            toast.error("Sunucu hatası! Daha sonra tekrar deneyin.");
+            return false;
+        }
+    };
+
+    const handleOpen = async (value) => {
+        const isAllowed = await checkFacilityLimit(); // Önce limiti kontrol et
+        if (isAllowed) {
+            setSize(value); // ✅ Eğer limit uygunsa modalı aç
+        }
+    };
+
 
     useEffect(() => {
         let isCancelled = false;
@@ -59,14 +118,14 @@ const Facility = () => {
         };
         const fetchData = async () => {
             await timeout(1000)
-          if(!isCancelled){
-            const dataResult = await get('/getfacility', config);
-            setCheckLoading(dataResult)
-            const responseResult = dataResult
-            // console.log("getFacility------------------------------", responseResult.data.data)
-            setResultData(responseResult.data.data)
-            setFacilityRes(responseResult.data.data)
-          }
+            if (!isCancelled) {
+                const dataResult = await get('/getfacility', config);
+                setCheckLoading(dataResult)
+                const responseResult = dataResult
+                // console.log("getFacility------------------------------", responseResult.data.data)
+                setResultData(responseResult.data.data)
+                setFacilityRes(responseResult.data.data)
+            }
 
         }
 
@@ -90,12 +149,16 @@ const Facility = () => {
         employeecount: '',
         state: '',
         totalarea: "",
+        latitude: "",
+        // lontitude: "",
+        CityCode: "",
+        FieldActivity: ""
     })
 
     const getData = (data) => {
         setUpdateId(data)
         setVeri(data)
-        console.log("datasss---",data)
+        console.log("datasss---", data)
         changeData.facilityname = data?.facilityname
         setChangeData(data?.facilityname)
     }
@@ -104,13 +167,18 @@ const Facility = () => {
         facilityname: '',
         employeecount: '',
         totalarea: '',
+        latitude: "",
+        // lontitude: "",
+        CityCode: "",
+        FieldActivity: ""
+
     })
     const [checkSpinner, setCheckSpinner] = useState(false)
-    const [checkLoading,setCheckLoading] = useState()
+    const [checkLoading, setCheckLoading] = useState()
 
     // Tesis Ekle kisminda calisan kisim
     const changeSave = (e) => {
-        e.preventDefault()
+        // e.preventDefault()
         setData({
             ...data,
             [e.target.name]: e.target.value,
@@ -118,71 +186,58 @@ const Facility = () => {
             city: state?.name,
             state: dropcity?.name,
         });
-        // console.log("data----regaip",veri)
+
         setGetVeri({
             facilityname: data?.facilityname,
             country: '',
             employeecount: data?.employeecount,
             state: '',
             totalarea: data?.totalarea,
+            latitude: "",
+            // lontitude: "",
+            CityCode: "",
+            FieldActivity: ""
         })
         console.log("result", data)
     }
     const LocalStorage = localStorage.getItem("Facilityname");
 
- // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
- const getAllData = async (item) => {
-    //    setGetVeri(item)
-    // console.log("GETveri-----",getVeri)
-    // const informationData = {
-    //     address:'',
-    //     cknNumber:'',
-    //     closeArea:'',
-    //     companyMail:'',
-    //     companyName:item.facilityname,
-    //     companyNumber:'',
-    //     companyWebsite:'',
-    //     openArea:'',
-    //     productArea:'',
-    //     totalArea:item.totalarea,
-    //     workerCount:item.employeecount
-    // }
-    // localStorage.setItem("facilityInfoDetail",JSON.stringify(informationData))
-    const itemData = JSON.stringify(item)
-    const getItem  = localStorage.getItem('facilityInformation')
-    // if(LocalStorage === item.facilityname){
-    //     localStorage.setItem("facilityInformation", itemData)
-    // }
+    // Maptedeki verileri tikladigimizda alabiliryoruz bu veriyi Calculation sayfasina gondermek icin
+    const getAllData = async (item) => {
+       
+        const itemData = JSON.stringify(item)
+        const getItem = localStorage.getItem('facilityInformation')
+       
 
-    const localData = JSON.parse(getItem)
-    console.log("localData--------", item.facilityname)
-    console.log("LocalStorage-----", LocalStorage)
+        const localData = JSON.parse(getItem)
+        console.log("localData--------", item.facilityname)
+        console.log("LocalStorage-----", LocalStorage)
 
-    // setGetVeri(localData)
-    setTesisName(item.facilityname)
-    var tesisNo = localData?._id
+        // setGetVeri(localData)
+        setTesisName(item.facilityname)
+        var tesisNo = localData?._id
 
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer: " +token
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer: " + token
+            }
+        };
+        const GetOnefacility = await post('/getonefacility', { tesisName, tesisNo }, config)
+
+        console.log('getfacility name-----------------', GetOnefacility)
+        if (GetOnefacility?.data.data) {
+            setCheckSpinner(true)
+            localStorage.setItem("facilityInformation", itemData)
+            localStorage.setItem("Facilityname", item.facilityname)
+
+            setTimeout(() => {
+                navigate('/calculation')
+            }, 750)
         }
-    };
-    const GetOnefacility = await post('/getonefacility', { tesisName,tesisNo }, config)
+        // console.log("getVeri-guncel---------------------",item)
 
-    console.log('getfacility name-----------------', GetOnefacility)
-    if (GetOnefacility?.data.data) {
-        setCheckSpinner(true)
-        localStorage.setItem("facilityInformation", itemData)
-        localStorage.setItem("Facilityname", item.facilityname)
-
-        setTimeout(() => {
-            navigate('/calculation')
-        }, 750)
     }
-    // console.log("getVeri-guncel---------------------",item)
-
-}
 
 
     // Post isleminin olacagi alan
@@ -191,18 +246,18 @@ const Facility = () => {
 
         e.preventDefault();
         handleOpen(null)
-    
+
 
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer: " +token
+                Authorization: "Bearer: " + token
             }
         };
         try {
             const addfacilitydata = await post('/addfacility', data, config);
 
-            console.log("added-facility-data-------",addfacilitydata)
+            console.log("added-facility-data-------", addfacilitydata)
 
             const tesisNo = addfacilitydata?.data?.data?._id;
             const tesisName = addfacilitydata?.data?.data?.facilityname;
@@ -210,32 +265,32 @@ const Facility = () => {
             const tesisArea = addfacilitydata?.data?.data?.totalarea;
 
 
-          
-           setTimeout( async ()=>{
-            const informationData = {
-                companyName:tesisName,
-                cknNumber:'',
-                companyNumber:'',
-                companyMail:'',
-                companyWebsite:'',
-                productArea:'',
-                closeArea:'',
-                openArea:'',
-                workerCount:tesisCount,
-                totalArea:tesisArea,
-                address:'',
-                facilityId:tesisNo
-            }
-            localStorage.setItem("facilityInfoDetail",JSON.stringify(informationData))
 
-            const loginuser = await post("/facilityinfo",informationData,config)
-            console.log("facilityInfo------",loginuser)
+            setTimeout(async () => {
+                const informationData = {
+                    companyName: tesisName,
+                    cknNumber: '',
+                    companyNumber: '',
+                    companyMail: '',
+                    companyWebsite: '',
+                    productArea: '',
+                    closeArea: '',
+                    openArea: '',
+                    workerCount: tesisCount,
+                    totalArea: tesisArea,
+                    address: '',
+                    facilityId: tesisNo
+                }
+                localStorage.setItem("facilityInfoDetail", JSON.stringify(informationData))
 
-           },1000)
+                const loginuser = await post("/facilityinfo", informationData, config)
+                console.log("facilityInfo------", loginuser)
+
+            }, 1000)
 
             setResultData([...resultData, { facilityname: data.facilityname, country: data.country, employeecount: data.employeecount, state: data.state, totalarea: data.totalarea, }])
             // window.location.reload()
-           
+
 
             // const response = addfacilitydata
             // console.log("yeni-tesis-no--------", addfacilitydata?.data?.data?._id)
@@ -253,7 +308,7 @@ const Facility = () => {
 
     }
 
-   
+
 
     // console.log("look----",changeData)
     const changeInputValue = (event, item) => {
@@ -261,16 +316,17 @@ const Facility = () => {
         setChangeData(item.facilityname)
 
         const changeData = item
-        setChangeData({ 
-            ...changeData, 
-            [event.target.name]: event.target.value}
+        setChangeData({
+            ...changeData,
+            [event.target.name]: event.target.value
+        }
         )
     }
-    const handleKeyDown = async (item,event) => {
+    const handleKeyDown = async (item, event) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer: " +token
+                Authorization: "Bearer: " + token
             }
         };
         setChangeData(item.facilityname)
@@ -288,7 +344,7 @@ const Facility = () => {
             // Tesis kayit edildikten sonra input acik geliyor
             setVeri(false)
         }
-        if(event.key === 'Escape'){
+        if (event.key === 'Escape') {
             setVeri(true)
             console.log("escape---------")
 
@@ -308,7 +364,7 @@ const Facility = () => {
             </div> : null}
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
-            {/* grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 */}
+                {/* grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 */}
                 {
                     resultData?.map((item, index) => (
                         <div >
@@ -319,18 +375,18 @@ const Facility = () => {
                                 <i style={{ fontSize: '50px' }} className="fa-solid fa-industry px-3"></i>
                                 <div key={index} className="flex flex-col justify-between p-4 w-90  leading-normal">
                                     <div className='flex justify-between  items-center'>
-                                        {item._id === veri?._id ? 
-                                        <input 
-                                        type='text' 
-                                        placeholder='' 
-                                        value={changeData?.facilityname} 
-                                        onKeyDown={(event) => handleKeyDown(item,event)} 
-                                        name='facilityname' 
-                                        onChange={(event) => changeInputValue(event, item)} 
-                                        style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }} 
-                                        className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> : 
-                                        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
-                                        <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData}  />
+                                        {item._id === veri?._id ?
+                                            <input
+                                                type='text'
+                                                placeholder=''
+                                                value={changeData?.facilityname}
+                                                onKeyDown={(event) => handleKeyDown(item, event)}
+                                                name='facilityname'
+                                                onChange={(event) => changeInputValue(event, item)}
+                                                style={{ margin: '0', padding: '0', border: '0', borderBottom: '1px solid black', borderRadius: '0' }}
+                                                className='w-70 rounded border h-9  hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black  bg-transparent focus-visible:outline-none  dark:text-white  ' /> :
+                                            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>}
+                                        <Facilitynone onClick={getData} deleteData={item} setResultData={setResultData} />
                                     </div>
                                     <div onMouseDown={() => getAllData(item)}>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
@@ -352,7 +408,7 @@ const Facility = () => {
                     ))
                 }
 
-                {checkLoading?.status === 200 ?    <div>
+                {checkLoading?.status === 200 ? <div>
                     <a href="#" className="flex flex-col items-center bg-white  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
                         {/* <i style={{ fontSize: '50px' }} class="fa-solid fa-industry px-3"></i> */}
                         <div className="flex flex-col justify-between h-[190px] w-full leading-normal relative" onClick={() => handleOpen("sm")}>
@@ -364,8 +420,8 @@ const Facility = () => {
                             <div style={{ transform: 'translate(-50%,-50%)', top: '50%', left: '50%', fontSize: '40px' }} className='absolute  translate-x-1/2  translate-y-2/4' > +</div>
                         </div>
                     </a>
-                </div> : <Skeleton height={'190px'} baseColor='#ebebeb'/> }
-             
+                </div> : <Skeleton height={'190px'} baseColor='#ebebeb' />}
+
             </div>
 
 
@@ -385,6 +441,10 @@ const Facility = () => {
                     size === "xl" ||
                     size === "xxl"
                 }
+                className="max-w-2xl mx-auto max-h-screen overflow-y-auto bg-gray-100 font-sans text-base leading-6 font-normal"
+
+                open={size === "xs" || size === "sm" || size === "md" || size === "lg" || size === "xl" || size === "xxl"}
+
                 size={size || "sm"}
                 handler={handleOpen}
             >
@@ -395,6 +455,79 @@ const Facility = () => {
                             <div className="flex 2xsm:mt-[-12%] xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
                                 <div className="flex flex-col justify-between p-4 w-full leading-normal" >
 
+                                    <div className="mt-4">
+                                        {/* Latitude ve Longitude için input alanları */}
+                                        <div className="flex justify-between items-center">
+                                            <p className="mr-2">Enlem:</p>
+                                            <input
+                                                type="text"
+                                                value={data.latitude ?? "Bekleniyor..."}
+                                                onChange={(e) => changeSave(e, "latitude")}
+                                                className="border rounded p-2 w-1/2"
+                                                placeholder="Latitude"
+                                            />
+                                        </div>
+                                        <div className="flex justify-between items-center mt-2">
+                                            <p className="mr-2">Boylam:</p>
+                                            <input
+                                                type="text"
+                                                value={data.longitude ?? "Bekleniyor..."}
+                                                onChange={(e) => changeSave(e, "longitude")}
+                                                className="border rounded p-2 w-1/2"
+                                                placeholder="Longitude"
+                                            />
+                                        </div>
+                                    </div>
+                                    <Button className='mt-3' onClick={getLocation} color="blue">Konumu Al</Button>
+                                    <p className="mt-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
+                                        <div className='2xsm:block xsm:flex justify-between'>
+
+                                            <label htmlFor="country">Ülke Kodu Seçin:</label>
+                                            <CountryDropdown
+                                                value={selectedCountry}
+                                                onChange={(country) => {
+                                                    // Seçilen ülkenin kodunu (ISO3) elde et
+                                                    const countryCode = country?.target?.dataset?.iso3;
+
+                                                    // selectedCountry'yi güncelle
+                                                    setSelectedCountry(countryCode);
+
+                                                    // CityCode'u güncellemek için changeSave fonksiyonunu çağır
+                                                    changeSave({ target: { name: 'CityCode', value: countryCode } });
+                                                    console.log("kod---------", countryCode)
+                                                }}
+                                                id="country"
+                                                clearable
+                                                searchable
+                                                native={false} // Bayrakları göster
+                                                priority={["TR"]} // Sadece Türkiye'yi göster
+                                            />
+                                        </div>
+                                        {/* <div>Seçilen Ülke Kodu: {selectedCountry}</div> */}
+
+                                    </p>
+                                    <p className="mt-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
+                                        <div className='2xsm:block xsm:flex justify-between'>
+
+                                            <label htmlFor="country">Firma Faliyet Alanı:</label>
+                                            <select
+                                                className='w-[67%] rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white'
+                                                name="FieldActivity" // name alanı ekleyerek state'e kaydedilecek alanı belirleyelim
+                                                value={data.FieldActivity} // value ile seçilen değeri bağla
+                                                onChange={changeSave} // onChange'e changeSave fonksiyonunu bağla
+                                            >
+                                                <option>Faliyet alanı seçin</option>
+                                                <option>Iron & steel production</option>
+                                                <option>Construction</option>
+                                                <option>Software Development</option>
+                                                {/* Buraya diğer seçenekleri de ekleyebilirsin */}
+                                            </select>
+
+                                        </div>
+                                        {/* <div>Seçilen Ülke Kodu: {selectedCountry}</div> */}
+
+                                    </p>
+
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
                                         <div className='2xsm:block  xsm:flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
                                             <input
@@ -404,6 +537,7 @@ const Facility = () => {
                                                 onChange={changeSave}
                                                 placeholder='Çalışan sayınızı girin'
                                                 className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
+
                                         </span></div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
@@ -413,7 +547,7 @@ const Facility = () => {
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
-                                                placeholder='Kapasitenizi girin  /m2' 
+                                                placeholder='Kapasitenizi girin  /m2'
                                                 className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
                                         </span>
                                         </div>
@@ -481,6 +615,9 @@ const Facility = () => {
                                                     className='w-full rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
 
                                             </div>
+                                            {/* Date Picker */}
+                                            {/* Tarih Seçici (Start Date) */}
+
                                             <p className='mt-3 2xsm:text-sm xsm:text-2xl'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
                                         </p>
                                     </div>

@@ -49,16 +49,17 @@ function App() {
           navigate("/login");
         }
       } else {
+        // window.location.href='/login'
         navigate("/login"); // Eğer token yoksa login'e yönlendir
       }
     };
 
     // Her 5 saniyede bir token süresini kontrol et
-    const interval = setInterval(() => {
-      checkTokenExpiration();
-    }, 2000); // 2000ms = 2 saniye
+    // const interval = setInterval(() => {
+    //   checkTokenExpiration();
+    // }, 2000); // 2000ms = 2 saniye
 
-    return () => clearInterval(interval); // Component unmount olursa interval'i temizle
+    // return () => clearInterval(interval); // Component unmount olursa interval'i temizle
   }, [navigate]);
 
 
