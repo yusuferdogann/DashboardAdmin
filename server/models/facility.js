@@ -30,6 +30,22 @@ const FacilitySchema = new Schema({
     type: String,
     required: true,
   },
+  latitude: {
+    type: String,
+    required: true,
+  },
+  longitude: {
+    type: String,
+    required: true,
+  },
+  CityCode: {
+    type: String,
+    required: true,
+  },
+  FieldActivity: {
+    type: String,
+    required: true,
+  },
   userId:{
     type:Schema.Types.ObjectId,
     required:true,

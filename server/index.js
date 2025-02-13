@@ -13,6 +13,7 @@ const cookieParser = require("cookie-parser");
 
 
 
+
 const app = express();
 dotenv.config();
 
@@ -46,7 +47,11 @@ app.use(bodyParser.json())
 //     credentials:true
 // }));
 app.use(cors());
-
+// app.use(cors({ 
+//     origin: "http://localhost:3000/auth", // React frontend'in çalıştığı domaini ekle
+//     methods: "GET,POST", // İzin verilen HTTP metodları
+//     allowedHeaders: "Content-Type"
+//   }));
 
 
 const PORT =  3000;
@@ -55,6 +60,10 @@ const PORT =  3000;
 app.get("/yusuf",(req,res)=>{
     res.send("selam")
 })
+
+
+
+
 
 
 app.use("/auth",authRouter)

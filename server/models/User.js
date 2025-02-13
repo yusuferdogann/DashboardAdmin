@@ -3,12 +3,27 @@ const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
+const limits = {
+  beginner: { reportLimit: 4, facilityLimit: 1 },
+  standard: { reportLimit: 8, facilityLimit: 3 },
+  professional: { reportLimit: 12, facilityLimit: 5 },
+}; 
+
 const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
     unique: true,
   },
+  role: {
+    type: String,
+    enum: ['beginner', 'standard', 'professional'],
+    required: true,
+    default: 'beginner', // Varsayılan olarak "beginner" olacak
+  },
+  reportLimit: { type: Number}, // Kullanıcının rapor limiti
+  facilityLimit: { type: Number}, // Kullanıcının facility limiti
   company_info: [],
   
   facility: [],
@@ -28,7 +43,18 @@ const UserSchema = new Schema({
     default: new Date(),
   },
 });
-
+/**
+ * Yeni bir kullanıcı oluşturulduğunda veya rolü değiştirildiğinde limitleri günceller.
+ */
+UserSchema.pre('save', function (next) {
+  if (this.isNew || this.isModified('role')) {
+    // Yeni kullanıcı oluşturuluyorsa veya rol değiştiyse, uygun limitleri ata
+    const roleSettings = limits[this.role] || limits['beginner'];
+    this.reportLimit = roleSettings.reportLimit;
+    this.facilityLimit = roleSettings.facilityLimit;
+  }
+  next();
+});
 UserSchema.methods.genereteJwtFromUser = function () {
   const { JWT_SECRET_KEY, JWT_EXPIRE } = process.env;
   const payload = {
