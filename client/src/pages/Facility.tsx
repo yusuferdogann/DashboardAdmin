@@ -64,15 +64,24 @@ const Facility = () => {
 
     // Konum bilgilerini almak için getLocation fonksiyonu
     const getLocation = () => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            const { latitude, longitude } = position.coords;
-            // Konum bilgilerini güncelleme
-            setData(prevData => ({
-                ...prevData,
-                latitude,
-                longitude,
-            }));
-        });
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    setData(prevData => ({
+                        ...prevData,
+                        latitude,
+                        longitude,
+                    }));
+                },
+                (error) => {
+                    console.error("Konum hatası kodu:", error.code, "Mesaj:", error.message);
+                    alert(`Konum alınamadı. Hata kodu: ${error.code}, Mesaj: ${error.message}`);
+                }
+            );
+        } else {
+            alert("Tarayıcınız konum servislerini desteklemiyor.");
+        }
     };
   
 
@@ -441,7 +450,7 @@ const Facility = () => {
                     size === "xl" ||
                     size === "xxl"
                 }
-                className="max-w-2xl mx-auto max-h-screen overflow-y-auto bg-gray-100 font-sans text-base leading-6 font-normal"
+                className="max-w-2xl mx-auto max-h-screen overflow-y-auto bg-white font-sans text-base leading-6 font-normal"
 
                 open={size === "xs" || size === "sm" || size === "md" || size === "lg" || size === "xl" || size === "xxl"}
 
@@ -461,20 +470,20 @@ const Facility = () => {
                                             <p className="mr-2">Enlem:</p>
                                             <input
                                                 type="text"
-                                                value={data.latitude ?? "Bekleniyor..."}
+                                                value={data.latitude ?? "Enlem"}
                                                 onChange={(e) => changeSave(e, "latitude")}
                                                 className="border rounded p-2 w-1/2"
-                                                placeholder="Latitude"
+                                                placeholder="Enlem"
                                             />
                                         </div>
                                         <div className="flex justify-between items-center mt-2">
                                             <p className="mr-2">Boylam:</p>
                                             <input
                                                 type="text"
-                                                value={data.longitude ?? "Bekleniyor..."}
+                                                value={data.longitude ?? "Boylam"}
                                                 onChange={(e) => changeSave(e, "longitude")}
                                                 className="border rounded p-2 w-1/2"
-                                                placeholder="Longitude"
+                                                placeholder="Boylam"
                                             />
                                         </div>
                                     </div>
@@ -617,8 +626,12 @@ const Facility = () => {
                                             </div>
                                             {/* Date Picker */}
                                             {/* Tarih Seçici (Start Date) */}
+                                          <div className='flex items-center'>
+                                          <i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>
+                                            <label className='mt-5  md:text-normal'>"Konum Al" butonu bulunduğunuz konum bilgisini almaktadır.Tesis kayıt derken tesisde bu işlemi yapmanız önemlidir.</label>
 
-                                            <p className='mt-3 2xsm:text-sm xsm:text-2xl'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
+                                          </div>
+                                            {/* <label className='mt-3 2xsm:text-sm'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</label> */}
                                         </p>
                                     </div>
                                 </div>
