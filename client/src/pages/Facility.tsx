@@ -452,7 +452,7 @@ const Facility = () => {
                 <DialogBody className='max-h-[50vh] overflow-y-auto'>
                     <div className="grid grid-cols-1" >
                         <div>
-                            <div className="flex 2xsm:mt-[12%] xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
+                            <div className="flex  xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
                                 <div className="flex flex-col justify-between p-4 w-full leading-normal" >
 
                                     <div className="mt-4">
@@ -632,7 +632,7 @@ const Facility = () => {
 
                     </div>
                 </DialogBody>
-                <DialogFooter className='2xsm:mt-[-12%] xsm:mt-0'>
+                <DialogFooter className=' xsm:mt-0'>
                     <Button
                         variant="gradient"
                         color="red"
