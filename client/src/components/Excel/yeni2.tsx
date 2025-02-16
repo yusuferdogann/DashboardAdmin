@@ -378,13 +378,29 @@ const ExcelEditor = () => {
   // Input değeri değiştiğinde state'i güncelleme
  
  
- const handleInputChange = (e, cell) => {
+  const handleInputChange = (e, cell) => {
+    const value = e.target.value;
+    
+    // Input değerini güncelliyoruz
     setInputValues({
       ...inputValues,
-      [cell]: e.target.value,
+      [cell]: value,
     });
-    console.log("yenisayfasi-------", inputValues)
+    
+    // H49 ve G49 arasındaki ilişkiyi kontrol ediyoruz
+    if (cell === "H49") {
+      const g49Value = parseFloat(inputValues["G49"]);
+      const h49Value = parseFloat(value);
+      
+      if (h49Value > g49Value) {
+        // Toast ile kullanıcıya uyarı gösteriyoruz
+        toast.warn("Kullanılan hammadde değerinin, alınan hammadde değerinden küçük olması gerekiyor.");
+      }
+    }
+  
+    console.log("yenisayfasi-------", inputValues);
   };
+  
 
   // DatePicker değeri değiştiğinde state'i güncelleme
   const handleDateChange = (date, cell) => {
@@ -434,29 +450,30 @@ const ExcelEditor = () => {
           </>
         )}
         {/* 2 DatePicker alanı */}
-        <div className="flex p-7 items-center border-b  border-stroke py-4  dark:border-strokedark">
-          <label htmlFor="J1" >Rapor Başlangıç Tarihi:</label>
-          <DatePicker
-            selected={selectValues["I9"]}
-            onChange={(date) => handleDateChange(date, "I9")}
-            dateFormat="dd/MM/yyyy"
-            className="w-full rounded border ms-4 border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-            locale={tr}
+        <div className="flex flex-wrap md:flex-nowrap p-7 items-center border-b border-stroke py-4 dark:border-strokedark gap-4">
+  <div className="flex flex-col  items-start  w-full">
+    <label htmlFor="J1" className="whitespace-nowrap">Rapor Başlangıç Tarihi:</label>
+    <DatePicker
+      selected={selectValues["I9"]}
+      onChange={(date) => handleDateChange(date, "I9")}
+      dateFormat="dd/MM/yyyy"
+      className="w-full md:w-auto rounded border  border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+      locale={tr}
+    />
+  </div>
 
-          />
+  <div className="flex flex-col  items-start  w-full">
+    <label htmlFor="L9" className="whitespace-nowrap">Rapor Bitiş Tarihi:</label>
+    <DatePicker
+      selected={selectValues["L9"]}
+      onChange={(date) => handleDateChange(date, "L9")}
+      dateFormat="dd/MM/yyyy"
+      className="w-full md:w-auto rounded border  border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+      locale={tr}
+    />
+  </div>
+</div>
 
-
-          <label htmlFor="L9" className="ms-7">Rapor Bitiş Tarihi:</label>
-          <DatePicker
-            selected={selectValues["L9"]}
-            onChange={(date) => handleDateChange(date, "L9")}
-            dateFormat="dd/MM/yyyy"
-            className="w-full rounded ms-4 border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-            locale={tr}
-
-          />
-
-        </div>
 
         <div className="p-7 flex grid grid-cols-1  md:grid-cols-2  xl:grid-cols-2  border-b  border-stroke py-4  dark:border-strokedark" >
           {/* 9 input alanı */}
@@ -775,153 +792,126 @@ const ExcelEditor = () => {
 
 
     {/* //===== */}
-    <Dialog  open={open} handler={() => setOpen(!open)}  size="md" className="p-6">
-      <DialogHeader className="mb-44 flex flex-col items-center w-full">
-        <h1 className="mb-6">Rapor Kontrol Et</h1>
-        {/* Stepper */}
-        <div className="flex items-center w-full relative">
-          <div className="relative flex items-center w-full">
-            <div className="flex items-center w-full">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 bg-green-500">
-                1
-              </div>
-              <div className={`w-full border-b-4 ${step >= 2 ? "border-green-500" : "border-[#d1d5dc]"}`}></div>
-            </div>
-            <div className="flex items-center w-full">
-              <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 ${step >= 2 ? "bg-green-500" : "bg-gray-300"}`}>
-                2
-              </div>
-              <div className={`w-full border-b-4 ${step >= 3 ? "border-green-500" : "border-[#d1d5dc]"}`}></div>
-            </div>
-          
-            <div className="flex items-center">
-              <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 ${step >= 3 ? "bg-green-500" : "bg-gray-300"}`}>
-                3
-              </div>
-            </div>
+    <Dialog open={open} handler={() => setOpen(!open)} size="md" className="p-2 w-full max-w-lg mx-auto">
+  <DialogHeader className="mb-6 flex flex-col items-center w-full">
+  <h1 className="mb-6 text-xs md:text-base font-semibold">
+      {step === 1 ? "Rapor Kontrol Et" : step === 2 ? "Sözleşmeyi Onayla" : "Raporunuz İndiriliyor"}
+    </h1>
+    {/* Stepper */}
+    <div className="flex items-center w-full relative">
+      <div className="relative flex items-center w-full">
+        <div className="flex items-center w-full">
+          <div className="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 bg-green-500 text-xs md:text-base">
+            1
+          </div>
+          <div className={`w-full border-b-4 ${step >= 2 ? "border-green-500" : "border-gray-300"}`}></div>
+        </div>
+        <div className="flex items-center w-full">
+          <div className={`flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 text-xs md:text-base ${step >= 2 ? "bg-green-500" : "bg-gray-300"}`}>
+            2
+          </div>
+          <div className={`w-full border-b-4 ${step >= 3 ? "border-green-500" : "border-gray-300"}`}></div>
+        </div>
+        <div className="flex items-center">
+          <div className={`flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 text-xs md:text-base ${step >= 3 ? "bg-green-500" : "bg-gray-300"}`}>
+            3
           </div>
         </div>
-      </DialogHeader>
-      
-      <DialogBody className="w-full">
-        <div className="relative h-40 flex justify-center items-center w-full">
-          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
-          <div className="flex flex-col gap-2">
-      {Object.keys(inputValues)
-        .filter((key) => cellMappings[key])
-        .map((key) => (
-          <div
-            key={key}
-            className="flex justify-between border-b border-stroke pb-1 bg-gray-100 font-sans text-base leading-6 font-normal"
-          >
-            <span className="font-semibold text-gray-700">{cellMappings[key]}</span>
-            <span className="text-gray-900">{inputValues[key]}</span>
-          </div>
-        ))}
-    </div>
-
-    <table className="w-full mt-4 border border-stroke bg-gray-100 font-sans text-base leading-6 font-normal">
-      <thead>
-        <tr className="bg-gray-200 text-gray-700 font-semibold">
-          <th className="border border-stroke p-2">ID</th>
-          <th className="border border-stroke p-2">Üretilen Ürün</th>
-          <th className="border border-stroke p-2">Satılan Ürün</th>
-          <th className="border border-stroke p-2">CN Kod</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="border border-stroke p-2">1</td>
-          <td className="border border-stroke p-2">{inputValues["E49"]}</td>
-          <td className="border border-stroke p-2">{inputValues["F49"]}</td>
-          <td className="border border-stroke p-2">{inputValues["I49"]}</td>
-        </tr>
-        {Array.from({ length: inputCount - 1 }).map((_, index) => {
-          const newIndex = index + 1;
-          const keyF = `E${49 + newIndex}`;
-          const keyG = `F${49 + newIndex}`;
-          const keySelect = `I${49 + newIndex}`;
-          return (
-            <tr key={newIndex}>
-              <td className="border border-stroke p-2">{newIndex + 1}</td>
-              <td className="border border-stroke p-2">{inputValues[keyF]}</td>
-              <td className="border border-stroke p-2">{inputValues[keyG]}</td>
-              <td className="border border-stroke p-2">{inputValues[keySelect]}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-          </div>
-          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
-         
-      <div><h2 className="flex font-bold">Ön Bilgilendirme Koşulları</h2></div>
-      <div className="w-full h-[180px] bg-white border border-[#e2e8f0] mt-3 rounded-[20px] overflow-hidden font-sans text-base leading-6 font-normal">
-  <div className="p-4 max-h-[180px] group overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 transition-all duration-500 ease-in-out">
-  <div className="group-hover:overflow-y-auto h-full pr-2 text-left">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo iusto eaque, laboriosam laborum enim rerum similique ad...
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis at harum minus facilis asperiores officiis dignissimos molestias esse libero sit! Mollitia ipsum totam placeat ab ducimus fugiat delectus minima dignissimos itaque. Velit aspernatur maiores quo eius magnam molestias, repudiandae esse. Blanditiis corrupti consequuntur illo, id culpa dolor tempora ab repellat, nam vero, delectus sapiente. Excepturi dolore aliquam, porro quaerat magnam earum assumenda nostrum quas culpa soluta laudantium sequi, enim quae. Nemo quo perferendis quae aspernatur necessitatibus eius laborum quas explicabo excepturi minima voluptas, inventore, unde harum laboriosam impedit perspiciatis possimus officia in nobis fugiat maiores beatae itaque quasi cum? Non.
-  </div>
-</div>
-
-</div>
-      
-    <div><h2 className="flex font-bold mt-5">Bilgilendirme Formu</h2></div>
-    <div className="w-full h-[180px] bg-white border border-[#e2e8f0] mt-3 rounded-[20px] overflow-hidden font-sans text-base leading-6 font-normal">
-  <div className="p-4 max-h-[180px] group overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 transition-all duration-500 ease-in-out">
-  <div className="group-hover:overflow-y-auto h-full pr-2 text-left">
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo iusto eaque, laboriosam laborum enim rerum similique ad...
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis at harum minus facilis asperiores officiis dignissimos molestias esse libero sit! Mollitia ipsum totam placeat ab ducimus fugiat delectus minima dignissimos itaque. Velit aspernatur maiores quo eius magnam molestias, repudiandae esse. Blanditiis corrupti consequuntur illo, id culpa dolor tempora ab repellat, nam vero, delectus sapiente. Excepturi dolore aliquam, porro quaerat magnam earum assumenda nostrum quas culpa soluta laudantium sequi, enim quae. Nemo quo perferendis quae aspernatur necessitatibus eius laborum quas explicabo excepturi minima voluptas, inventore, unde harum laboriosam impedit perspiciatis possimus officia in nobis fugiat maiores beatae itaque quasi cum? Non.
-  </div>
-</div>
-
-</div>
-
-
-    <label className="flex items-center mt-4 bg-gray-100 font-sans text-base leading-6 font-normal">
-      <Checkbox
-        type="checkbox"
-        checked={isChecked}
-        onChange={(e) => setIsChecked(e.target.checked)}
-        className="mr-2"
-      />
-      <small>
-        <b>Ön Bilgilendirme Koşullarını</b> ve <b>Sözleşme</b>'yi okudum, Onaylıyorum.
-      </small>
-    </label>
-          </div>
-          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
-        {step === 3 && (
-          <div className="flex flex-col items-center justify-center">
-            <div className="w-12 h-12 border-4 border-t-transparent border-green-500 rounded-full animate-spin mb-4"></div>
-            <span className="text-lg font-semibold">Raporunuz hazırlanıyor...</span>
-          </div>
-        )}
       </div>
+    </div>
+  </DialogHeader>
+  
+  <DialogBody className="w-full flex flex-col items-center">
+    {step === 1 && (
+      <div className="w-full">
+        <div className="flex flex-col gap-2 bg-gray-100 p-4 rounded-lg">
+          {Object.keys(inputValues).filter((key) => cellMappings[key]).map((key) => (
+            <div key={key} className="flex justify-between border-b border-stroke pb-1 text-sm">
+              <span className="font-semibold text-xs md:text-base text-gray-700">{cellMappings[key]}</span>
+              <span className="text-gray-900 text-xs md:text-base">{inputValues[key]}</span>
+            </div>
+          ))}
         </div>
-      </DialogBody>
-      
-      <DialogFooter className="flex justify-between w-full mt-44">
-        <Button onClick={prevStep} className="bg-red-500 text-white px-6 py-2 rounded-lg " disabled={step === 1}>
-          Prev
-        </Button>
-        <Button
-  onClick={() => { 
-    if (step === 2) { 
-      setStep(3); // Step 3'e geçiş
-      updateExcel(); // Excel dosyasını güncelleme işlemi
-    } else if (step === 1) {
-      setStep(2); // Step 2'ye geçiş
-    }
-  } } // Checkbox işaretli ise step 2'ye ya da step 3'e geç
-  className="bg-green-500 text-white px-6 py-2 rounded-lg"
-  disabled={step === 3 || (step === 2 && !isChecked)} // Step 3'teyken ve step 2'de checkbox işaretli değilse buton devre dışı
->
-  {isChecked ? (step === 2 ? "İndir" : "Next") : "Next"}
-</Button>
+        <table className="w-full mt-4 border border-stroke text-sm">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700 font-semibold">
+            <th className="border border-stroke text-xs md:text-base p-2">ID</th>
+            <th className="border border-stroke text-xs md:text-base p-2">Üretilen Ürün</th>
+              <th className="border border-stroke text-xs md:text-base p-2">Satılan Ürün</th>
+              <th className="border border-stroke text-xs md:text-base p-2">CN Kod</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="border border-stroke text-xs md:text-base p-2">1</td>
+              <td className="border border-stroke text-xs md:text-base p-2">{inputValues["E49"]}</td>
+              <td className="border border-stroke text-xs md:text-base p-2">{inputValues["F49"]}</td>
+              <td className="border border-stroke text-xs md:text-base p-2">{inputValues["I49"]}</td>
+            </tr>
+            {Array.from({ length: inputCount - 1 }).map((_, index) => {
+              const newIndex = index + 1;
+              return (
+                <tr key={newIndex}>
+                  <td className="border border-stroke text-xs md:text-base p-2">{newIndex + 1}</td>
+                  <td className="border border-stroke text-xs md:text-base p-2">{inputValues[`E${49 + newIndex}`]}</td>
+                  <td className="border border-stroke text-xs md:text-base p-2">{inputValues[`F${49 + newIndex}`]}</td>
+                  <td className="border border-stroke text-xs md:text-base p-2">{inputValues[`I${49 + newIndex}`]}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )}
+    
+    {step === 2 && (
+      <div className="w-full">
+        <h2 className="font-bold text-xs md:text-base">Ön Bilgilendirme Koşulları</h2>
+        <div className="w-full h-40 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
+          lorem200
+        </div>
+        <h2 className="font-bold mt-5 text-xs md:text-base">Bilgilendirme Formu</h2>
+        <div className="w-full h-40 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit...
+        </div>
+        <label className="flex items-center mt-4 text-sm">
+          <Checkbox type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} className="mr-2" />
+          <small>
+            <b>Ön Bilgilendirme Koşullarını</b> ve <b>Sözleşme</b>'yi okudum, Onaylıyorum.
+          </small>
+        </label>
+      </div>
+    )}
+    
+    {step === 3 && (
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-12 h-12 border-4 border-t-transparent border-green-500 rounded-full animate-spin mb-4"></div>
+        <span className="text-lg font-semibold">Raporunuz hazırlanıyor...</span>
+      </div>
+    )}
+  </DialogBody>
+  
+  <DialogFooter className="flex justify-between w-full mt-6">
+    <Button onClick={prevStep} className="bg-red-500 text-white px-4 py-2 rounded-lg text-xs md:text-base" disabled={step === 1}>
+      Geri
+    </Button>
+    <Button
+      onClick={() => { 
+        if (step === 2) { 
+          setStep(3);
+          updateExcel();
+        } else if (step === 1) {
+          setStep(2);
+        }
+      }}
+      className="bg-green-500 text-white px-4 py-2 rounded-lg text-xs md:text-base"
+      disabled={step === 3 || (step === 2 && !isChecked)}
+    >
+      {isChecked ? (step === 2 ? "İndir" : "İlerı") : "İlerı"}
+    </Button>
+  </DialogFooter>
+</Dialog>
 
-      </DialogFooter>
-    </Dialog>
 
 
     </>

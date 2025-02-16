@@ -289,14 +289,14 @@ const Login: React.FC = () => {
 : 'Giris Yap'}
                     
                   </button >
-                  <div className="mt-6 text-center" >
+                  {/* <div className="mt-6 text-center" >
                     <p>
                       Bir hesabın yok mu?{' '}
                       <Link to="/register" className="text-primary">
                         Kayıt Ol
                       </Link>
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

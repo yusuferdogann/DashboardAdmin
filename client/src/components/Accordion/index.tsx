@@ -1,7 +1,8 @@
+
 import { Accordion, AccordionHeader, AccordionBody, } from "@material-tailwind/react";
 import Facility from "../Facility/index"
 import DataPicker from "../../common/DataPicker/index"
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef  } from "react";
 import { post,get } from "../../server/Apiendpoint"
 import PersonalCar from "../Calculatıon/PersonalCar"
 import ServiceCar from "../Calculatıon/ServiceCar"
@@ -43,16 +44,17 @@ const AccordionCustomIcon = () => {
   const [size, setSize] = useState(null);
   const handleModal = (value) => setSize(value);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const scrollToDiv = useRef(null);
 
 
 
   const styles = {
     input: {
-      normal: 'bg-gray-50 border border-gray-300 text-gray-900 h-8 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+      normal: 'w-full rounded border  border-stroke  py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary',
       error: 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
     },
     select: {
-      normal: 'h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none',
+      normal: 'w-full rounded border  border-stroke  py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary',
       error: 'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-1 px-4 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 h-8'
 
     }
@@ -66,7 +68,7 @@ const AccordionCustomIcon = () => {
       states: [
         {
           id: 1,
-          name: "SABIT YANMA",
+          name: "Sabit Yanma",
           short: ['sabit'],
           cities: ["Doğal Gaz", "Linyit Kömürü",  "Yaş Biokütle"],
           // cities: ["Doğal Gaz", "Fleoil 2", "Fleoil 6", "Gazyağı", "Sıvılaştırılmış Petrol Gazları (LPG)", "Antrasit Kömür", "Bitümlü Kömür", "Alt Bitümlü Kömür", "Linyit Kömürü", "Kok komuru", "Belediye Katı Atıkları", "Petrol Kökü", "Plastik", "Lastik", "Yaş Biokütle", "Turba", "Kuru Biokutle", "Ahşap ve Ahşap Kalıntıları", "Propan Gazı", "Çöp Gazı", "Biyodizel (%100),", "Etanol (%100)", "İşlenmiş Hayvansal Yağ", "Bitkisel Yağ"],
@@ -74,7 +76,7 @@ const AccordionCustomIcon = () => {
         },
         {
           id: 2,
-          name: "HAREKETLI YANMA",
+          name: "Hareketli Yanma",
           short: ['hareketli'],
           // cities: ["Jet Yakıtı(Benzinli)", "Sıkıştırılmış Doğal Gaz (CNG)", "Dizel Yakıt", "Etanol", "Gazyağı Tipi Jet Yakıtı", "Sıvılaştırılmış Doğal Gaz (LNG)", "Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin", "Artık Akaryakıt"],
           cities: ["Dizel Yakıt","Sıvılaştırılmış Petrol Gazları (LPG)", "Benzin"],
@@ -82,7 +84,7 @@ const AccordionCustomIcon = () => {
         },
         {
           id: 3,
-          name: "DOGRUDAN SIZMA KACAK EMISYONU",
+          name: "Doğrudan Sızma Kaçak Emisyon",
           short: ['dogrudan'],
           // birim: ['CH4', 'N20', 'R22', 'R134a', 'R404A', 'CO2', 'R410A', 'R32', 'R407C', 'R600A'],
           // birim: [ 'R134a',  'CO2','R134a1', 'R410a', 'R32', 'HFC32', 'R601','R601a'],
@@ -734,7 +736,8 @@ Data.map((value)=>{
   };
 
   const changeState = (event, index) => {
-
+// Scroll işlemi yapılıyor
+scrollToDiv.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     setSubtitle(event.target.textContent)
     console.log("subsubsub--------",subtitle)
     setDublicate(false)
@@ -1024,11 +1027,11 @@ Data.map((value)=>{
     console.log("subtitle-----",subtitle)
 
 
-    if(baslik1 === 'SCOPE-1' && subtitle === 'SABIT YANMA'){
+    if(baslik1 === 'SCOPE-1' && subtitle === 'Sabit Yanma'){
       setSavedData({ 
         tarih:datetime,
         title: 'SCOPE-1', 
-        subtitle: 'SABIT YANMA', 
+        subtitle: 'Sabit Yanma', 
         kaynak: '', 
         birim: '', 
         miktar:savedData?.miktar,
@@ -1041,7 +1044,7 @@ Data.map((value)=>{
       setSavedData({
         ...savedData,
         title: 'SCOPE-1', 
-        subtitle: 'SABIT YANMA', 
+        subtitle: 'Sabit Yanma', 
         [event.target.name]: event.target.value,
       });  
       console.log("Scope-1-2-GasType-yok--------",savedData)
@@ -1434,7 +1437,7 @@ const handleValidation = async (event)=>{
 
       // if(isEmpty(formErrors)){
 
-      if(baslik1 === 'SCOPE-1' && subtitle === 'SABIT YANMA'){
+      if(baslik1 === 'SCOPE-1' && subtitle === 'Sabit Yanma'){
         const config = {
           headers:{
               "Content-Type":"application/json",
@@ -1452,7 +1455,7 @@ const handleValidation = async (event)=>{
        const savedDataLast= { 
          tarih:datetime,
          title: 'SCOPE-1', 
-         subtitle: 'SABIT YANMA', 
+         subtitle: 'Sabit Yanma', 
          kaynak: savedData?.kaynak, 
          birim: savedData?.birim, 
          miktar: CalculateFuction( funcKaynak,funcMiktar)?.toFixed(2),
@@ -1484,7 +1487,7 @@ const handleValidation = async (event)=>{
           setSavedData({ 
             tarih:datetime,
             title: 'SCOPE-1', 
-            subtitle: 'SABIT YANMA', 
+            subtitle: 'Sabit Yanma', 
             kaynak: '', 
             birim: '', 
             miktar: '',
@@ -1505,7 +1508,7 @@ const handleValidation = async (event)=>{
     
         
       }
-      else if(baslik1 === 'SCOPE-1' &&  subtitle === 'HAREKETLI YANMA'){
+      else if(baslik1 === 'SCOPE-1' &&  subtitle === 'Hareketli Yanma'){
         const config = {
           headers:{
               "Content-Type":"application/json",
@@ -1570,7 +1573,7 @@ const handleValidation = async (event)=>{
     
         
       }
-      else if(baslik1 === 'SCOPE-1' && subtitle === 'DOGRUDAN SIZMA KACAK EMISYONU'){
+      else if(baslik1 === 'SCOPE-1' && subtitle === 'Doğrudan Sızma Kaçak Emisyon'){
         const config = {
           headers:{
               "Content-Type":"application/json",
@@ -1911,22 +1914,22 @@ console.log(listData)
       <Breadcrumb pageName="Hesaplama" />
       <Facility  />
       {/* <Language/> */}
-      <div className='border border-slate-300  rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
+      <div className='border border-stroke rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-5 bg-white'>
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5'>
-          <div className="border border-slate-300 " style={{width:'104%'}}>
+          <div className="border border-stroke " style={{width:'104%'}}>
             <div className="px-4">
               <div className="flex flex-col my-4">
-                <span className="title-dynamily dark:text-white">KAPSAM BAŞLIKLARI</span>
+                <span className=" font-semibold text-md md:text-base dark:text-white">KAPSAM BAŞLIKLARI</span>
                 {/* <span>SCOPE & SUBCATEGORY SELECTION</span> */}
               </div>
-              <hr />
+              <hr className="border-stroke"/>
               <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                 <div className="flex ">
                   {open === 1 ? <div style={{ background: 'blue', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
+                  <AccordionHeader className="text-md md:text-base dark:text-white" onClick={changeCountry} value='SCOPE-1' style={open === 1 ? { paddingLeft: '20px' } : null}>KAPSAM 1</AccordionHeader>
                 </div>
 
-                <AccordionBody className='px-3' value={state}>
+                <AccordionBody className=' text-sm md:text-base px-3' value={state}>
                   {
                     <div
                       className="form-control"
@@ -1934,8 +1937,8 @@ console.log(listData)
                       multiple={false}
                     >
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
-                          style={scope1 === scope1 && id === index + 1 && baslik1 === 'SCOPE-1' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }}>{state.name}
+                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-1' name='cities' key={index} className="my-3 bg-sky-300 p-2 rounded-md "
+                          style={scope1 === scope1 && id === index + 1 && baslik1 === 'SCOPE-1' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'normal', fontWeight: '500' } : { display: "block", width: "100%" }}>{state.name}
                         </button>
                       ))}
                     </div>
@@ -1947,20 +1950,20 @@ console.log(listData)
 
                 <div className="flex">
                   {open === 2 ? <div style={{ background: 'green', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader className="text-md md:text-base dark:text-white" onClick={changeCountry} value='SCOPE-2' style={open === 2 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 2
                   </AccordionHeader>
                 </div>
                 <AccordionBody>
                   {
                     <div
-                      className="form-control"
+                      className="form-control "
                       value={state}
                       multiple={false}
                     >
                       {/* <option>Select souttrce</option> */}
                       {states.map((state, index) => (
-                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md"
+                        <button onClick={(event) => changeState(event, index + 1)} id='SCOPE-2' key={index} className="my-3 bg-sky-300 p-2 rounded-md "
                           style={scope2 === scope2 && baslik2 === 'SCOPE-2' ? { background: '#5bfd4575', display: "block", width: "100%", color: 'black', fontSize: 'large', fontWeight: '500' } : { display: "block", width: "100%" }} >{state.name}</button>
                       ))}
                     </div>
@@ -1971,7 +1974,7 @@ console.log(listData)
               <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
                 <div className="flex">
                   {open === 3 ? <div style={{ background: 'purple', width: '3%', borderRadius: '0px 10px 10px 0px' }}></div> : null}
-                  <AccordionHeader className="dark:text-white" onClick={changeCountry} value='SCOPE-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
+                  <AccordionHeader className="dark:text-white text-md md:text-base" onClick={changeCountry} value='SCOPE-3' style={open === 3 ? { paddingLeft: '20px' } : null}>
                     KAPSAM 3
                   </AccordionHeader>
                 </div>
@@ -2006,13 +2009,13 @@ console.log(listData)
           </div>
           {/* before area finish */}
           {
-            videopen ? <div className="col-span-2 border-slate-300 border">
+            videopen ? <div className="col-span-2 border-stroke border">
               <div className='p-3'>
-                <div className='flex flex-col'>
-                  <span className="title-dynamily">{baslikvalue ? baslikvalue : ""} </span>
+                <div className='flex flex-col' ref={scrollToDiv}>
+                  <span className="font-semibold text-sm md:text-base ">{baslikvalue ? baslikvalue : ""} </span>
                   {/* <span>EMISSIN SOURCE SELECTION:<span>SCOPE 1/STATIONARY COMBUSTION</span></span> */}
                 </div>
-                <hr className='my-4 ' />
+                <hr className='my-4 border-stroke ' />
                 
                 {
                   ver ? <div>
@@ -2047,7 +2050,7 @@ console.log(listData)
         {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
         <div>
         { change===false ? <i class="fa-solid fa-triangle-exclamation text-2xl" style={{color:"#d46c6c"}}></i> : null}
-        <label className="mb-3 ms-3 text-xl">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
+        <label className="mb-3 ms-3 text-md md:text-base">Lütfen kayıt için dönem <span className="font-bold">veya</span> ay seçin</label>
         </div>
         <div className="mt-7">
           <select  value={savedData.situation} name='situation' className={formErrors.situation ? styles.select.error : styles.select.normal} onChange={(event)=>changeData(event)}>
@@ -2162,7 +2165,8 @@ console.log(listData)
                           </div>
                         </div>
                         <div className='flex justify-end mt-4'>
-                  <button type="submit" className="relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-[#00ff8e] to-[#00a0fe] group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                  <button type="submit"                         style={{ background: "linear-gradient(to bottom right, #00ff8e, #00a0fe)" }}
+ className="relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-[#00ff8e] to-[#00a0fe] group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
                     {
                       load ? <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB" />
@@ -2191,7 +2195,7 @@ console.log(listData)
                 }
                
                 {/* form end */}
-                <hr className='mt-3' />
+                <hr className='border border-stroke mt-3' />
                { dublicate ?  <div className={dublicate ? 'errorListData' : 'warningListData'} style={{background:'#ff000026',width:'100%',height:'40px'}}>
                 <i class="fa-solid fa-triangle-exclamation text-2xl p-1 ms-4" style={{color:"#d46c6c"}}></i> 
                 <label className="mb-3 ms-3 text-normal">Bu veri daha önce kayıt edildi</label>
@@ -2232,7 +2236,7 @@ console.log(listData)
                         {
                           listData?.map((arac, index) => (
                             <tbody key={index}>
-                              <tr className="border-b dark:bg-gray-800 dark:border-gray-700">
+                              <tr className="border border-stroke dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {arac.kaynak}
                                 </th>
