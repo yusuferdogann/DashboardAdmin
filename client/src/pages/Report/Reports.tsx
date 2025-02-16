@@ -8,12 +8,14 @@ import {
 } from "@material-tailwind/react";
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
 import PdfView from "../../components/Pdf/PdfView";
- 
+import { useTranslation } from "react-i18next";
+
 export default function DialogSizes() {
   const [size, setSize] = React.useState(null);
   const [change,setChange] = useState(false)
   const [pdfcontrol,setPdfControl] = useState(false)
-  
+  const { t, i18n } = useTranslation();
+
   const initialValues = {situation:'',period:'',mounth:'',report:'',scope:''}
   const [formValues,setFormValues] = useState(initialValues);
   const [formErrors,setFormErrors] = useState({});
@@ -62,7 +64,7 @@ export default function DialogSizes() {
   }
   return (
     <>
-      <Breadcrumb pageName="Rapor" />
+      <Breadcrumb pageName={t("report.report")} />
       <div className="mb-3 flex gap-3">
         
         {/* <Button  onClick={() => handleOpen("sm")} color="blue" variant="gradient">

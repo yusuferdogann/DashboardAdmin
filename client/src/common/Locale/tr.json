@@ -1,0 +1,31 @@
+{
+  "sidebar": {
+    "dashboard":"Ana Sayfa",
+    "calculation":"Hesaplama",
+    "facility":"Tesisler",
+    "analysis":"Analiz",
+    "report": "Rapor Al",
+    "sumary":"Özet"
+  },
+  "navbar":{
+    "settings":"Ayarlar",
+    "logout":"Çıkış Yap"
+  },
+  "breadcrumb":{
+    "language":"Dil Ayarları",
+    "settings":"Ayarlar",
+    "reports":"Rapor"
+  },
+  "settings":{
+    "language":"Dil Seçenekleri",
+    "facility":"Tesis Bilgileri"
+  },
+  "report":{
+    "select":"Rapor Seçin",
+    "cbam":"CBAM Raporu",
+    "period":"Donem Raporu",
+    "report":"Rapor"
+  }
+
+}
+  

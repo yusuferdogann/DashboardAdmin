@@ -5,7 +5,7 @@ import { saveAs } from "file-saver";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import tr from "date-fns/locale/tr"; // Türkçe dil dosyasını import et
-import { Dialog, DialogBody, DialogFooter, Button, Checkbox, DialogHeader, Card } from "@material-tailwind/react";
+import { Dialog, DialogBody, DialogFooter, Button, Checkbox, DialogHeader } from "@material-tailwind/react";
 import { handleErrorCBAM } from '../../common/utils/helpers';
 import { userAuth } from "../../auth/userAuth"
 import { toast } from "react-toastify";
@@ -23,7 +23,10 @@ const ExcelEditor = () => {
   // const [wb, setWb] = useState(null); // Excel çalışma kitabı (wb) durumu
   const [wb, setWorkbook] = useState(null); // Workbook state'i
     const { token} = userAuth();
+    const [step, setStep] = useState(1);
 
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, 4));
+  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -203,88 +206,89 @@ const ExcelEditor = () => {
       }
       else{  setOpen(true) }
     }
-
-
- 
-  
 };
 
   
   // Excel dosyasını seçilen sayfada güncelleme ve şifreleme fonksiyonu
- const updateExcel = async () => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer: " + token
+  const updateExcel = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer: " + token
+      }
+    };
+  
+    try {
+      if (!wb) {
+        toast.error("Lütfen önce bir Excel dosyası yükleyin!");
+        console.error("wb bulunamadı!");
+        return;
+      }
+  
+      console.log("Excel dosyası alındı. İşlem başlatılıyor...");
+  
+      const sheet = wb.getWorksheet("Veri_Girisi");
+      if (!sheet) {
+        toast.error('"Veri_Girisi" sayfası bulunamadı.');
+        console.error('"Veri_Girisi" sayfası bulunamadı!');
+        return;
+      }
+  
+      console.log('"Veri_Girisi" sayfası başarıyla bulundu.');
+  
+      // ✅ SABİT INPUTLARIN GÜNCELLENMESİ
+      Object.keys(inputValues).forEach((key) => {
+        const cell = sheet.getCell(key);
+        cell.value = inputValues[key];
+        console.log(`Hücre: ${key}, Değer: ${inputValues[key]}`);
+      });
+  
+      // ✅ SELECT DEĞERLERİNİ GÜNCELLEME
+      Object.keys(selectValues).forEach((key) => {
+        const cell = sheet.getCell(key);
+        cell.value = selectValues[key];
+        console.log(`Hücre: ${key}, Seçili Değer: ${selectValues[key]}`);
+      });
+  
+      // 🟢 GÜNCELLENEN EXCEL'İ BUFFER'A YAZDIR
+      const buffer = await wb.xlsx.writeBuffer();
+      console.log("Excel buffer yazıldı:", buffer);
+  
+      // ✅ EXCEL DOSYASINI İNDİR
+      const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "Guncellenmis_Veriler.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  
+      await post('/checkBalanceReport', {}, config);
+  
+      // ✅ INPUT VE DATEPICKER VERİLERİNİ SIFIRLAMA (DOĞRU YÖNTEM)
+      setInputValues((prev) => {
+        const clearedInputs = {};
+        Object.keys(prev).forEach((key) => {
+          clearedInputs[key] = ""; // Tüm inputları boş string yap
+        });
+        return clearedInputs;
+      });
+  
+      setSelectValues({}); // DatePicker'ları sıfırla
+  
+      toast.success("Excel başarıyla güncellendi ve indirildi!");
+      setWorkbook(null)
+      // Step geçişini burada yapıyoruz
+      setStep((prev) => Math.min(prev + 1, 4)); // Step 3'e geçiş için
+  
+      // Modalı kapat
+      setOpen(null); 
+  
+    } catch (error) {
+      console.error("Excel güncelleme hatası:", error);
+      toast.error("Excel güncellenirken hata oluştu!");
     }
   };
-
-  try {
-    if (!wb) {
-      toast.error("Lütfen önce bir Excel dosyası yükleyin!");
-      console.error("wb bulunamadı!");
-      return;
-    }
-
-    console.log("Excel dosyası alındı. İşlem başlatılıyor...");
-
-    const sheet = wb.getWorksheet("Veri_Girisi");
-    if (!sheet) {
-      toast.error('"Veri_Girisi" sayfası bulunamadı.');
-      console.error('"Veri_Girisi" sayfası bulunamadı!');
-      return;
-    }
-
-    console.log('"Veri_Girisi" sayfası başarıyla bulundu.');
-
-    // ✅ SABİT INPUTLARIN GÜNCELLENMESİ
-    Object.keys(inputValues).forEach((key) => {
-      const cell = sheet.getCell(key);
-      cell.value = inputValues[key];
-      console.log(`Hücre: ${key}, Değer: ${inputValues[key]}`);
-    });
-
-    // ✅ SELECT DEĞERLERİNİ GÜNCELLEME
-    Object.keys(selectValues).forEach((key) => {
-      const cell = sheet.getCell(key);
-      cell.value = selectValues[key];
-      console.log(`Hücre: ${key}, Seçili Değer: ${selectValues[key]}`);
-    });
-
-    // 🟢 GÜNCELLENEN EXCEL'İ BUFFER'A YAZDIR
-    const buffer = await wb.xlsx.writeBuffer();
-    console.log("Excel buffer yazıldı:", buffer);
-
-    // ✅ EXCEL DOSYASINI İNDİR
-    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Guncellenmis_Veriler.xlsx";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    await post('/checkBalanceReport', {}, config);
-
-    // ✅ INPUT VE DATEPICKER VERİLERİNİ SIFIRLAMA (DOĞRU YÖNTEM)
-    setInputValues((prev) => {
-      const clearedInputs = {};
-      Object.keys(prev).forEach((key) => {
-        clearedInputs[key] = ""; // Tüm inputları boş string yap
-      });
-      return clearedInputs;
-    });
-
-    setSelectValues({}); // DatePicker'ları sıfırla
-
-    toast.success("Excel başarıyla güncellendi ve indirildi!");
-    setOpen(null); // Modalı en son kapat
-
-  } catch (error) {
-    console.error("Excel güncelleme hatası:", error);
-    toast.error("Excel güncellenirken hata oluştu!");
-  }
-};
 
 // very-hidden ozellikli------------------------------
 // const updateExcel = async () => {
@@ -372,7 +376,9 @@ const ExcelEditor = () => {
   
 
   // Input değeri değiştiğinde state'i güncelleme
-  const handleInputChange = (e, cell) => {
+ 
+ 
+ const handleInputChange = (e, cell) => {
     setInputValues({
       ...inputValues,
       [cell]: e.target.value,
@@ -646,13 +652,50 @@ const ExcelEditor = () => {
           </button>
         </div>
     </div>
-    <Dialog
+    {/* <Dialog
   open={open}
   handler={() => setOpen(!open)}
   className="max-w-2xl mx-auto max-h-screen overflow-y-auto bg-gray-100 font-sans text-base leading-6 font-normal"
 >
+      <DialogHeader className="justify-center flex">Raporu Onayla</DialogHeader>
+
+      <ol className="flex items-center !w-full min-w-0 text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base p-4">
+      <li class="flex md:w-full items-center text-green-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:hidden sm:after:inline-block   dark:after:border-gray-700">
+      <span className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full lg:h-12 lg:w-12 dark:bg-blue-800 shrink-0">
+      <svg className=" text-g-600 lg:w-4 lg:h-4 dark:text-blue-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+        <path stroke="currentColor" strokeWidth="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+      </svg>
+    </span>
+  </li>
+  <li class="flex md:w-full items-center text-gray-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:hidden sm:after:inline-block  dark:after:border-gray-700">
+  <span className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+      <svg className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+        <path d="M18 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM6.5 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.014 13.021l.157-.625A3.427 3.427 0 0 1 6.5 9.571a3.426 3.426 0 0 1 3.322 2.805l.159.622-6.967.023ZM16 12h-3a1 1 0 0 1 0-2h3a1 1 0 0 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Z"/>
+      </svg>
+    </span>
+  </li>
+  <li class="flex md:w-full items-center text-gray-600 dark:text-blue-500 sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-4 after:hidden sm:after:inline-block  dark:after:border-gray-700">
+  <span className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+      <svg className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
+        <path d="M18 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2ZM6.5 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.014 13.021l.157-.625A3.427 3.427 0 0 1 6.5 9.571a3.426 3.426 0 0 1 3.322 2.805l.159.622-6.967.023ZM16 12h-3a1 1 0 0 1 0-2h3a1 1 0 0 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Zm0-3h-3a1 1 0 1 1 0-2h3a1 1 0 1 1 0 2Z"/>
+      </svg>
+    </span>
+  </li>
+  <li className="flex flex-grow items-center">
+    <span className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full lg:h-12 lg:w-12 dark:bg-gray-700 shrink-0">
+      <svg className="w-4 h-4 text-gray-500 lg:w-5 lg:h-5 dark:text-gray-100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+        <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2ZM7 2h4v3H7V2Zm5.7 8.289-3.975 3.857a1 1 0 0 1-1.393 0L5.3 12.182a1.002 1.002 0 1 1 1.4-1.436l1.328 1.289 3.28-3.181a1 1 0 1 1 1.392 1.435Z"/>
+      </svg>
+    </span>
+  </li>
+</ol>
+
+
+    
+
+
+
   <DialogBody className="max-h-[80vh] overflow-y-auto bg-gray-100 font-sans text-base leading-6 font-normal">
-    <DialogHeader className="justify-center flex">Raporu Onayla</DialogHeader>
 
     <div className="flex flex-col gap-2">
       {Object.keys(inputValues)
@@ -727,8 +770,158 @@ const ExcelEditor = () => {
       İndir
     </Button>
   </DialogFooter>
-</Dialog>
+</Dialog> */}
 
+
+
+    {/* //===== */}
+    <Dialog  open={open} handler={() => setOpen(!open)}  size="md" className="p-6">
+      <DialogHeader className="mb-44 flex flex-col items-center w-full">
+        <h1 className="mb-6">Rapor Kontrol Et</h1>
+        {/* Stepper */}
+        <div className="flex items-center w-full relative">
+          <div className="relative flex items-center w-full">
+            <div className="flex items-center w-full">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 bg-green-500">
+                1
+              </div>
+              <div className={`w-full border-b-4 ${step >= 2 ? "border-green-500" : "border-[#d1d5dc]"}`}></div>
+            </div>
+            <div className="flex items-center w-full">
+              <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 ${step >= 2 ? "bg-green-500" : "bg-gray-300"}`}>
+                2
+              </div>
+              <div className={`w-full border-b-4 ${step >= 3 ? "border-green-500" : "border-[#d1d5dc]"}`}></div>
+            </div>
+          
+            <div className="flex items-center">
+              <div className={`flex items-center justify-center w-12 h-12 rounded-full text-white font-bold z-10 ${step >= 3 ? "bg-green-500" : "bg-gray-300"}`}>
+                3
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogHeader>
+      
+      <DialogBody className="w-full">
+        <div className="relative h-40 flex justify-center items-center w-full">
+          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+          <div className="flex flex-col gap-2">
+      {Object.keys(inputValues)
+        .filter((key) => cellMappings[key])
+        .map((key) => (
+          <div
+            key={key}
+            className="flex justify-between border-b border-stroke pb-1 bg-gray-100 font-sans text-base leading-6 font-normal"
+          >
+            <span className="font-semibold text-gray-700">{cellMappings[key]}</span>
+            <span className="text-gray-900">{inputValues[key]}</span>
+          </div>
+        ))}
+    </div>
+
+    <table className="w-full mt-4 border border-stroke bg-gray-100 font-sans text-base leading-6 font-normal">
+      <thead>
+        <tr className="bg-gray-200 text-gray-700 font-semibold">
+          <th className="border border-stroke p-2">ID</th>
+          <th className="border border-stroke p-2">Üretilen Ürün</th>
+          <th className="border border-stroke p-2">Satılan Ürün</th>
+          <th className="border border-stroke p-2">CN Kod</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="border border-stroke p-2">1</td>
+          <td className="border border-stroke p-2">{inputValues["E49"]}</td>
+          <td className="border border-stroke p-2">{inputValues["F49"]}</td>
+          <td className="border border-stroke p-2">{inputValues["I49"]}</td>
+        </tr>
+        {Array.from({ length: inputCount - 1 }).map((_, index) => {
+          const newIndex = index + 1;
+          const keyF = `E${49 + newIndex}`;
+          const keyG = `F${49 + newIndex}`;
+          const keySelect = `I${49 + newIndex}`;
+          return (
+            <tr key={newIndex}>
+              <td className="border border-stroke p-2">{newIndex + 1}</td>
+              <td className="border border-stroke p-2">{inputValues[keyF]}</td>
+              <td className="border border-stroke p-2">{inputValues[keyG]}</td>
+              <td className="border border-stroke p-2">{inputValues[keySelect]}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+          </div>
+          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+         
+      <div><h2 className="flex font-bold">Ön Bilgilendirme Koşulları</h2></div>
+      <div className="w-full h-[180px] bg-white border border-[#e2e8f0] mt-3 rounded-[20px] overflow-hidden font-sans text-base leading-6 font-normal">
+  <div className="p-4 max-h-[180px] group overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 transition-all duration-500 ease-in-out">
+  <div className="group-hover:overflow-y-auto h-full pr-2 text-left">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo iusto eaque, laboriosam laborum enim rerum similique ad...
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis at harum minus facilis asperiores officiis dignissimos molestias esse libero sit! Mollitia ipsum totam placeat ab ducimus fugiat delectus minima dignissimos itaque. Velit aspernatur maiores quo eius magnam molestias, repudiandae esse. Blanditiis corrupti consequuntur illo, id culpa dolor tempora ab repellat, nam vero, delectus sapiente. Excepturi dolore aliquam, porro quaerat magnam earum assumenda nostrum quas culpa soluta laudantium sequi, enim quae. Nemo quo perferendis quae aspernatur necessitatibus eius laborum quas explicabo excepturi minima voluptas, inventore, unde harum laboriosam impedit perspiciatis possimus officia in nobis fugiat maiores beatae itaque quasi cum? Non.
+  </div>
+</div>
+
+</div>
+      
+    <div><h2 className="flex font-bold mt-5">Bilgilendirme Formu</h2></div>
+    <div className="w-full h-[180px] bg-white border border-[#e2e8f0] mt-3 rounded-[20px] overflow-hidden font-sans text-base leading-6 font-normal">
+  <div className="p-4 max-h-[180px] group overflow-hidden hover:overflow-y-auto scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 transition-all duration-500 ease-in-out">
+  <div className="group-hover:overflow-y-auto h-full pr-2 text-left">
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo iusto eaque, laboriosam laborum enim rerum similique ad...
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis at harum minus facilis asperiores officiis dignissimos molestias esse libero sit! Mollitia ipsum totam placeat ab ducimus fugiat delectus minima dignissimos itaque. Velit aspernatur maiores quo eius magnam molestias, repudiandae esse. Blanditiis corrupti consequuntur illo, id culpa dolor tempora ab repellat, nam vero, delectus sapiente. Excepturi dolore aliquam, porro quaerat magnam earum assumenda nostrum quas culpa soluta laudantium sequi, enim quae. Nemo quo perferendis quae aspernatur necessitatibus eius laborum quas explicabo excepturi minima voluptas, inventore, unde harum laboriosam impedit perspiciatis possimus officia in nobis fugiat maiores beatae itaque quasi cum? Non.
+  </div>
+</div>
+
+</div>
+
+
+    <label className="flex items-center mt-4 bg-gray-100 font-sans text-base leading-6 font-normal">
+      <Checkbox
+        type="checkbox"
+        checked={isChecked}
+        onChange={(e) => setIsChecked(e.target.checked)}
+        className="mr-2"
+      />
+      <small>
+        <b>Ön Bilgilendirme Koşullarını</b> ve <b>Sözleşme</b>'yi okudum, Onaylıyorum.
+      </small>
+    </label>
+          </div>
+          <div className={`absolute w-full text-center transition-all duration-500 transform ${step === 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}>
+        {step === 3 && (
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-12 h-12 border-4 border-t-transparent border-green-500 rounded-full animate-spin mb-4"></div>
+            <span className="text-lg font-semibold">Raporunuz hazırlanıyor...</span>
+          </div>
+        )}
+      </div>
+        </div>
+      </DialogBody>
+      
+      <DialogFooter className="flex justify-between w-full mt-44">
+        <Button onClick={prevStep} className="bg-red-500 text-white px-6 py-2 rounded-lg " disabled={step === 1}>
+          Prev
+        </Button>
+        <Button
+  onClick={() => { 
+    if (step === 2) { 
+      setStep(3); // Step 3'e geçiş
+      updateExcel(); // Excel dosyasını güncelleme işlemi
+    } else if (step === 1) {
+      setStep(2); // Step 2'ye geçiş
+    }
+  } } // Checkbox işaretli ise step 2'ye ya da step 3'e geç
+  className="bg-green-500 text-white px-6 py-2 rounded-lg"
+  disabled={step === 3 || (step === 2 && !isChecked)} // Step 3'teyken ve step 2'de checkbox işaretli değilse buton devre dışı
+>
+  {isChecked ? (step === 2 ? "İndir" : "Next") : "Next"}
+</Button>
+
+      </DialogFooter>
+    </Dialog>
 
 
     </>

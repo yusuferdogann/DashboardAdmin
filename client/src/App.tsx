@@ -22,6 +22,9 @@ import { userAuth } from './auth/userAuth';
 import Facility from './pages/Facility';
 import Reports from './pages/Report/Reports';
 import {jwtDecode} from "jwt-decode"; // npm install jwt-decode
+import View from "./pages/View"
+import Language from "./pages/Language"
+import ProtectedRoute from "./ProtectRoute";
 
 
 function App() {
@@ -62,8 +65,10 @@ function App() {
     // return () => clearInterval(interval); // Component unmount olursa interval'i temizle
   }, [navigate]);
 
-
-
+  const checkRole = JSON.parse(localStorage.getItem('detail'))
+  const Role = checkRole?.role
+// Örnek: Kullanıcının giriş yaptığı rolü belirleme
+const userRole = Role; // Bunu gerçek token veya context'ten çekebilirsin
 
 
 
@@ -113,15 +118,10 @@ function App() {
           <DefaultLayout>
             <Routes>
              
-              <Route
-                path='/dashboard'
-                element={
-                  <>
-                    <PageTitle title="Dashboard " />
-                    <ECommerce />
-                  </>
-                }
-              />
+            <Route
+          path="/dashboard"
+          element={<ProtectedRoute element={<ECommerce />} allowedRoles={["admin", "professional"]} userRole={userRole} />}
+        />
               <Route
                 path="/register"
                 element={
@@ -231,21 +231,30 @@ function App() {
                   </>
                 }
               />
+             
+                 <Route
+          path="/calculation"
+          element={<ProtectedRoute element={<AccordionLayout />} allowedRoles={["admin", "professional"]} userRole={userRole} />}
+              />
+                <Route
+          path="/sumary"
+          element={<ProtectedRoute element={<Sumary />} allowedRoles={["admin", "professional"]} userRole={userRole} />}
+              />
               <Route
-                path="/calculation"
+                path="/view"
                 element={
                   <>
-                    <PageTitle title="Calculation " />
-                    <AccordionLayout />
+                    <PageTitle title="View " />
+                    <View />
                   </>
                 }
               />
-              <Route
-                path="/sumary"
+               <Route
+                path="/view/language-settings"
                 element={
                   <>
-                    <PageTitle title="Sumary " />
-                    <Sumary />
+                    <PageTitle title="Language " />
+                    <Language />
                   </>
                 }
               />

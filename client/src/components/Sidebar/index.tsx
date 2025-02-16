@@ -9,6 +9,7 @@ import { userAuth } from '../../auth/userAuth';
 import Report from "../../images/logo/report.png"
 import { post, get } from '../../server/Apiendpoint';
 import LogoCarbon from "../../images/logo/logorevize.png"
+import { useTranslation } from "react-i18next";
 
 
 interface SidebarProps {
@@ -23,6 +24,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
   const { value, token, user } = userAuth();
+  const { t } = useTranslation(); // i18n çeviri fonksiyonunu çağır
+
   // console.log("VALUEEE",value)
   const [updatelogo, setUpdateLogo] = useState(false)
   const fileUploadRef = useRef();
@@ -36,8 +39,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [comeImage, setComeImage] = useState()
   const [tesisName, setTesisName] = useState()
 
-  // Kullanıcının rolünü belirle (Bu değeri backend'den alabilirsin)
-  const userRole = "user"; // "user" veya "admin" olarak değiştir
+  
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -55,10 +57,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   });
   var val = localStorage.getItem('facilityInformation');
   var object = JSON.parse(val);
+  var userDetail = JSON.parse(localStorage.getItem("detail"))
+  // console.log("ROLE------------",userDetail?.role)
   // setTesisName(object.tesisName)
   // console.log("data-----------------",object.company_logo)
   // console.log("right-------",object?.facilityname)
   // close if the esc key is pressed
+
+  // Kullanıcının rolünü belirle (Bu değeri backend'den alabilirsin)
+  const userRole = userDetail?.role; // "user" veya "admin" olarak değiştir
   useEffect(() => {
 
     const fetchdata = async () => {
@@ -215,7 +222,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   return (
                     <React.Fragment>
                       <li className="relative group">
-                        {userRole === "user" ? (
+                        {userRole !== "admin" && userRole !== "professional" ? (
                           // Kullanıcı 'user' ise
                           <Tooltip content="Paketi yükseltin" placement="right" className="z-[1001]">
                             <div className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
@@ -246,7 +253,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                   />
                                 </svg>
                                 <span className="relative flex items-center ms-2">
-                                  Ana Sayfa
+                                {t("sidebar.dashboard")}
                                   {/* PRO Etiketi - Sadece 'user' için gösterilir */}
                                   <span
                                     className="ml-1 text-[10px] font-bold bg-clip-text text-transparent"
@@ -291,7 +298,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 fill=""
                               />
                             </svg>
-                            <span className="relative flex items-center">Ana Sayfa</span>
+                            <span className="relative flex items-center">{t("sidebar.dashboard")}</span>
                           </NavLink>
                         )}
                       </li>
@@ -302,7 +309,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               
               <li className="relative group">
-                {userRole === "user" ? (
+                {userRole !== "admin" && userRole !== "professional" ? (
                   // Kullanıcı 'user' ise
                   <Tooltip content="Paketi yükseltin" placement="right" className="z-[1001]">
                     <div className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
@@ -321,7 +328,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>                       
                          <span className="relative flex items-center ms-2">
-                          Hesaplama
+                         {t("sidebar.calculation")}
                           {/* PRO Etiketi - Sadece 'user' için gösterilir */}
                           <span
                             className="ml-1 text-[10px] font-bold bg-clip-text text-transparent"
@@ -354,7 +361,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         fill=""
                       />
                     </svg>                   
-                    <span className="relative flex items-center">Hesaplama</span>
+                    <span className="relative flex items-center">{t("sidebar.calculation")}</span>
                   </NavLink>
                 )}
               </li>
@@ -373,12 +380,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     
                     <i style={{ color: '#b5bbc7' }} className="fa-solid fa-industry"></i>
     
-                  Tesisler
+                    {t("sidebar.facility")}
                 </NavLink>
 
 
               <li className="relative group">
-                {userRole === "user" ? (
+                {userRole !== "admin" && userRole !== "professional" ? (
                   // Kullanıcı 'user' ise
                   <Tooltip content="Paketi yükseltin" placement="right" className="z-[1001]">
                     <div className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
@@ -413,7 +420,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </defs>
                         </svg>
                         <span className="relative flex items-center ms-2">
-                          Analiz
+                        {t("sidebar.report")}
                           {/* PRO Etiketi - Sadece 'user' için gösterilir */}
                           <span
                             className="ml-1 text-[10px] font-bold bg-clip-text text-transparent"
@@ -462,7 +469,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </clipPath>
                       </defs>
                     </svg>
-                    <span className="relative flex items-center">Analiz</span>
+                    <span className="relative flex items-center"> {t("sidebar.analysis")}</span>
                   </NavLink>
                 )}
               </li>
@@ -474,19 +481,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     }`}
                 >
                   <i className="fa-regular fa-file" style={{ color: '#b5bbc7' }}></i>
-                  Rapor Al
+                  {t("sidebar.report")}
                 </NavLink>
               </li>
 
               <li className="relative group">
-                {userRole === "user" ? (
+                {userRole !== "admin" && userRole !== "professional" ? (
                   // Kullanıcı 'user' ise
                   <Tooltip content="Paketi yükseltin" placement="right" className="z-[1001]">
                     <div className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
                       <div className="flex items-center pointer-events-none">
                         <i className="fa-solid fa-desktop"></i>
                         <span className="relative flex items-center ms-2">
-                          Özet
+                        {t("sidebar.sumary")}
                           {/* PRO Etiketi - Sadece 'user' için gösterilir */}
                           <span
                             className="ml-1 text-[10px] font-bold bg-clip-text text-transparent"
@@ -507,7 +514,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
                   >
                     <i className="fa-solid fa-desktop"></i>
-                    <span className="relative flex items-center">Özet</span>
+                    <span className="relative flex items-center"> {t("sidebar.sumary")}</span>
                   </NavLink>
                 )}
               </li>

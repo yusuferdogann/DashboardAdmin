@@ -57,31 +57,22 @@ const Facility = () => {
     const navigate = useNavigate();
     const locationmap = useLocation();
 
-    console.log("yol-------", locationmap.pathname)
+    // console.log("yol-------", locationmap.pathname)
     function timeout(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms))
     }
 
     // Konum bilgilerini almak için getLocation fonksiyonu
     const getLocation = () => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setData(prevData => ({
-                        ...prevData,
-                        latitude,
-                        longitude,
-                    }));
-                },
-                (error) => {
-                    console.error("Konum hatası kodu:", error.code, "Mesaj:", error.message);
-                    alert(`Konum alınamadı. Hata kodu: ${error.code}, Mesaj: ${error.message}`);
-                }
-            );
-        } else {
-            alert("Tarayıcınız konum servislerini desteklemiyor.");
-        }
+        navigator.geolocation.getCurrentPosition((position) => {
+            const { latitude, longitude } = position.coords;
+            // Konum bilgilerini güncelleme
+            setData(prevData => ({
+                ...prevData,
+                latitude,
+                longitude,
+            }));
+        });
     };
   
 
@@ -241,7 +232,7 @@ const Facility = () => {
             localStorage.setItem("Facilityname", item.facilityname)
 
             setTimeout(() => {
-                navigate('/calculation')
+                navigate('/get-report')
             }, 750)
         }
         // console.log("getVeri-guncel---------------------",item)
@@ -626,12 +617,8 @@ const Facility = () => {
                                             </div>
                                             {/* Date Picker */}
                                             {/* Tarih Seçici (Start Date) */}
-                                          <div className='flex items-center'>
-                                          <i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>
-                                            <label className='mt-5  md:text-normal'>"Konum Al" butonu bulunduğunuz konum bilgisini almaktadır.Tesis kayıt derken tesisde bu işlemi yapmanız önemlidir.</label>
 
-                                          </div>
-                                            {/* <label className='mt-3 2xsm:text-sm'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</label> */}
+                                            <p className='mt-3 2xsm:text-sm xsm:text-2xl'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
                                         </p>
                                     </div>
                                 </div>
@@ -643,17 +630,20 @@ const Facility = () => {
                 </DialogBody>
                 <DialogFooter className='2xsm:mt-[-12%] xsm:mt-0'>
                     <Button
-                        variant="text"
+                        variant="gradient"
                         color="red"
                         onClick={() => handleOpen(null)}
-                        className="mr-1"
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold p-2 w-30 rounded"
                     >
-                        <span>İptal Et</span>
+                       İptal Et
                     </Button>
+                    
                     <Button
-                        className='relative inline-flex items-center justify-center p-2 w-30 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-[#00ff8e] to-[#00a0fe] group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800'
-                        variant="gradient"
-                        color="green"
+                        className="text-white font-bold p-2 w-30 rounded ms-4"
+                        // variant="gradient"
+                        // color="green"
+                        style={{ background: "linear-gradient(to bottom right, #00ff8e, #00a0fe)" }}
+
                         onClick={(e) => saveData(e)}
                     >
                         <span>Kaydet</span>

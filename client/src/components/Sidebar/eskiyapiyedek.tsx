@@ -55,6 +55,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   });
   var val = localStorage.getItem('facilityInformation');
   var object = JSON.parse(val);
+
   // setTesisName(object.tesisName)
   // console.log("data-----------------",object.company_logo)
   // console.log("right-------",object?.facilityname)

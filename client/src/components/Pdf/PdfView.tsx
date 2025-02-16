@@ -7,7 +7,8 @@ import { Button } from "@material-tailwind/react";
 import { handleErrorForFacility } from '../../common/utils/helpers'
 import CReports from '../../pages/Report/CReports';
 import PeriodReport from '../../pages/Report/PeriodReport';
-
+import { useTranslation } from "react-i18next";
+ 
 import { toast } from 'react-toastify';
 const PdfView = () => {
     const contentRef = useRef(null);
@@ -25,6 +26,8 @@ const PdfView = () => {
         + (currentdate.getMonth() + 1) + "/"
         + currentdate.getFullYear()
     const localData = localStorage.getItem("Facilityname")
+    const { t, i18n } = useTranslation();
+
     console.log("localData-----", localData)
     useEffect(() => {
         if (localData === '' || !localData) {
@@ -131,10 +134,10 @@ return (
     <>
       {checkStatus?.status === 200 ? (
         <select onChange={(event) => handleReport(event)} className='h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none'>
-          Rapor Secin
-          <option>Rapor Seçin</option>
-          <option value='period'>Dönem Raporu</option>
-          <option value='cbam'>CBAM Raporu</option>
+          {t("report.select")}
+          <option>{t("report.select")}</option>
+          <option value='period'>{t("report.period")}</option>
+          <option value='cbam'>{t("report.cbam")}</option>
         </select>
       ) : "Yükleniyor..."}
   

@@ -12,8 +12,17 @@ import Level6 from "../../components/CReports/LastReport/Level6"
 import Level7 from "../../components/CReports/LastReport/Level7"
 import Level8 from "../../components/CReports/LastReport/Level8"
 
-// yeni tasarim
-import ExcelEditor from "../../components/Excel/yeni2"
+// yeni tasarim------------
+import ExcelEditor2 from "../../components/Excel/yeni2"
+
+
+// Payment-----------------
+// import ExcelEditor2 from "../../components/Excel/Payment"
+
+// import ExcelEditor from "../../pages/Report/Modal"
+
+
+
 // import ExcelEditor from "../../components/Excel/calisankod"
 
 
@@ -39,7 +48,9 @@ const CReports = () => {
      {/* <Level4/> */}
      {/* <Level5/> */}
      {/* <Level6/> */}
-     <ExcelEditor/>
+     {/* <ExcelEditor/> */}
+     <ExcelEditor2/>
+
      {/* <ExceImport/> */}
      {/* elektrik */}
      {/* <Level7/> */}

@@ -1,0 +1,30 @@
+{
+  "sidebar": {
+    "dashboard":"Dashboard",
+    "calculation":"Calcuation",
+    "facility":"Facility",
+    "analysis":"Analysis",
+    "report": "Reports",
+    "sumary":"Sumary"
+  },
+  "navbar":{
+    "settings":"Settings",
+    "logout":"Logout"
+  },
+  "breadcrumb":{
+    "language":"Language Settings",
+    "settings":"Settings"
+
+  },
+  "settings":{
+    "language":"Language Settings",
+    "facility":"Facility İnformation"
+  },
+  "report":{
+    "select":"Select Report",
+    "cbam":"CBAM Report",
+    "period":"Period Report",
+    "report":"Report"
+  }
+  }
+  

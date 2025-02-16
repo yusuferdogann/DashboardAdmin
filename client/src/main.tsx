@@ -7,6 +7,7 @@ import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import "react-toastify/ReactToastify.css"
 import Userprovider from './auth/userAuth';
+import "./i18n.js"
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Userprovider>
