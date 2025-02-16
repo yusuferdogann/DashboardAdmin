@@ -206,7 +206,7 @@ const TabsDefault = () => {
                             {/* <Datepicker  i18n={"tr"} value={data} onChange={(newValue)=>handleChange(newValue)} /> */}
                             <div className="">
                                 {change === false ? <i className="fa-solid fa-triangle-exclamation text-2xl" style={{ color: "#d46c6c" }}></i> : null}
-                                <label className=" ms-3 text-xl">Lütfen özet için dönem <span className="font-bold">veya</span> ay seçin</label>
+                                <label className=" ms-3 text-md md:text-base">Lütfen özet için dönem <span className="font-bold">veya</span> ay seçin</label>
                             </div>
                             <div className="mt-7">
                                 <select className='py-1 px-4 h-8 border border-gray-300 text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none' 

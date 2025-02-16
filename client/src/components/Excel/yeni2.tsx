@@ -804,13 +804,14 @@ const ExcelEditor = () => {
           <div className="flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 bg-green-500 text-xs md:text-base">
             1
           </div>
-          <div className={`w-full border-b-4 ${step >= 2 ? "border-green-500" : "border-gray-300"}`}></div>
+
+          <div className={`w-full border-b-4 ${step >= 2 ? "border-green-500" : "[border-color:#d1d5dc]"}`}></div>
         </div>
         <div className="flex items-center w-full">
           <div className={`flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 text-xs md:text-base ${step >= 2 ? "bg-green-500" : "bg-gray-300"}`}>
             2
           </div>
-          <div className={`w-full border-b-4 ${step >= 3 ? "border-green-500" : "border-gray-300"}`}></div>
+          <div className={`w-full border-b-4 ${step >= 3 ? "border-green-500" : "[border-color:#d1d5dc]"}`}></div>
         </div>
         <div className="flex items-center">
           <div className={`flex items-center justify-center w-10 h-10 rounded-full text-white font-bold z-10 text-xs md:text-base ${step >= 3 ? "bg-green-500" : "bg-gray-300"}`}>
@@ -821,7 +822,7 @@ const ExcelEditor = () => {
     </div>
   </DialogHeader>
   
-  <DialogBody className="w-full flex flex-col items-center">
+  <DialogBody className=" max-h-[40vh] overflow-y-auto">
     {step === 1 && (
       <div className="w-full">
         <div className="flex flex-col gap-2 bg-gray-100 p-4 rounded-lg">
@@ -867,12 +868,12 @@ const ExcelEditor = () => {
     {step === 2 && (
       <div className="w-full">
         <h2 className="font-bold text-xs md:text-base">Ön Bilgilendirme Koşulları</h2>
-        <div className="w-full h-40 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
-          lorem200
+        <div className="w-full h-30 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, ipsa voluptates accusamus debitis animi veritatis id maxime nisi libero iusto laudantium nulla eum quod earum tempore ullam voluptatibus eius impedit eligendi excepturi recusandae. Cupiditate a repellat expedita. Deleniti, eveniet temporibus delectus odio repudiandae tempore voluptas, praesentium aliquid similique repellat optio officiis soluta aspernatur quod non! Inventore at officia minus quaerat cum, voluptatum nam velit earum expedita nostrum. Voluptate quod veniam nemo libero voluptatum labore odit unde, qui repellat quo perspiciatis illum odio id ad omnis est ex at nihil enim mollitia praesentium ipsum sit eaque. Quis quas recusandae voluptatum totam qui tempore maxime facilis sint fugit ullam dolore aliquid est excepturi doloremque, dolorum ipsum, voluptates cupiditate aperiam sit, omnis nobis hic? Dolorem pariatur iure vitae iusto vero doloribus eum repellat fuga architecto. Nisi sunt maiores eligendi at. Ab soluta dolores id debitis in. Facilis a error impedit fuga delectus porro iure? Doloremque hic temporibus exercitationem! Dolorum est voluptatibus repellendus quidem, reiciendis aspernatur corrupti incidunt quas, placeat at harum reprehenderit soluta ea commodi, cupiditate deleniti? Accusamus, blanditiis! Alias molestias eligendi minus atque, repellat incidunt sunt et voluptate quae qui perspiciatis rem, placeat ad velit a quidem magni commodi rerum in aspernatur!
         </div>
         <h2 className="font-bold mt-5 text-xs md:text-base">Bilgilendirme Formu</h2>
-        <div className="w-full h-40 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit...
+        <div className="w-full h-30 bg-white border border-gray-300 mt-3 rounded-lg p-4 overflow-y-auto text-sm">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, fugiat. Aliquam corrupti sapiente incidunt aspernatur reprehenderit labore nostrum. Nulla doloribus pariatur perspiciatis hic architecto ut quos corrupti, officiis, odit at dolore accusantium quibusdam nihil. Reprehenderit, vel laboriosam. Nobis unde enim quam voluptatum quos repellendus voluptatem nemo, fugit temporibus cumque quis dolore soluta a quaerat aut modi quia placeat libero corrupti accusamus obcaecati hic. Labore possimus dolorem sapiente, obcaecati nisi vero voluptate eveniet doloremque. Unde porro nihil eveniet amet animi sit a. Sequi, reiciendis soluta molestias nisi dolor neque nam ab dolore! Eos delectus inventore dolorem provident quisquam officia laboriosam. Earum eum in impedit dignissimos tempora totam atque doloribus vitae velit eveniet ea magnam incidunt quisquam, iste laboriosam quod adipisci, quasi, fugit placeat nam. Rem, ea tenetur cum quis nostrum sint facilis at sit rerum provident veritatis ex sequi error dolorum fuga nihil aspernatur praesentium, exercitationem nesciunt adipisci iure necessitatibus vero? Officia dicta repellat rerum ea nobis quo eaque praesentium inventore, nemo aliquam voluptatibus cumque? Quae labore adipisci vero! Sint, aspernatur tenetur labore mollitia esse praesentium quod eaque! Beatae, neque perferendis, facilis numquam voluptatum est consectetur asperiores necessitatibus velit quaerat perspiciatis quibusdam hic vero earum quidem nam tempore sunt cupiditate deleniti.
         </div>
         <label className="flex items-center mt-4 text-sm">
           <Checkbox type="checkbox" checked={isChecked} onChange={(e) => setIsChecked(e.target.checked)} className="mr-2" />

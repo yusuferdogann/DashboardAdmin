@@ -441,48 +441,50 @@ const Facility = () => {
                     size === "xl" ||
                     size === "xxl"
                 }
-                className="max-w-2xl mx-auto max-h-screen overflow-y-auto bg-white font-sans text-base leading-6 font-normal"
+                className="max-w-2xl mx-auto  bg-white font-sans text-base leading-6 font-normal"
 
                 open={size === "xs" || size === "sm" || size === "md" || size === "lg" || size === "xl" || size === "xxl"}
 
-                size={size || "sm"}
+                size={size || "md"}
                 handler={handleOpen}
             >
                 <DialogHeader className='text-center relative' style={{ display: 'block' }}>Tesis Bilgilerinizi Girin</DialogHeader>
-                <DialogBody>
+                <DialogBody className='max-h-[50vh] overflow-y-auto'>
                     <div className="grid grid-cols-1" >
                         <div>
-                            <div className="flex 2xsm:mt-[-12%] xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
+                            <div className="flex 2xsm:mt-[12%] xsm:mt-0 flex-col items-center bg-white mx-auto w-full border-gray-200  md:flex-row md:max-w-xl  dark:border-gray-700 dark:bg-gray-800 ">
                                 <div className="flex flex-col justify-between p-4 w-full leading-normal" >
 
                                     <div className="mt-4">
                                         {/* Latitude ve Longitude için input alanları */}
-                                        <div className="flex justify-between items-center">
-                                            <p className="mr-2">Enlem:</p>
+                                        <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <p className="mr-2 mb-1 font-semibold md:mb-0 self-start md:self-center">Enlem:</p>
                                             <input
                                                 type="text"
                                                 value={data.latitude ?? "Enlem"}
                                                 onChange={(e) => changeSave(e, "latitude")}
-                                                className="border rounded p-2 w-1/2"
+                                                className="border border-stroke rounded p-2 w-full md:w-[360px]"
                                                 placeholder="Enlem"
                                             />
                                         </div>
-                                        <div className="flex justify-between items-center mt-2">
-                                            <p className="mr-2">Boylam:</p>
+
+
+                                        <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <p className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Boylam:</p>
                                             <input
                                                 type="text"
                                                 value={data.longitude ?? "Boylam"}
                                                 onChange={(e) => changeSave(e, "longitude")}
-                                                className="border rounded p-2 w-1/2"
+                                                className="border border-stroke rounded p-2 w-full md:w-[360px]"
                                                 placeholder="Boylam"
                                             />
                                         </div>
                                     </div>
                                     <Button className='mt-3' onClick={getLocation} color="blue">Konumu Al</Button>
                                     <p className="mt-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
-                                        <div className='2xsm:block xsm:flex justify-between'>
+                                    <div className="flex flex-col md:flex-row justify-between items-center w-full">
 
-                                            <label htmlFor="country">Ülke Kodu Seçin:</label>
+                                            <label className="mr-2 mb-1 font-semibold md:mb-0 self-start md:self-center">Ülke Kodu Seçin:</label>
                                             <CountryDropdown
                                                 value={selectedCountry}
                                                 onChange={(country) => {
@@ -507,11 +509,11 @@ const Facility = () => {
 
                                     </p>
                                     <p className="mt-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
-                                        <div className='2xsm:block xsm:flex justify-between'>
 
-                                            <label htmlFor="country">Firma Faliyet Alanı:</label>
+                                    <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <label className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Firma Faliyet Alanı:</label>
                                             <select
-                                                className='w-[67%] rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white'
+                                                className="border border-stroke rounded p-2 w-full md:w-[360px]"                                               
                                                 name="FieldActivity" // name alanı ekleyerek state'e kaydedilecek alanı belirleyelim
                                                 value={data.FieldActivity} // value ile seçilen değeri bağla
                                                 onChange={changeSave} // onChange'e changeSave fonksiyonunu bağla
@@ -529,35 +531,37 @@ const Facility = () => {
                                     </p>
 
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
-                                        <div className='2xsm:block  xsm:flex justify-between'><span className='font-normal'>Çalışan Sayısı:</span><span className='font-normal'>
+                                    <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <span  className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Çalışan Sayısı:</span>
+                                          
                                             <input
                                                 type='number'
                                                 value={data.employeecount}
                                                 name='employeecount'
                                                 onChange={changeSave}
                                                 placeholder='Çalışan sayınızı girin'
-                                                className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white  ' />
-
-                                        </span></div>
+                                                className="border border-stroke rounded p-2 w-full md:w-[360px]"
+                                                />
+                                        </div>
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
-                                        <div className='2xsm:block xsm:flex justify-between'><span className='font-normal '>Toplam Kapali Alan:</span><span className='font-normal'>
+                                    <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Toplam Kapali Alan:</span>
                                             <input
                                                 type='number'
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
                                                 placeholder='Kapasitenizi girin  /m2'
-                                                className='2xsm:w-full xsm:w-90 rounded border h-11 border-[#ccc] bg-gray py-1 mt-0 pl-2 pr-1.5 text-black focus:border-[#96c8da] bg-transparent focus-visible:outline-none dark:border-strokedark dark:text-white' />
-                                        </span>
+                                                className="border border-stroke rounded p-2 w-full md:w-[360px]"
+                                                />
                                         </div>
                                     </p>
                                     <div className="" >
-                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
+                                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 w-fll">
 
-                                            <div className='2xsm:block  xsm:flex justify-between'>
-                                                <div> <span className='font-normal'>Ülke:</span><span className='font-semibold'></span></div>
-                                                <div className='ulkesehir'>
+                                        <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                            <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Ülke:</span>
                                                     <CountryDropdown
                                                         clearable
                                                         searchable
@@ -568,14 +572,13 @@ const Facility = () => {
                                                         onChange={handleSetCountry}
                                                         className=''
                                                     />
-                                                </div>
                                             </div>
                                         </p>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                            <div className='2xsm:block  xsm:flex justify-between'>
-                                                <div> <span className='font-normal'>Şehir:</span><span className='font-semibold'></span></div>
-                                                <div className='ulkesehir'>
+                                            <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                              
+                                                    <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Şehir:</span>
                                                     <StateDropdown
                                                         clearable
                                                         placeHolder='Şehir seçin'
@@ -584,14 +587,14 @@ const Facility = () => {
                                                         value={state}
                                                         onChange={handleSetState}
                                                     />
-                                                </div>
+                                               
                                             </div>
                                         </p>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
 
-                                            <div className='2xsm:block  xsm:flex justify-between'>
-                                                <div> <span className='font-normal'>İlçe:</span><span className='font-semibold'></span></div>
-                                                <div>
+                                            <div className="flex flex-col md:flex-row justify-between items-center w-full">
+                                                
+                                                     <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">İlçe:</span>
                                                     <CityDropdown
                                                         className=''
                                                         clearable
@@ -603,7 +606,6 @@ const Facility = () => {
                                                         value={dropcity}
                                                         onChange={handleSetCity}
                                                     />
-                                                </div>
                                             </div>
                                             <div className='flex justify-between w-full mt-4 items-center'>
                                                 <input
@@ -618,7 +620,9 @@ const Facility = () => {
                                             {/* Date Picker */}
                                             {/* Tarih Seçici (Start Date) */}
 
-                                            <p className='mt-3 2xsm:text-sm xsm:text-2xl'><i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>Tesisiniz ile ilgi detaylı veri kaydı için <Link to='/settings' className='logotextmini'>tesis bilgileri</Link> sayfasına gidin</p>
+                                            <p className='mt-3'>
+                                                <i className="fa-solid fa-triangle-exclamation me-3 2xsm:text-sm xsm:text-2xl" style={{ color: '#f1c40f' }}></i>
+                                               Konum bilgisi alırken tesisiniz bulunduğu alandan almanız gerekmektedir.</p>
                                         </p>
                                     </div>
                                 </div>
