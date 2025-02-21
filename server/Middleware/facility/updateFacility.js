@@ -35,52 +35,79 @@ const updatedFacility = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const addedFacility = asyncErrorWrapper(async (req, res, next) => {
-  // const id = await Usermodels.findById(req.user.id);
-
-  const userId = await Usermodels.findById(req.user.id);
-  const user = await Usermodels.findById(userId);
-  const {city,country,employeecount,facilityname,company_logo,state,totalarea,latitude,longitude,CityCode,FieldActivity} = req.body;
+  // Kullanıcıyı bul
+  const user = await Usermodels.findById(req.user.id);
 
   if (!user) {
     return res.status(404).json({ message: "Kullanıcı bulunamadı" });
-}
+  }
 
-// ❌ Eğer facilityLimit 0 ise tesis ekleme
-if (user.facilityLimit <= 0) {
+  // Eğer kullanıcı adminse, facilityLimit'i değiştirme
+  if (user.role === "admin") {
+    // Admin olduğunda facilityLimit azaltma işlemi yapılmaz
+    const { city, country, employeecount, facilityname, company_logo, state, totalarea, latitude, longitude, CityCode, FieldActivity } = req.body;
+
+    // Yeni tesis ekle
+    const newFacility = await FacilityModel.create({
+      city,
+      country,
+      employeecount,
+      company_logo,
+      facilityname,
+      state,
+      totalarea,
+      latitude,
+      longitude,
+      CityCode,
+      FieldActivity,
+      userId: req.user.id,
+    });
+
+    await newFacility.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Facility successfully added",
+      data: newFacility,
+    });
+  }
+
+  // Eğer facilityLimit 0 ise tesis ekleme
+  if (user.facilityLimit <= 0) {
     return res.status(400).json({ message: "Limitiniz doldu! Yeni tesis ekleyemezsiniz." });
-}
+  }
 
-// ✅ Yeni tesis ekle
-const newFacility =  await FacilityModel.create({
-  city,
-  country,
-  employeecount,
-  company_logo,
-  facilityname,
-  state,
-  totalarea,
-  latitude,
-  longitude,
-  CityCode,
-  FieldActivity,
-  userId: req.user.id,
-});
+  const { city, country, employeecount, facilityname, company_logo, state, totalarea, latitude, longitude, CityCode, FieldActivity } = req.body;
 
-await newFacility.save();
+  // Yeni tesis ekle
+  const newFacility = await FacilityModel.create({
+    city,
+    country,
+    employeecount,
+    company_logo,
+    facilityname,
+    state,
+    totalarea,
+    latitude,
+    longitude,
+    CityCode,
+    FieldActivity,
+    userId: req.user.id,
+  });
 
-// ✅ Facility limitini azalt
-user.facilityLimit -= 1;
-await user.save();
+  await newFacility.save();
 
-  
-
+  // Facility limitini azalt (admin değilse)
+  user.facilityLimit -= 1;
+  await user.save();
 
   res.status(200).json({
     success: true,
-    message: "facility add successfull",
-    data: facility,
+    message: "Facility successfully added",
+    data: newFacility,
   });
 });
+
 
 const checkFacilityLimit = asyncErrorWrapper(async (req,res,next)=>{
 
@@ -130,34 +157,33 @@ const getReportLimit = asyncErrorWrapper(async (req,res,next)=>{
   console.error("Facility limit kontrol hatası:");
   res.status(500).json({ message: "Sunucu hatası" });
 })
-const checkBalanceReport = asyncErrorWrapper(async(req,res,next)=>{
+const checkBalanceReport = asyncErrorWrapper(async (req, res, next) => {
   const userId = await Usermodels.findById(req.user.id);
   const user = await Usermodels.findById(userId);
 
   if (!user) {
     return res.status(404).json({ message: "Kullanıcı bulunamadı" });
-}
+  }
 
-// ❌ Eğer reportLimit 0 ise tesis ekleme
-if (user.reportLimit <= 0) {
-    return res.status(400).json({ message: "Limitiniz doldu! Yeni tesis ekleyemezsiniz." });
-}
+  // Eğer kullanıcı admin ise, reportLimit'i azaltma
+  if (user.role !== 'admin') {
+    // ❌ Eğer reportLimit 0 ise işlem yapma
+    if (user.reportLimit <= 0) {
+      return res.status(400).json({ message: "Limitiniz doldu! Yeni tesis ekleyemezsiniz." });
+    }
 
-
-
-
-  // ✅ Report limitini azalt
-  user.reportLimit -= 1;
- // ✅ Güncellenmiş kullanıcı verisini kaydet
-  await user.save(); // Burası eksikti, bunu ekledim.
+    // ✅ Report limitini azalt
+    user.reportLimit -= 1;
+    // ✅ Güncellenmiş kullanıcı verisini kaydet
+    await user.save();
+  }
 
   res.status(200).json({
     success: true,
-    message: "facility add successfull",
-    
+    message: "Facility add successful",
   });
+});
 
-})
 const getOneFacility = asyncErrorWrapper(async (req, res, next) => {
   const { tesisName, tesisNo } = req.body;
 
@@ -957,13 +983,12 @@ const GetAllScopeByDateOfDaily = asyncErrorWrapper(async (req, res, next) => {
   const tesisName = req.app.locals.data.tesisName;
 
   var currentdate = new Date();
-  var datetime =
-    currentdate.getDate() +
-    "/" +
-    (currentdate.getMonth() + 1) +
-    "/" +
-    currentdate.getFullYear();
+var datetime =
+  ("0" + currentdate.getDate()).slice(-2) + "." + 
+  ("0" + (currentdate.getMonth() + 1)).slice(-2) + "." + 
+  currentdate.getFullYear();
 
+console.log(datetime); // Örnek Çıktı: 20.02.2025
   var DailyScope = await ScopeModel.find({
     tesis: tesisName,
     tarih: datetime,

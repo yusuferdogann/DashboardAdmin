@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 
 const limits = {
+  demo: { reportLimit: 1, facilityLimit: 1 },
   beginner: { reportLimit: 4, facilityLimit: 1 },
   standard: { reportLimit: 8, facilityLimit: 3 },
   professional: { reportLimit: 12, facilityLimit: 5 },
@@ -18,9 +19,9 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['beginner', 'standard', 'professional'],
+    enum: ["demo",'beginner', 'standard', 'professional','admin'],
     required: true,
-    default: 'beginner', // Varsayılan olarak "beginner" olacak
+    default: 'demo', // Varsayılan olarak "demo" olacak
   },
   reportLimit: { type: Number}, // Kullanıcının rapor limiti
   facilityLimit: { type: Number}, // Kullanıcının facility limiti
@@ -49,7 +50,7 @@ const UserSchema = new Schema({
 UserSchema.pre('save', function (next) {
   if (this.isNew || this.isModified('role')) {
     // Yeni kullanıcı oluşturuluyorsa veya rol değiştiyse, uygun limitleri ata
-    const roleSettings = limits[this.role] || limits['beginner'];
+    const roleSettings = limits[this.role] || limits['demo'];
     this.reportLimit = roleSettings.reportLimit;
     this.facilityLimit = roleSettings.facilityLimit;
   }

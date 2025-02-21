@@ -9,6 +9,10 @@ const UserSchema = new Schema({
     type: String,
     trim: true,
   },
+  cartype: {
+    type: String,
+    trim: true,
+  },
   subtitle: {
     type: String,
   },

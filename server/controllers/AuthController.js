@@ -107,7 +107,7 @@ const addFacility = async (req, res) => {
  
 
 const addScope = asyncErrorWrapper(async(req,res,next)=>{
-    const {yakitturu,plaka,birim,ilce,kaynak,miktar,sehir,situation,subtitle,tarih,tesis,title,ulke,type,gasType} = req.body;
+    const {yakitturu,plaka,birim,ilce,kaynak,miktar,sehir,situation,subtitle,tarih,tesis,title,ulke,type,gasType,cartype} = req.body;
     const savedData = await ScopeModel.create({
       gasType,
       birim,
@@ -124,6 +124,7 @@ const addScope = asyncErrorWrapper(async(req,res,next)=>{
       type,
       yakitturu,
       plaka,
+      cartype,
       user:req.user.id
     })
     res.status(200)
