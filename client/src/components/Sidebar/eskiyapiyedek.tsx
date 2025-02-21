@@ -1,15 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../images/logo/new-logo-new.png';
-import { Tooltip, Button } from "@material-tailwind/react";
-import zIndex from '@mui/material/styles/zIndex';
-import Image from "../../images/logo/sidebarlogodd.jpg"
-import { userAuth } from '../../auth/userAuth';
-import Report from "../../images/logo/report.png"
-import { post, get } from '../../server/Apiendpoint';
-import LogoCarbon from "../../images/logo/logorevize.png"
-
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { get } from 'your-api-client';  // API client
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -23,76 +15,56 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
   const { value, token, user } = userAuth();
-  // console.log("VALUEEE",value)
-  const [updatelogo, setUpdateLogo] = useState(false)
-  const fileUploadRef = useRef();
-  const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
-  const [sidebarExpanded, setSidebarExpanded] = useState(
-    storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
-  );
+  const { t } = useTranslation();
 
-  const [avatarURL, setAvatarURL] = useState('')
-  const [image, setImage] = useState("")
-  const [comeImage, setComeImage] = useState()
-  const [tesisName, setTesisName] = useState()
-
-  // Kullanıcının rolünü belirle (Bu değeri backend'den alabilirsin)
-  const userRole = "admin"; // "user" veya "admin" olarak değiştir
-  // close on click outside
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [avatarURL, setAvatarURL] = useState('');
+  const [image, setImage] = useState('');
+  const [comeImage, setComeImage] = useState();
+  const [tesisName, setTesisName] = useState('');
+  const userDetail = JSON.parse(localStorage.getItem('detail') || '{}');
+  
+  const userRole = userDetail?.role; // Kullanıcı rolünü al
+  
+  // Sidebar dışına tıklama kontrolü
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
-      if (
-        !sidebarOpen ||
-        sidebar.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
+      if (!sidebarOpen || sidebar.current.contains(target) || trigger.current.contains(target)) return;
       setSidebarOpen(false);
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
-  var val = localStorage.getItem('facilityInformation');
-  var object = JSON.parse(val);
+  }, [sidebarOpen]);
 
-  // setTesisName(object.tesisName)
-  // console.log("data-----------------",object.company_logo)
-  // console.log("right-------",object?.facilityname)
-  // close if the esc key is pressed
+  // ESC tuşu ile kapanma
   useEffect(() => {
-
-    const fetchdata = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer: " + token
-        }
-      };
-      const dataResult = await get('/getlogo', config);
-      console.log("DATA-IMAGE-----------", dataResult)
-      setComeImage(dataResult)
-    }
-
-    fetchdata();
-
-
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!sidebarOpen || keyCode !== 27) return;
       setSidebarOpen(false);
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  }, [updatelogo]);
+  }, [sidebarOpen]);
 
+  // Sidebar genişletme durumu
   useEffect(() => {
     localStorage.setItem('sidebar-expanded', sidebarExpanded.toString());
-    if (sidebarExpanded) {
-      document.querySelector('body')?.classList.add('sidebar-expanded');
-    } else {
-      document.querySelector('body')?.classList.remove('sidebar-expanded');
-    }
+    document.querySelector('body')?.classList.toggle('sidebar-expanded', sidebarExpanded);
   }, [sidebarExpanded]);
+
+  // Logo verisini çekme
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        headers: { "Content-Type": "application/json", Authorization: `Bearer: ${token}` },
+      };
+      const dataResult = await get('/getlogo', config);
+      setComeImage(dataResult);
+    };
+    fetchData();
+  }, [token]);
 
 
 

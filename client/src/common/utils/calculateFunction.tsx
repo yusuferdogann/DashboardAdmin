@@ -146,7 +146,7 @@ const arrayResult117 = benzinResult22 * value22;
 const arrayResult118 = benzinResult33 * value33;
 // ------------------------------------
 
-export const CalculateFuction = (funcKaynak,funcMiktar) =>{
+export const CalculateFunction = (funcKaynak,funcMiktar) =>{
 
     if(funcKaynak === 'Doğal Gaz'){
         return ((funcMiktar * (arrayResult11+arrayResult22+arrayResult33)))
@@ -169,27 +169,13 @@ export const CalculateFuction = (funcKaynak,funcMiktar) =>{
     else if(funcKaynak === 'Elektrik'){
        return ((funcMiktar  / 1000) * 0.6345)
     }
-    // else if(funcKaynak === 'Yangın Söndürme Tüpü'){
-    //   return  (4 * funcMiktar )
-    // }
+   
     else if(funcKaynak === 'R22'){
       return  (0.001 * 1760 * funcMiktar )
     }
     else if(funcKaynak === '134a'){
       return  (0.001  * 1300 * funcMiktar )
     }
-    // else if(funcKaynak === 'R600a'){
-    //   return  (0.1  * 1300 * funcMiktar )
-    // }
-    // R134a -
-    // R134a1
-    // R410a +
-    // CO2 +
-    // R32 -
-    // HFC32 +
-    // R601 +
-    // R601a +
-
     else if(funcKaynak === 'R410a'){
       return  (0.001  * 2088 * funcMiktar )
     }
@@ -213,8 +199,3 @@ export const CalculateFuction = (funcKaynak,funcMiktar) =>{
     }
   }
 
-// buzdolap secerken 0.1
-// su sebili 0.1
-// ciller 2
-// endustiel sogutucu 7
-// klimima 1
