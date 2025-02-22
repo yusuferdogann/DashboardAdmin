@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef  } from "react";
 import { Accordion, AccordionHeader, AccordionBody } from "@material-tailwind/react";
 import { toast } from "react-toastify";  // React Toast kütüphanesini kullanıyoruz
 import { Tabs, TabsHeader, Tab } from "@material-tailwind/react";
@@ -54,6 +54,14 @@ export default function Component() {
   const { setFacilitSend,facilitySend,token } = userAuth();
   const [cityName, setCityName] = useState([])
 
+  // otomatik scroll yapi
+  const targetRef = useRef(null);
+
+  const handleScrollToTarget = () => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
    useEffect(()=>{
     const countryName = Country.getAllCountries();
 
@@ -218,7 +226,7 @@ export default function Component() {
   };
 
   const months = [
-    "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+    "Ay Seçin","Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
     "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
   ];
 
@@ -598,9 +606,9 @@ export default function Component() {
                 </div>
             </div>
     </div>
-    <div className="flex border border-stroke rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4 bg-white">
+    <div className="flex flex-col md:flex-row border border-stroke rounded-sm bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4">
         
-      <div className="w-1/3 px-4 border border-stroke">
+      <div className="w-full md:w-1/3 px-4 border border-stroke">
       {Countries.map((scope) => (
         <Accordion key={scope.id} open={open === scope.id}>
           <AccordionHeader
@@ -628,6 +636,7 @@ export default function Component() {
                   setShowTabs(isDownstream);
                   setShowForm(!isDownstream);
                   handleChange("subtitle", state.name);
+                  handleScrollToTarget()
 
                 }}
                 className={`my-3 ps-5 rounded-md block uppercase  ${
@@ -642,8 +651,8 @@ export default function Component() {
       ))}
     </div>
 
-      {videopen ?  <div className="w-2/3 p-4 border border-stroke" form key={formKey}>
-        <h2 className="text-lg font-semibold">{getDynamicTitle()}</h2>
+      {videopen ?  <div ref={targetRef}  className="w-full md:w-2/3 md:ms-4 backdrop" form key={formKey}>
+        <h2 className="text-lg font-semibold my-10 md:mt-0 md:text-md lg:text-md">{getDynamicTitle()}</h2>
         
         {selectedState && (
           <>
@@ -816,7 +825,7 @@ export default function Component() {
 )}
 
         <div className="mt-4">
-          <label className="block">Yeni Seçim 1</label>
+          <label className="block">Dönem/Ay Seçin</label>
           <select
             className={`w-full p-2 border rounded  ${formErrors.selection1 ? "border-red-500" : "border-stroke"}`}
             value={selectionType}
@@ -868,8 +877,10 @@ export default function Component() {
 
                 }}
             >
-              <option>2025</option>
-              <option>2026</option>
+              <option>Ocak-Mart</option>
+              <option>Nisan-Haziran</option>
+              <option>Temmuz-Eylul</option>
+              <option>Ekim-Aralik</option>
             </select>
           </div>
         )}
@@ -884,69 +895,66 @@ export default function Component() {
         </button>
 
         {/* Tablo */}
-        <div className="mt-4">
+        <div className="w-full overflow-x-auto">
           <h1 className="my-5 py-2 font-semibold border-t">KAYDEDILEN LISTE</h1>
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr>
-                <th className="border border-stroke px-4 py-2">Kaynak</th>
-                <th className="border border-stroke px-4 py-2">Birim</th>
-                <th className="border border-stroke px-4 py-2">Miktar</th>
-                <th className="border border-stroke px-4 py-2">Duzenle</th>
-                <th className="border border-stroke px-4 py-2">Sil</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData?.map((row, index) => (
-                <tr key={index}>
-                  <td className="border border-stroke px-4 py-2 ">{row.city ? row.city : row.plaka ? row.plaka : row.kaynak? row.kaynak : row.cartype ? row.cartype : 'Veri Hatalı geliyor...'}</td>
-                  <td className="border border-stroke px-4 py-2 flex justify-center">{row.birim}</td>
-                  <td className="border border-stroke  text-center" style={{width:'25%'}}
-                  > {editIndex === index ? (
-                  <input
-                    type="text"
-                    value={editingAmount}
-                    onChange={(e) => setEditingAmount(e.target.value)}
-                    className="border border-stroke p-1 rounded"
-                    style={{width:'100%'}}
-                  />
-                ) : (
-                  row.miktar
-                )}</td>
-                  <td className="border border-stroke px-4 py-2 flex justify-center">
-                  {editIndex === index ? (
-                  <button className="text-green-500" onClick={handleSaveEdit}>Kaydet</button>
-                ) : (
-                  <button
-                    className="text-blue-500 "
-                    onClick={() => {
-                      setEditIndex(index);
-                      setEditingAmount(row.amount);
-                    }}
-                  >
-                    Düzenle
-                  </button>
-                )}
-                  </td>
-                  <td className="border border-stroke px-4 py-2 text-center ">
-                    <button
-                      className="text-red-500 "
-                      onClick={() => handleDelete(row)}
-                    >
-                      Sil
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <table className="w-full table-auto border-collapse min-w-[600px]">
+    <thead>
+      <tr>
+        <th className="border border-stroke px-4 py-2">Kaynak</th>
+        <th className="border border-stroke px-4 py-2">Birim</th>
+        <th className="border border-stroke px-4 py-2">Miktar</th>
+        <th className="border border-stroke px-4 py-2">Düzenle</th>
+        <th className="border border-stroke px-4 py-2">Sil</th>
+      </tr>
+    </thead>
+    <tbody>
+      {tableData?.map((row, index) => (
+        <tr key={index}>
+          <td className="border border-stroke px-4 py-2">
+            {row.city || row.plaka || row.kaynak || row.cartype || 'Veri Hatalı geliyor...'}
+          </td>
+          <td className="border border-stroke px-4 py-2 flex justify-center">{row.birim}</td>
+          <td className="border border-stroke text-center w-1/4">
+            {editIndex === index ? (
+              <input
+                type="text"
+                value={editingAmount}
+                onChange={(e) => setEditingAmount(e.target.value)}
+                className="border border-stroke p-1 rounded w-full"
+              />
+            ) : (
+              row.miktar
+            )}
+          </td>
+          <td className="border border-stroke px-4 py-2 flex justify-center">
+            {editIndex === index ? (
+              <button className="text-green-500" onClick={handleSaveEdit}>Kaydet</button>
+            ) : (
+              <button
+                className="text-blue-500"
+                onClick={() => {
+                  setEditIndex(index);
+                  setEditingAmount(row.amount);
+                }}
+              >
+                Düzenle
+              </button>
+            )}
+          </td>
+          <td className="border border-stroke px-4 py-2 text-center">
+            <button className="text-red-500" onClick={() => handleDelete(row)}>Sil</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
         </div>
         </>
           )} 
        
       </div>
        
-           :  <div className="w-2/3 ms-4 backdrop" >
+           :  <div className="w-full md:w-2/3 md:ms-4 backdrop" >
            <video width="auto" height="500" autoPlay={true} loop muted>
              <source src={Videokayit} type="video/mp4" />
            </video>

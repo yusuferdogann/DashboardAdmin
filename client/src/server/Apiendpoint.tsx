@@ -1,38 +1,25 @@
-import axios from "axios"
+import axios from "axios";
 
 export const instance = axios.create({
-    // baseURL:'https://dashboard-admin-lovat.vercel.app'
+  // baseURL: "http://localhost:3000/auth",
+  baseURL:'https://app.carbonistan.com/auth',
+});
 
-    // =====Vercel guncel api backend======
-    // baseURL:'https://dashboard-admin-weld.vercel.app/auth' 
-       // =====Render guncel api backend======
-    //    baseURL:'https://dashboardadmin-deis.onrender.com/auth' 
+// 401 hatalarını yakalamak için interceptor ekleyelim
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      window.dispatchEvent(new Event("sessionExpired")); // Global event fırlat
+    }
+    return Promise.reject(error);
+  }
+);
 
-    // ===== slave.carbonistan ===============
-    // https://slave.carbonistan.com/
-    baseURL:'https://app.carbonistan.com/auth',
-    
-
-    // =====local api // 24.11.2024 // ==========
-    // baseURL:'http://localhost:3000/auth',
-    
-})
-
-// export const configdetail = axios.interceptors.request.use((config) => {
-//     const token = JSON.parse(localStorage.getItem("access_token"));
-//     console.log("GELIYOR------------------",token)
-//     if (token) {
-//       config.headers.Authorization = `Bearer: ${token}`;
-//       config.headers["Content-Type"] = "application/json";
-//     }
-//     return config;
-//   });
-export const login = (url,data) =>instance.post(url,data)
-export const post = (url,data,config)=>instance.post(url,data,config)
-export const put = (url,data,config)=>instance.put(url,data,config)
-export const get  = (url,config)=>instance.get(url,config)
-export const register = (url,value)=>instance.post(url,value)
-export const deleteFacilityApi = (url,data)=>instance.delete(url,data)
-
-
-// dashboard-admin-new.vercel.app
+// API metodlarını export etmeye devam edelim
+export const login = (url, data) => instance.post(url, data);
+export const post = (url, data, config) => instance.post(url, data, config);
+export const put = (url, data, config) => instance.put(url, data, config);
+export const get = (url, config) => instance.get(url, config);
+export const register = (url, value) => instance.post(url, value);
+export const deleteFacilityApi = (url, data) => instance.delete(url, data);

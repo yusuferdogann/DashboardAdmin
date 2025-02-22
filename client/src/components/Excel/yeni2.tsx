@@ -148,7 +148,8 @@ const ExcelEditor = () => {
     console.log("Excel dosyası alınıyor...");
     
     try {
-      const fileId = "1E17l81o5bYENLSKKLasR3ErsTkkwXUNh"; // Google Sheets ID
+      const fileId = "1N22M83ZNZoH86E-OTj3RbRWw2qRMsjV4"; // Google Sheets ID
+      
       const url = `https://docs.google.com/spreadsheets/d/${fileId}/export?format=xlsx`;
       const response = await fetch(url);
   
