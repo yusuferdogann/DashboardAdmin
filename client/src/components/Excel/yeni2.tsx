@@ -149,7 +149,6 @@ const ExcelEditor = () => {
     
     try {
       const fileId = "1N22M83ZNZoH86E-OTj3RbRWw2qRMsjV4"; // Google Sheets ID
-      
       const url = `https://docs.google.com/spreadsheets/d/${fileId}/export?format=xlsx`;
       const response = await fetch(url);
   
@@ -164,7 +163,7 @@ const ExcelEditor = () => {
       console.log("Excel workbook başarıyla yüklendi.");
   
       // Sayfa kontrolü
-      const sheet = wb.getWorksheet("Veri_Girisi");
+      const sheet = wb.getWorksheet("Veri Girisi");
       if (!sheet) {
         toast.error('"Veri_Girisi" sayfası bulunamadı.');
         console.log('"Veri_Girisi" sayfası bulunamadı!');
