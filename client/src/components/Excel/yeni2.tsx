@@ -127,9 +127,9 @@ const ExcelEditor = () => {
   //     const wb = new ExcelJS.Workbook();
   //     await wb.xlsx.load(bufferArray);
   
-  //     const sheet = wb.getWorksheet("Veri_Girisi");
+  //     const sheet = wb.getWorksheet("Veri Girisi");
   //     if (!sheet) {
-  //       toast.error('"Veri_Girisi" sayfası bulunamadı.');
+  //       toast.error('"Veri Girisi" sayfası bulunamadı.');
   //       return;
   //     }
   
@@ -165,11 +165,11 @@ const ExcelEditor = () => {
       // Sayfa kontrolü
       const sheet = wb.getWorksheet("Veri Girisi");
       if (!sheet) {
-        toast.error('"Veri_Girisi" sayfası bulunamadı.');
-        console.log('"Veri_Girisi" sayfası bulunamadı!');
+        toast.error('"Veri Girisi" sayfası bulunamadı.');
+        console.log('"Veri Girisi" sayfası bulunamadı!');
         return;
       }
-      console.log('"Veri_Girisi" sayfası başarıyla bulundu.');
+      console.log('"Veri Girisi" sayfası başarıyla bulundu.');
   
       setWorkbook(wb); // Workbook'u state'e set et
       setLoading(false);
@@ -227,14 +227,14 @@ const ExcelEditor = () => {
   
       console.log("Excel dosyası alındı. İşlem başlatılıyor...");
   
-      const sheet = wb.getWorksheet("Veri_Girisi");
+      const sheet = wb.getWorksheet("Veri Girisi");
       if (!sheet) {
-        toast.error('"Veri_Girisi" sayfası bulunamadı.');
-        console.error('"Veri_Girisi" sayfası bulunamadı!');
+        toast.error('"Veri Girisi" sayfası bulunamadı.');
+        console.error('"Veri Girisi" sayfası bulunamadı!');
         return;
       }
   
-      console.log('"Veri_Girisi" sayfası başarıyla bulundu.');
+      console.log('"Veri Girisi" sayfası başarıyla bulundu.');
   
       // ✅ SABİT INPUTLARIN GÜNCELLENMESİ
       Object.keys(inputValues).forEach((key) => {
@@ -308,14 +308,14 @@ const ExcelEditor = () => {
 
 //     console.log("Excel dosyası alındı. İşlem başlatılıyor...");
 
-//     const sheet = wb.getWorksheet("Veri_Girisi");
+//     const sheet = wb.getWorksheet("Veri Girisi");
 //     if (!sheet) {
-//       toast.error('"Veri_Girisi" sayfası bulunamadı.');
-//       console.error('"Veri_Girisi" sayfası bulunamadı!');
+//       toast.error('"Veri Girisi" sayfası bulunamadı.');
+//       console.error('"Veri Girisi" sayfası bulunamadı!');
 //       return;
 //     }
 
-//     console.log('"Veri_Girisi" sayfası başarıyla bulundu.');
+//     console.log('"Veri Girisi" sayfası başarıyla bulundu.');
 
 //     // ✅ SABİT INPUTLARIN GÜNCELLENMESİ
 //     Object.keys(inputValues).forEach((key) => {
@@ -331,9 +331,9 @@ const ExcelEditor = () => {
 //       console.log(`Hücre: ${key}, Seçili Değer: ${selectValues[key]}`);
 //     });
 
-//     // 🟢 "Veri_Girisi" Sayfasını "Very Hidden" Yap (Gizliliği sağla)
+//     // 🟢 "Veri Girisi" Sayfasını "Very Hidden" Yap (Gizliliği sağla)
 //     sheet.state = "veryHidden"; // Sayfayı gizle
-//     console.log('"Veri_Girisi" sayfası veryHidden olarak ayarlandı.');
+//     console.log('"Veri Girisi" sayfası veryHidden olarak ayarlandı.');
 
 //     // 🟢 GÜNCELLENEN EXCEL'İ BUFFER'A YAZDIR
 //     const buffer = await wb.xlsx.writeBuffer();
