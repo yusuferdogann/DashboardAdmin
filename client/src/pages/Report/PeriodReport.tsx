@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas-pro';
+import html2canvas from "html2canvas-pro/dist/html2canvas.min.js";
 import { useRef, useEffect, useState } from 'react';
 import CoverImage from '../../images/cover/revizecover.jpg';
 import { userAuth } from '../../auth/userAuth';
