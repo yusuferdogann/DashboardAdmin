@@ -21,11 +21,7 @@ const {getAccessToRoute} = require("../Middleware/authorization/auth")
 const express = require('express')
 // const profileImageUpload = require('../Middleware/libraries/profileImageUpload')
 const updateCompanyInfo = require('../Middleware/companyInfo/companyInfo')
-<<<<<<< Updated upstream
 const {DashboardWeekGrafic,EditData,DeletedFacility,checkBalanceReport,getReportLimit,checkReportLimit,GetExcelData,imageUpload,checkFacilityLimit,updatedFacility,FacilityUpdateInfo,FacilitySaveInfo,getLogo,addedFacility,GetFacilityInfo,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
-=======
-const {DashboardWeekGrafic,DeletedFacility,EditData,checkBalanceReport,getReportLimit,checkReportLimit,GetExcelData,imageUpload,checkFacilityLimit,updatedFacility,FacilityUpdateInfo,FacilitySaveInfo,getLogo,addedFacility,GetFacilityInfo,getOneFacility,GetAllScopeByDateOfDaily, DeletedScope, ReportPeriodData,findObjectName,summaryFilterSubData, getAllFacility,filterFacilityByUserId,filterAmountByUserId,summaryFilterData,DashboardMounthGrafic,DashboardFacilityGrafic,DashboardScopeGrafic} = require('../Middleware/facility/updateFacility')
->>>>>>> Stashed changes
 
 const routers = express.Router()
 
@@ -56,7 +52,7 @@ routers.get("/getcardgraficdata",getAccessToRoute,DashboardScopeGrafic)
 routers.get("/getweekgraficdata",getAccessToRoute,DashboardWeekGrafic)
 routers.post("/deletefacility",getAccessToRoute,DeletedFacility)
 routers.post("/getsummarysubdata",getAccessToRoute,summaryFilterSubData)
-routers.get("/",getAccessToRoute,ReportPeriodData)
+routers.get("/reportperioddata",getAccessToRoute,ReportPeriodData)
 routers.get("/getdailyscope",getAccessToRoute,GetAllScopeByDateOfDaily)
 routers.post("/deletedscope",getAccessToRoute,DeletedScope)
 routers.post("/getonefacility",getAccessToRoute,getOneFacility)
@@ -68,10 +64,6 @@ routers.post('/checkReportLimit',getAccessToRoute,checkReportLimit)
 routers.post('/checkBalanceReport',getAccessToRoute,checkBalanceReport)
 routers.get('/getReportLimit',getAccessToRoute,getReportLimit)
 routers.put("/editdata",getAccessToRoute,EditData)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
 
 

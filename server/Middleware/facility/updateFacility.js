@@ -1202,7 +1202,6 @@ const GetExcelData = asyncErrorWrapper(async (req, res, next) => {
   }
 });
 
-<<<<<<< Updated upstream
 
 
 const EditData = asyncErrorWrapper(async (req, res, next) => {
@@ -1228,29 +1227,6 @@ const EditData = asyncErrorWrapper(async (req, res, next) => {
 
 
 
-=======
-const EditData = asyncErrorWrapper(async (req, res, next) => {
-  const { id, miktar } = req.body; // Frontend’den gelen veriyi al
-  // Eğer gerekli alanlar eksikse hata döndür
-  if (!id || miktar === undefined) {
-      return res.status(400).json({ success: false, message: "Eksik veri gönderildi." });
-  }
-
-  // Güncellenecek veriyi MongoDB'de ara
-  const existingData = await ScopeModel.findById(id);
-  if (!existingData) {
-      return res.status(404).json({ success: false, message: "Veri bulunamadı." });
-  }
-
-  // Miktarı güncelle
-  existingData.miktar = miktar;
-  await existingData.save();
-
-  return res.status(200).json({ success: true, message: "Veri başarıyla güncellendi.", data: existingData });
-});
-
-
->>>>>>> Stashed changes
 module.exports = {
   GetFacilityInfo,
   updatedFacility,
