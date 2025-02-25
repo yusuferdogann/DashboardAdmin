@@ -27,11 +27,13 @@ import Language from "./pages/Language"
 import ProtectedRoute from "./ProtectRoute";
 import axios from 'axios';
 import api from "./server/Apiendpoint"; // Az önce oluşturduğumuz axiosConfig dosyasını import et
+import { FaFilePdf } from 'react-icons/fa';
+import { ClipLoader } from "react-spinners"; // Spinner için
 
 
 function App() {
   const { token, checkSpinner } = userAuth()
-  
+  const [loading, setLoading] = useState(false);
   const [isSessionExpired, setIsSessionExpired] = useState(false);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function App() {
 const userRole = Role; // Bunu gerçek token veya context'ten çekebilirsin
 
 const handleModalClose = () =>{
-
+ setLoading(true)
   setTimeout(() => {
     setIsSessionExpired(false);
     window.location.href = "/login";
@@ -306,16 +308,23 @@ const handleModalClose = () =>{
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-lg font-semibold mb-4">Oturum Süreniz Doldu</h2>
             <p className="text-gray-600 mb-4">Lütfen tekrar giriş yapın.</p>
+          
             <button
               onClick={() => { handleModalClose()}}
-              className="flex items-center gap-2 mx-auto px-4 py-2 text-white rounded shadow-lg"
-              style={{
-                background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
-              }}
-        
-            >
-              Oturum Aç
-            </button>
+              className="flex items-center mt-5 mx-auto gap-2 px-4 py-2 text-white rounded shadow-lg"
+      style={{
+        background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+      }}
+      disabled={loading} // İşlem sırasında buton devre dışı kalsın
+    >
+      {loading ? (
+        <ClipLoader color="#fff" size={20} />
+      ) : (
+        // <FaFilePdf size={20} />
+        null
+      )}
+      {loading ? "Oturum Kapatılıyor..." : "Oturum Aç"}
+    </button>
           </div>
         </div>
       )}

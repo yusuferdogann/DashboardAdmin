@@ -11,6 +11,8 @@ import { userAuth } from "../../auth/userAuth"
 import { toast } from "react-toastify";
 import { get, post } from "../../server/Apiendpoint";
 import cndata from "../../../cndata.json"; // CN Kodlarını içeren JSON
+import { FaFileExcel } from "react-icons/fa";
+import { ClipLoader } from "react-spinners"; // Spinner için
 
 
 
@@ -468,15 +470,20 @@ const [inputSearchTerms, setInputSearchTerms] = useState({}); // Her dropdown i�
         {/* <input type="file" accept=".xlsx" onChange={handleFileUpload} /> */}
         {/* 📌 Excel Yükle Butonu */}
         <button
-          onClick={fetchExcelData}
-          className="flex items-center gap-2  px-4 py-2 text-white rounded shadow-lg"
-          style={{
-            background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
-          }}  
-                    disabled={loading}
-        >
-          {loading ? "Yükleniyor..." : "Excel Yükle"}
-        </button>
+              onClick={fetchExcelData}
+              className="flex items-center mt-5 gap-2 px-4 py-2 text-white rounded shadow-lg"
+              style={{
+                background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+              }}
+              disabled={loading} // İşlem sırasında buton devre dışı kalsın
+            >
+              {loading ? (
+                <ClipLoader color="#fff" size={20} />
+              ) : (
+                <FaFileExcel size={20} />
+              )}
+              {loading ? "İndiriliyor..." : "Excel Yükle"}
+            </button>
         <br /><br />
 
         {/* Kullanıcıdan Sayfa Seçmesini İste */}
