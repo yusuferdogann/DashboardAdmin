@@ -10,6 +10,7 @@ import { handleErrorCBAM } from '../../common/utils/helpers';
 import { userAuth } from "../../auth/userAuth"
 import { toast } from "react-toastify";
 import { get, post } from "../../server/Apiendpoint";
+import cndata from "./cndata.json"; // CN Kodlarını içeren JSON
 
 
 
