@@ -10,7 +10,7 @@ import { handleErrorCBAM } from '../../common/utils/helpers';
 import { userAuth } from "../../auth/userAuth"
 import { toast } from "react-toastify";
 import { get, post } from "../../server/Apiendpoint";
-import cndata from "./cndata.json"; // CN Kodlarını içeren JSON
+import cndata from "../../../cndata.json"; // CN Kodlarını içeren JSON
 
 
 
@@ -38,6 +38,13 @@ const ExcelEditor = () => {
   const facilityInfo = JSON.parse(localStorage.getItem('facilityInformation'))
   const userDetail = JSON.parse(localStorage.getItem('detail'))
   // setReportBalance(userDetail?.reportLimit)
+
+  const [cnOptions, setCnOptions] = useState([]);
+const [searchTerm, setSearchTerm] = useState("");
+const [dropdowns, setDropdowns] = useState({}); // Açık dropdown'ları takip et
+const [inputSearchTerms, setInputSearchTerms] = useState({}); // Her dropdown için ayrı arama terimi
+
+
   console.log("facility--------",facilityInfo)
   // 9 input için değerler
   const [inputValues, setInputValues] = useState({
@@ -58,13 +65,6 @@ const ExcelEditor = () => {
     E49: "",
     F49: "",
     I49: "",
-   
-   
-    
-    
-   
-   
-
   }); 
 
   // 2 select için değerler
@@ -89,6 +89,46 @@ const ExcelEditor = () => {
       console.log("Workbook güncellendi:", wb); // wb güncellendikçe burası tetiklenir
     }
   }, [wb]); // wb değiştiğinde çalışacak
+
+  useEffect(() => {
+    setCnOptions(cndata); // JSON'dan verileri yükle
+  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      Object.keys(dropdowns).forEach((key) => {
+        // Eğer tıklanan yer dropdown'un içindeyse kapanmasını engelle
+        if (
+          dropdowns[key] &&
+          !event.target.closest(".dropdown-container") // Dropdown'un kendisi
+        ) {
+          setDropdowns((prev) => ({ ...prev, [key]: false }));
+        }
+      });
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdowns]);
+  const handleDropdownChange = (value, key) => {
+    setInputValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+    setDropdowns((prev) => ({ ...prev, [key]: false })); // Seçimden sonra dropdown'u kapat
+  };
+  
+  // Arama terimini ayrı ayrı saklamak için
+  const handleSearchChange = (e, key) => {
+    setInputSearchTerms((prev) => ({
+      ...prev,
+      [key]: e.target.value,
+    }));
+  };
+  
+  // Dropdown aç/kapat
+  const toggleDropdown = (key) => {
+    setDropdowns((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   const addInput = () => {
     if (inputCount >= 5){
@@ -575,7 +615,7 @@ const ExcelEditor = () => {
             Urun Ekle
           </button>
         </div>
-        <div className="flex flex-wrap gap-4 p-3">
+        {/* <div className="flex flex-wrap gap-4 p-3">
           <div className="flex-1 min-w-[150px]">
             <label htmlFor="E49">Üretilen 1.Ürün(ton):</label>
             <input
@@ -608,51 +648,83 @@ const ExcelEditor = () => {
               onChange={(e) => handleInputChange(e, "I49")}
             />
           </div>
-        </div>
+        </div> */}
           {/* Dinamik olarak eklenen inputlar */}
-          {Array.from({ length: inputCount - 1 }).map((_, index) => {
-  const newIndex = index + 1;
-  const keyF = `E${49 + newIndex}`; // E49, E50, E51...
-  const keyG = `F${49 + newIndex}`; // F49, F50, F51...
-  const keySelect = `I${49 + newIndex}`; // I49, I50, I51...
+          {Array.from({ length: inputCount }).map((_, index) => {
+      const newIndex = index;
+      const keyF = `E${49 + newIndex}`;
+      const keyG = `F${49 + newIndex}`;
+      const keySelect = `I${49 + newIndex}`;
 
-  return (
-    <div key={newIndex} className="flex flex-wrap gap-4 p-3">
-      <div className="flex-1 min-w-[150px]">
-        <label htmlFor={keyF}>Üretilen {newIndex + 1} Ürün(ton):</label>
-        <input
-          id={keyF}
-          className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          type="text"
-          value={inputValues[keyF]}
-          onChange={(e) => handleInputChange(e, keyF)}
-        />
-      </div>
+      return (
+        <div key={newIndex} className="flex flex-wrap gap-4 p-3">
+          <div className="flex-1 min-w-[150px]">
+            <label htmlFor={keyF}>Üretilen {newIndex + 1} Ürün(ton):</label>
+            <input
+              id={keyF}
+              className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+              type="text"
+              value={inputValues[keyF]}
+              onChange={(e) => handleInputChange(e, keyF)}
+            />
+          </div>
 
-      <div className="flex-1 min-w-[150px]">
-        <label htmlFor={keyG}>Satılan {newIndex + 1} Ürün(ton):</label>
-        <input
-          id={keyG}
-          className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          type="text"
-          value={inputValues[keyG]}
-          onChange={(e) => handleInputChange(e, keyG)}
-        />
-      </div>
+          <div className="flex-1 min-w-[150px]">
+            <label htmlFor={keyG}>Satılan {newIndex + 1} Ürün(ton):</label>
+            <input
+              id={keyG}
+              className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+              type="text"
+              value={inputValues[keyG]}
+              onChange={(e) => handleInputChange(e, keyG)}
+            />
+          </div>
 
-      <div className="flex-1 min-w-[150px]">
-        <label htmlFor={keySelect}>CN Kod:</label>
-        <input
-          id={keySelect}
-          className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-          type="text"
-          value={inputValues[keySelect]}
-          onChange={(e) => handleInputChange(e, keySelect)}
-        />
-      </div>
-    </div>
-  );
-})}
+          {/* CN Kod Dropdown */}
+          <div className="flex-1 min-w-[150px] relative dropdown-container">
+            <label htmlFor={keySelect}>CN Kod:</label>
+            <div className="relative">
+              <div
+                className="w-full rounded border border-stroke bg-gray py-1 px-4.5 text-black cursor-pointer focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                onClick={() => toggleDropdown(keySelect)}
+              >
+                {inputValues[keySelect] || "Seçiniz"}
+              </div>
+
+              {dropdowns[keySelect] && (
+                <div className="absolute left-0 w-full bg-white border border-gray-300 shadow-md z-50 max-h-60 overflow-y-auto dark:bg-meta-4 dark:border-strokedark">
+                  {/* Arama Kutusu */}
+                  <input
+                    type="text"
+                    className="w-full px-2 py-1 border-b border-gray-300 focus:outline-none"
+                    placeholder="Ara..."
+                    value={inputSearchTerms[keySelect] || ""}
+                    onChange={(e) => handleSearchChange(e, keySelect)}
+                  />
+                  
+                  {/* Filtrelenmiş Seçenekler */}
+                  <ul className="max-h-48 overflow-y-auto">
+                    {cnOptions
+                      .filter((item) =>
+                        item.id.includes(inputSearchTerms[keySelect] || "")
+                      )
+                      .map((item) => (
+                        <li
+                          key={item.id}
+                          className="px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600"
+                          onClick={() => handleDropdownChange(item.id, keySelect)}
+                        >
+                          {item.id}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    })}
 
       
 
