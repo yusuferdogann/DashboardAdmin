@@ -428,8 +428,11 @@ const ExcelEditor = () => {
         {/* 📌 Excel Yükle Butonu */}
         <button
           onClick={fetchExcelData}
-          className="bg-blue-500 text-white p-2 rounded"
-          disabled={loading}
+          className="flex items-center gap-2  px-4 py-2 text-white rounded shadow-lg"
+          style={{
+            background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+          }}  
+                    disabled={loading}
         >
           {loading ? "Yükleniyor..." : "Excel Yükle"}
         </button>
@@ -561,8 +564,10 @@ const ExcelEditor = () => {
         <h1 className="text-2xl ms-7 mt-5">Satılan/Üretilen Ürün Ekle</h1>
         <div className="flex justify-start gap-4.5 p-3">
           <button
-            className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-            type="submit"
+ className="flex items-center gap-2  px-4 py-2 text-white rounded shadow-lg"
+ style={{
+   background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+ }}            type="submit"
             onClick={addInput}
 
           >
@@ -652,8 +657,10 @@ const ExcelEditor = () => {
 
         <div className="flex justify-end gap-4.5 p-4">
           <button
-            className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-            type="submit"
+ className="flex items-center gap-2  px-4 py-2 text-white rounded shadow-lg"
+ style={{
+   background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+ }}              type="submit"
             onClick={CheckImport}
 
           >
