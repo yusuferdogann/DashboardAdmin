@@ -6,7 +6,7 @@ import Videokayit from '../../../src/images/video/animation-video.mp4'
 import {CalculateFunction} from "../../common/utils/calculateFunction"
 import { userAuth } from '../../auth/userAuth';
 import { Country, State, City } from 'country-state-city';
-import { get, post } from "../../server/Apiendpoint";
+import { get, post, put } from "../../server/Apiendpoint";
 
 
 export default function Component() {
@@ -477,22 +477,47 @@ export default function Component() {
     }
 };
 
-  const handleSaveEdit = () => {
-    if (!editingAmount) {
-      toast.error("Lütfen miktar girin!");
-      return;
+const handleSaveEdit = async () => {
+  if (!editingAmount) {
+    toast.error("Lütfen miktar girin!");
+    return;
+  }
+
+
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer: " + token,
+      },
+    };
+    const data = {
+      id: tableData[editIndex]?._id, // Güncellenmesi gereken satırın ID'si
+      miktar: editingAmount, // 'amount' yerine 'miktar' olarak gönderiyoruz
     }
-  
-    setTableData(prev => {
-      const updatedData = [...prev];
-      updatedData[editIndex].amount = editingAmount;
-      return updatedData;
-    });
-  
-    toast.success("Miktar güncellendi!");
-    setEditIndex(null);
-    setEditingAmount("");
-  };
+    // Güncellenen veriyi API'ye gönder
+    const response = await put("/editdata", data,config);
+
+    if (response.status === 200) {
+      // Başarılı güncelleme sonrası state'i güncelle
+      setTableData((prev) => {
+        const updatedData = [...prev];
+        updatedData[editIndex].miktar = editingAmount; // 'amount' yerine 'miktar' güncelleniyor
+        return updatedData;
+      });
+
+      toast.success("Miktar başarıyla güncellendi!");
+      setEditIndex(null);
+      setEditingAmount("");
+    } else {
+      throw new Error("Güncelleme başarısız!");
+    }
+  } catch (error) {
+    console.error("Hata:", error);
+    toast.error("Miktar güncellenirken hata oluştu!");
+  }
+};
+
 
   const handleGasTypeChange = (value, isActive) => {
     if (isActive) {
@@ -877,10 +902,10 @@ export default function Component() {
 
                 }}
             >
-              <option>Ocak-Mart</option>
-              <option>Nisan-Haziran</option>
-              <option>Temmuz-Eylul</option>
-              <option>Ekim-Aralik</option>
+              <option>Ocak - Mart</option>
+              <option>Nisan - Haziran</option>
+              <option>Temmuz - Eylul</option>
+              <option>Ekim - Aralik</option>
             </select>
           </div>
         )}
@@ -888,7 +913,11 @@ export default function Component() {
        
 
         <button
-          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                className="flex items-center gap-2 px-4 py-2 text-white rounded shadow-lg"
+                style={{
+                  background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+                }}
+          
           onClick={handleSave}
         >
           {editIndex !== null ? "Kaydet" : "Ekle"}
@@ -917,11 +946,16 @@ export default function Component() {
           <td className="border border-stroke text-center w-1/4">
             {editIndex === index ? (
               <input
-                type="text"
-                value={editingAmount}
-                onChange={(e) => setEditingAmount(e.target.value)}
-                className="border border-stroke p-1 rounded w-full"
-              />
+              type="text"
+              value={editingAmount}
+              onChange={(e) => setEditingAmount(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSaveEdit();
+                }
+              }}
+              className="border border-stroke p-1 rounded w-full"
+            />
             ) : (
               row.miktar
             )}
@@ -934,7 +968,7 @@ export default function Component() {
                 className="text-blue-500"
                 onClick={() => {
                   setEditIndex(index);
-                  setEditingAmount(row.amount);
+                  setEditingAmount(row.miktar);
                 }}
               >
                 Düzenle

@@ -308,7 +308,11 @@ const handleModalClose = () =>{
             <p className="text-gray-600 mb-4">Lütfen tekrar giriş yapın.</p>
             <button
               onClick={() => { handleModalClose()}}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              className="flex items-center gap-2 mx-auto px-4 py-2 text-white rounded shadow-lg"
+              style={{
+                background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
+              }}
+        
             >
               Oturum Aç
             </button>

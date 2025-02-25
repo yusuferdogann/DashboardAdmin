@@ -271,7 +271,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           // Kullanıcı 'admin' ise (Tıklanabilir ve PRO etiketi yok)
                           <NavLink
                             to="/dashboard"
-                            className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('dashboard') && 'bg-graydark dark:bg-meta-4'
+                            }`}                          
                           >
                             <svg
                               className="fill-current"
@@ -346,7 +347,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   // Kullanıcı 'admin' ise (Tıklanabilir ve PRO etiketi yok)
                   <NavLink
                     to="/calculation"
-                    className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('calculation') && 'bg-graydark dark:bg-meta-4'
+                    }`}                  
                   >
                     <svg
                       className="fill-current"
@@ -373,7 +375,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <NavLink
                   to="/facility"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('dashboard') &&
+                    pathname.includes('facility') &&
                     'bg-graydark dark:bg-meta-4'
                   }`}
                 >
@@ -438,8 +440,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   // Kullanıcı 'admin' ise (Tıklanabilir ve PRO etiketi yok)
                   <NavLink
                     to="/chart"
-                    className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                  >
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
+                    }`}                 
+                 >
                     <svg
                       className="fill-current"
                       width="18"
@@ -511,8 +514,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   // Kullanıcı 'admin' ise (Tıklanabilir ve PRO etiketi yok)
                   <NavLink
                     to="/sumary"
-                    className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                  >
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('sumary') && 'bg-graydark dark:bg-meta-4'
+                    }`}                 
+                 >
                     <i className="fa-solid fa-desktop"></i>
                     <span className="relative flex items-center"> {t("sidebar.sumary")}</span>
                   </NavLink>
