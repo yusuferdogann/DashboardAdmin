@@ -537,8 +537,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </div>
           <NavLink
             target="_blank"
-            to="https://carbonistan.vercel.app/"
-            style={{ position: 'absolute' }}
+            to="https://carbonistan.com/"
+            style={{ position: 'absolute',bottom:"0" }}
             className={`2xsm:bottom-0 xsm:bottom-[3rem] logotext group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
               }`}
           >

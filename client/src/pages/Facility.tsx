@@ -318,12 +318,19 @@ const Facility = () => {
     //     console.log("data---",changeData)
     // }
     const changeInputValue = (event, item) => {
-        const updatedItem = { ...item, [event.target.name]: event.target.value }; // facilityname dışındaki tüm veriler korunur
-        setChangeData(updatedItem); // Anlık olarak değişiklikleri güncel tutuyoruz
+        const updatedItem = { 
+            ...item, 
+            [event.target.name]: event.target.value // Boş bıraktıklarında da sadece input değeri olacak
+        };
+    
+        setChangeData(updatedItem); // Anlık olarak değişiklikleri güncelliyoruz
         console.log("Updated Item: ", updatedItem); // Anlık olarak güncellenmiş item'ı logluyoruz
     };
+    
+    
+    
 
-    const handleKeyDown = async (item, event) => {
+    const handleKeyDown = async (item, event = null, isClick = false) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -331,7 +338,8 @@ const Facility = () => {
             }
         };
 
-        if (event.key === 'Enter') {
+        // Eğer tıklama yapılmışsa (check iconu tıklanmışsa) veya Enter tuşuna basıldıysa
+        if (isClick || (event && event.key === 'Enter')) {
             // company_logo'yu hariç tutarak sadece diğer alanları güncelliyoruz
             const { company_logo, ...updatedItem } = item; // company_logo hariç tutulur
 
@@ -348,17 +356,30 @@ const Facility = () => {
 
                 // Toast uyarısı ekleyebilirsiniz (örneğin React-Toastify)
                 toast.success("Tesis ismi başarılı bir şekilde güncellendi.");
+                 // Hemen state güncellemesi yap
+            // Hemen UI'yi güncelle
+        setResultData((prevData) => {
+            return prevData.map((data) => {
+                if (data._id === updatedItem._id) {
+                    return { ...data, ...updatedItem }; // Yeni değeri ekle
+                }
+                return data;
+            });
+        });
             } catch (error) {
                 console.error("Error updating facility: ", error);
                 toast.error("Error updating facility name");
             }
         }
 
-        if (event.key === 'Escape') {
+        // Escape tuşuna basıldığında input'u kapatıyoruz
+        if (event && event.key === 'Escape') {
             setVeri(true); // Input kapanır
             console.log("Escape pressed - closing input");
         }
     };
+
+
 
 
     // hazir veri
@@ -372,24 +393,24 @@ const Facility = () => {
                 <ClipLoader size={50} color="#36d7b7" />
             </div> : null}
 
-            <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5'>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 2xl:gap-7.5">
                 {
                     resultData?.map((item, index) => (
                         <div >
 
                             <div className={LocalStorage === item.facilityname ? "glowing-outline flex flex-col items-center bg-white cursor-pointer  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 " : "flex flex-col items-center bg-white cursor-pointer  duration-300 hover:bg-[#efefef66] dark:hover:bg-meta-4  ease-in-out border-gray-200 shadow-default md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 "}>
                                 {/* <i style={{ fontSize: '20px' }} className="fa-solid fa-industry px-3"></i> */}
-                                <div key={index} className="flex flex-col justify-between p-4 w-90  leading-normal">
-                                    <div className='flex justify-between  items-center'>
-                                        {item._id === veri?._id ?
-                                            <div className="relative">
+                                <div key={index} className="flex flex-col justify-between p-4 w-90  leading-normal" >
+                                    <div className="flex justify-between items-center relative">
+                                        {item._id === veri?._id ? (
+                                            <div className="relative flex items-center w-full">
                                                 <input
                                                     type="text"
                                                     placeholder=""
-                                                    value={changeData?.facilityname || item.facilityname} // Eski değeri gösteriyor
+                                                    value={changeData?.facilityname || item.facilityname || ""} // ChangeData boşsa item.facilityname ile yer değiştir, ikisi de boşsa input alanı boş olacak
                                                     onKeyDown={(event) => handleKeyDown(item, event)}
                                                     name="facilityname"
-                                                    onChange={(event) => changeInputValue(event, item)} // Değişiklik yapıldıkça güncellenir
+                                                    onChange={(event) => changeInputValue(event, item)} // Anlık olarak değişiklikleri güncellenir
                                                     style={{
                                                         margin: '0',
                                                         padding: '0',
@@ -397,8 +418,9 @@ const Facility = () => {
                                                         borderBottom: '1px solid black',
                                                         borderRadius: '0',
                                                     }}
-                                                    className="w-70 rounded border h-9 hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black bg-transparent focus-visible:outline-none dark:text-white"
+                                                    className="w-full rounded border h-9 hover:bg-[#efefef66] py-1 mt-0 pl-2 pr-1.5 text-black bg-transparent focus-visible:outline-none dark:text-white"
                                                 />
+
                                                 {/* İptal (Cancel) ikonu */}
                                                 <div
                                                     style={{
@@ -414,12 +436,30 @@ const Facility = () => {
                                                 >
                                                     <i className="fa-solid fa-xmark"></i> {/* İptal simgesi */}
                                                 </div>
+
+                                                {/* Check iconu */}
+                                                <div
+
+                                                    className="absolute right-12 bottom-[-17px] transform -translate-y-1/2 cursor-pointer"
+                                                    onClick={() => {
+                                                        if (changeData.facilityname) {
+                                                            handleKeyDown(item, null, true); // Kaydetmek için handleKeyDown fonksiyonunu çağırıyoruz
+                                                        }
+                                                    }}
+                                                >
+                                                    <i className="fa-solid fa-check"></i> {/* Check simgesi */}
+                                                </div>
                                             </div>
-                                            :
-                                            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{item.facilityname}</h5>
-                                        }
+
+                                        ) : (
+                                            <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                {item.facilityname}
+                                            </h5>
+                                        )}
                                         <Facilitynote onClick={getData} deleteData={item} setResultData={setResultData} />
                                     </div>
+
+
                                     <div onMouseDown={() => getAllData(item)}>
                                         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 mt-4">
                                             <div className='flex justify-between'><span className='font-normal'>Ulke:</span><span className='font-semibold'>{item.country}</span></div>
@@ -448,7 +488,8 @@ const Facility = () => {
                             <div style={{ transform: 'translate(-50%,-50%)', top: '50%', left: '50%', fontSize: '40px' }} className='absolute  translate-x-1/2  translate-y-2/4' > +</div>
                         </div>
                     </a>
-                </div> : <Skeleton height={'190px'} baseColor='#ebebeb' />}
+                </div> : <Skeleton height={'190px'} baseColor='#ebebeb' />
+                }
 
             </div>
 
