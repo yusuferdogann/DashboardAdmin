@@ -16,23 +16,36 @@ var app = express();
 app.locals.data = {};
 
 globalThis.globalVariable;
+
 const updatedFacility = asyncErrorWrapper(async (req, res, next) => {
-  // const name = 'yalan'
-  // const id = '6736457cd4aa767c3e9d8e69'
-  const { id, title } = req.body;
-  console.log("id---", id);
+  const { _id, facilityname } = req.body;
+  
 
-  let facility = await FacilityModel.findById(id);
-  // console.log("facility---",facility)
-  facility.facilityname = title;
-  facility = await facility.save();
+  // Facility'yi id ile buluyoruz
+  let facility = await FacilityModel.findById(_id);
 
+  // Eğer facility bulunamazsa hata verelim
+  if (!facility) {
+    return res.status(404).json({
+      success: false,
+      message: "Facility not found"
+    });
+  }
+
+  // Yalnızca 'facilityname' alanını güncelliyoruz, diğer alanlar mevcut değerleriyle kalır
+  facility.facilityname = facilityname;
+
+  // Diğer zorunlu alanları da korumak için mevcut verileri alıyoruz
+  const updatedFacility = await facility.save();
+
+  // Başarılı bir şekilde güncellenmişse
   res.status(200).json({
     success: true,
-    message: "facility upload successfull",
-    // data: facility,
+    message: "Facility name updated successfully",
+    // data: updatedFacility
   });
 });
+
 
 const addedFacility = asyncErrorWrapper(async (req, res, next) => {
   // Kullanıcıyı bul
