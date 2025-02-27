@@ -19,7 +19,7 @@ const Userprovider = ({children})=>{
     const [checkSpinner,setCheckSpinner] = useState(false)
     const [facilityRes,setFacilityRes] = useState([])
     const [chartThree,setChartThree] = useState([])
-
+    const [checkFacility,setCheckFacility] = useState('')
 
     useEffect(()=>{
         const soterToken= JSON.parse(localStorage.getItem("access_token"))
@@ -38,7 +38,7 @@ const Userprovider = ({children})=>{
     }
     return(
         <>
-        <UserContext.Provider value={{checkSpinner,setCheckSpinner,setChartThree,chartThree,token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend,setFacilityRes,facilityRes}}>
+        <UserContext.Provider value={{checkSpinner,checkFacility,setCheckFacility,setCheckSpinner,setChartThree,chartThree,token,setToken,user,Logout,setUser,setValue,value,facilitySend,setFacilitSend,setFacilityRes,facilityRes}}>
             {children}
         </UserContext.Provider>
         </>

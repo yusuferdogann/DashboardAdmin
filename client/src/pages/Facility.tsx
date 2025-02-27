@@ -35,7 +35,7 @@ const Facility = () => {
     const [size, setSize] = useState(null);
     const [resultData, setResultData] = useState([])
 
-    const { value, setFacilitSend, token, setFacilityRes } = userAuth();
+    const { value, setFacilitSend, token, setFacilityRes,setCheckFacility } = userAuth();
     const [sendUpdateData, setSendUpdateData] = useState({ id: '', title: '' })
     const [tesisName, setTesisName] = useState()
     const [changeData, setChangeData] = useState({ facilityname: '' })
@@ -231,7 +231,7 @@ const Facility = () => {
             setCheckSpinner(true)
             localStorage.setItem("facilityInformation", itemData)
             localStorage.setItem("Facilityname", item.facilityname)
-
+            setCheckFacility(item.facilityname)
             setTimeout(() => {
                 navigate('/get-report')
             }, 750)

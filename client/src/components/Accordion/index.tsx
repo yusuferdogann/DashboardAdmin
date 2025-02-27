@@ -902,6 +902,7 @@ const handleSaveEdit = async () => {
 
                 }}
             >
+              <option>Dönem Seçin</option>
               <option>Ocak - Mart</option>
               <option>Nisan - Haziran</option>
               <option>Temmuz - Eylul</option>
@@ -913,7 +914,7 @@ const handleSaveEdit = async () => {
        
 
         <button
-                className="flex items-center gap-2 px-4 py-2 text-white rounded shadow-lg"
+                className="flex items-center mt-4 gap-2 px-4 py-2 text-white rounded shadow-lg"
                 style={{
                   background: "linear-gradient(to right, rgb(0, 255, 142), rgb(0, 160, 254))",
                 }}

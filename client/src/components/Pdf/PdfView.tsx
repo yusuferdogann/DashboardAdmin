@@ -7,7 +7,7 @@ import PeriodReport from '../../pages/Report/PeriodReport';
 import { useTranslation } from "react-i18next";
 
 const PdfView = () => {
-    const { token } = userAuth();
+    const { token ,checkFacility} = userAuth();
     const [reportData, setReportData] = useState();
     const [periodData, setPeriodData] = useState();
     const [checkStatus, setCheckStatus] = useState();
@@ -79,18 +79,30 @@ const PdfView = () => {
 
         setReportText(selectedReport);
     };
-
+    useEffect(() => {
+        if (!checkFacility) {
+          toast.warning("Lütfen önce tesis seçiniz!");
+        }
+      }, [checkFacility]);
     return (
         <>
-                <select onChange={handleReport} className='h-8 border border-stroke text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none'>
-                    <option>{t("report.select")}</option>
-                    <option value='period'>{t("report.period")}</option>
-                    <option value='cbam'>{t("report.cbam")}</option>
-                </select>
-
-            {reportText === 'period' && <PeriodReport />}
-            {reportText === 'cbam' && <CReports />}
-        </>
+        {checkFacility ? (
+          <select
+            onChange={handleReport}
+            className="h-8 border border-stroke text-gray-600 text-base rounded-lg block w-full py-1 px-4 focus:outline-none"
+          >
+            <option>{t("report.select")}</option>
+            <option value="period">{t("report.period")}</option>
+            <option value="cbam">{t("report.cbam")}</option>
+          </select>
+        ) : (
+          <p className="text-red-500 font-medium">Tesis Seçilmedi...</p>
+        )}
+      
+        {reportText === "period" && <PeriodReport />}
+        {reportText === "cbam" && <CReports />}
+      </>
+      
     );
 };
 
