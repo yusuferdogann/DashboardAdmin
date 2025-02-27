@@ -4,7 +4,7 @@ import { Tooltip, Button, Dialog, DialogHeader, DialogBody, DialogFooter } from 
 import Facilitynote from '../common/Facilitynote';
 import { post, get, put } from '../server/Apiendpoint';
 import { userAuth } from '../auth/userAuth';
-import { CountryDropdown, StateDropdown, CityDropdown, LanguageDropdown, PhoneInput, } from "react-country-state-dropdown";
+import { CountryDropdown, StateDropdown, CityDropdown } from "react-country-state-dropdown";
 import { NavLink, useNavigate, Link, useLocation } from 'react-router-dom';
 import Settings from './Settings';
 import Skeleton from 'react-loading-skeleton'
@@ -243,27 +243,34 @@ const Facility = () => {
     // Post isleminin olacagi alan
     const saveData = async (e) => {
         e.preventDefault();
-        handleOpen(null)
-
-
+        handleOpen(null);
+    
         const config = {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer: " + token
             }
         };
+    
         try {
             const addfacilitydata = await post('/addfacility', data, config);
-
-            console.log("added-facility-data-------", addfacilitydata)
-
-            const tesisNo = addfacilitydata?.data?.data?._id;
-            const tesisName = addfacilitydata?.data?.data?.facilityname;
-            const tesisCount = addfacilitydata?.data?.data?.employeecount;
-            const tesisArea = addfacilitydata?.data?.data?.totalarea;
-
-
-
+            console.log("added-facility-data-------", addfacilitydata);
+    
+            // API'den gelen veriyi kontrol edelim
+            const tesisData = addfacilitydata?.data?.data;
+            if (!tesisData) {
+                toast.error("Tesis bilgileri alınamadı.");
+                return;
+            }
+    
+            const {
+                _id: tesisNo,
+                facilityname: tesisName,
+                employeecount: tesisCount,
+                totalarea: tesisArea,
+                FieldActivity: tesisField = "" // Eğer gelmezse boş string yap
+            } = tesisData;
+    
             setTimeout(async () => {
                 const informationData = {
                     companyName: tesisName,
@@ -271,52 +278,55 @@ const Facility = () => {
                     companyNumber: '',
                     companyMail: '',
                     companyWebsite: '',
-                    productArea: '',
+                    fieldActivity: tesisField || "Bilinmiyor", // Eğer boş gelirse bir default değer koy
                     closeArea: '',
                     openArea: '',
                     workerCount: tesisCount,
                     totalArea: tesisArea,
                     address: '',
                     facilityId: tesisNo
+                };
+                localStorage.setItem("facilityInfoDetail", JSON.stringify(informationData));
+    
+                const loginuser = await post("/facilityinfo", informationData, config);
+                console.log("facilityInfo------", loginuser);
+            }, 1000);
+    
+            // Sonuç verisini güncelleme
+            setResultData((prevData) => [
+                ...prevData,
+                {
+                    facilityname: tesisName,
+                    country: data.country,
+                    employeecount: tesisCount,
+                    state: data.state,
+                    totalarea: tesisArea,
+                    FieldActivity: tesisField
                 }
-                localStorage.setItem("facilityInfoDetail", JSON.stringify(informationData))
-
-                const loginuser = await post("/facilityinfo", informationData, config)
-                console.log("facilityInfo------", loginuser)
-
-            }, 1000)
-
-            setResultData([...resultData, { facilityname: data.facilityname, country: data.country, employeecount: data.employeecount, state: data.state, totalarea: data.totalarea, }])
+            ]);
+    
             toast.success("Tesis ismi başarılı bir şekilde eklendi.");
-
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
+            toast.error("Tesis eklenirken bir hata oluştu.");
         }
-
-        setData('')
+    
+        // Form verilerini sıfırlama
+        setData({
+            facilityname: '',
+            employeecount: '',
+            totalarea: '',
+            latitude: "",
+            CityCode: "",
+            FieldActivity: ""
+        });
+    
         setCountry(value);
         setState(value);
         setDropCity(value);
-        // =========================================
+    };
+    
 
-    }
-
-
-
-    // const changeInputValue = (event, item) => {
-    //     // const { name, value } = event.target;
-    //     setChangeData(item.facilityname)
-
-
-    //     const changeData = item
-    //     setChangeData({
-    //         ...changeData,
-    //         [event.target.name]: event.target.value
-    //     }
-    //     )
-    //     console.log("data---",changeData)
-    // }
     const changeInputValue = (event, item) => {
         const updatedItem = { 
             ...item, 
@@ -522,8 +532,8 @@ const Facility = () => {
 
                                     <div className="mt-4">
                                         {/* Latitude ve Longitude için input alanları */}
-                                        <div className="flex flex-col md:flex-row justify-between items-center w-full">
-                                            <p className="mr-2 mb-1 font-semibold md:mb-0 self-start md:self-center">Enlem:</p>
+                                        <div className="flex flex-col mb-4 md:flex-row justify-between items-center w-full">
+                                            <label className="mr-2 mb-1 font-semibold md:mb-0 self-start md:self-center">Enlem:</label>
                                             <input
                                                 type="text"
                                                 value={data.latitude ?? "Enlem"}
@@ -535,7 +545,7 @@ const Facility = () => {
 
 
                                         <div className="flex flex-col md:flex-row justify-between items-center w-full">
-                                            <p className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Boylam:</p>
+                                            <label className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Boylam:</label>
                                             <input
                                                 type="text"
                                                 value={data.longitude ?? "Boylam"}
@@ -564,6 +574,7 @@ const Facility = () => {
                                                     console.log("kod---------", countryCode)
                                                 }}
                                                 id="country"
+                                                placeholder='sdsd'
                                                 clearable
                                                 searchable
                                                 native={false} // Bayrakları göster
@@ -611,13 +622,13 @@ const Facility = () => {
                                     </p>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 block w-full ">
                                         <div className="flex flex-col md:flex-row justify-between items-center w-full">
-                                            <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Toplam Kapali Alan:</span>
+                                            <span className="mr-2 mb-1 mt-2 font-semibold md:mb-0 self-start md:self-center">Toplam Kapalı Alan:</span>
                                             <input
                                                 type='number'
                                                 value={data.totalarea}
                                                 name='totalarea'
                                                 onChange={changeSave}
-                                                placeholder='Kapasitenizi girin  /m2'
+                                                placeholder='Kapalı alan girin(m2)'
                                                 className="border border-stroke rounded p-2 w-full md:w-[360px]"
                                             />
                                         </div>

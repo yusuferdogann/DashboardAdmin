@@ -936,7 +936,7 @@ const handleSaveEdit = async () => {
       <tr>
         <th className="border border-stroke px-4 py-2">Kaynak</th>
         <th className="border border-stroke px-4 py-2">Birim</th>
-        <th className="border border-stroke px-4 py-2">Miktar</th>
+        <th className="border border-stroke px-4 py-2">Karbon Emisyonu (tonCo2e)</th>
         <th className="border border-stroke px-4 py-2">Düzenle</th>
         <th className="border border-stroke px-4 py-2">Sil</th>
       </tr>

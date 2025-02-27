@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  // baseURL: "http://localhost:3000/auth",
-  baseURL:'https://app.carbonistan.com/auth',
+  baseURL: "http://localhost:3000/auth",
+  // baseURL:'https://app.carbonistan.com/auth',
 });
 
 // 401 hatalarını yakalamak için interceptor ekleyelim

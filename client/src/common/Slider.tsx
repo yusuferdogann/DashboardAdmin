@@ -83,7 +83,7 @@ if(currentIndex>cards.length-3) {
                                        <div className='flex justify-between'><span className='font-normal'>Toplu Kapalı Alan:</span><span className='font-semibold'>{card.totalarea} m2</span></div>
                                    </p>
                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 ">
-                                       <div className='flex justify-between'><span className='font-normal'>Toplam Emilsyon:</span><span className='font-semibold'>{card.total} /tonCo2e</span></div>
+                                       <div className='flex justify-between'><span className='font-normal'>Toplam Emisyon:</span><span className='font-semibold'>{card.total} /tonCo2e</span></div>
                                    </p>
                                </div>
                            </a>

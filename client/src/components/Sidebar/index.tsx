@@ -488,16 +488,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
-              <li className="relative group">
+              {/* <li className="relative group">
                 {userRole !== "admin" && userRole !== "professional" ? (
-                  // Kullanıcı 'user' ise
                   <Tooltip content="Paketi yükseltin" placement="right" className="z-[1001]">
                     <div className="relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4">
                       <div className="flex items-center pointer-events-none">
                         <i className="fa-solid fa-desktop"></i>
                         <span className="relative flex items-center ms-2">
                         {t("sidebar.sumary")}
-                          {/* PRO Etiketi - Sadece 'user' için gösterilir */}
                           <span
                             className="ml-1 text-[10px] font-bold bg-clip-text text-transparent"
                             style={{
@@ -511,7 +509,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </div>
                   </Tooltip>
                 ) : (
-                  // Kullanıcı 'admin' ise (Tıklanabilir ve PRO etiketi yok)
                   <NavLink
                     to="/sumary"
                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('sumary') && 'bg-graydark dark:bg-meta-4'
@@ -521,7 +518,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <span className="relative flex items-center"> {t("sidebar.sumary")}</span>
                   </NavLink>
                 )}
-              </li>
+              </li> */}
               {/* <!-- Menu Item Settings --> */}
             </ul>
           </div>

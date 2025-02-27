@@ -236,7 +236,7 @@ const handleModalClose = () =>{
                 }
               />
               <Route
-                path="/settings"
+                path="/facility-information"
                 element={
                   <>
                     <PageTitle title="Settings " />
