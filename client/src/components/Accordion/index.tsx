@@ -51,7 +51,7 @@ export default function Component() {
   const [formKey, setFormKey] = useState(Date.now());
 
   // tesis bilgileri
-  const { setFacilitSend,facilitySend,token } = userAuth();
+  const { setFacilitSend,facilitySend,token,checkFacility } = userAuth();
   const [cityName, setCityName] = useState([])
 
   // otomatik scroll yapi
@@ -221,9 +221,14 @@ export default function Component() {
   
   
   const toggleAccordion = (id) => {
+    if (checkFacility === '') {
+      toast.warning("Lütfen önce tesis seçiniz!");
+      return; // Eğer tesis seçili değilse, fonksiyon burada durur
+    }
     setOpen(open === id ? null : id);
-    setVideopen(true)
+    setVideopen(true);
   };
+  
 
   const months = [
     "Ay Seçin","Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
@@ -529,7 +534,6 @@ const handleSaveEdit = async () => {
   };
   
   const handleChange = (key, value) => {
-    setVideopen(true)
     setSavedData((prev) => {
       let updatedData = { ...prev, [key]: value };
   
