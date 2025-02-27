@@ -13,8 +13,8 @@ import { userAuth } from '../../auth/userAuth';
 const Header = (props) => {
 
   const {token,user,setCheckSpinner,checkSpinner} = userAuth()
-  const localData = JSON.parse(localStorage.getItem('facilityInformation'))
-  // console.log("header-test------",localData?.facilityname)
+  const localData =(localStorage.getItem('Facilityname'))
+  console.log("header-test------",localData)
   return (
     <header className={checkSpinner ? '' : 'sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none'}>
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -72,8 +72,8 @@ const Header = (props) => {
         <div className="flex items-center gap-3 2xsm:gap-4 justify-between w-full">
         <div className="flex-start relative">
               {/* <h3>AKTİF TESİS</h3> */}
-            <i style={{ fontSize:'20px',color:localData?.facilityname === undefined ? '#adb4b6' : "#3de846" }} className="ms-3 fas fa-industry" ></i>
-            <span className='2xsm:ms-1 2xsm:text-xs md:text-base ms-3'>{localData?.facilityname ? localData?.facilityname : 'Tesis Seçilmedi'}</span>
+            <i style={{ fontSize:'20px',color:localData === null ? '#adb4b6' : "#3de846" }} className="ms-3 fas fa-industry" ></i>
+            <span className='2xsm:ms-1 2xsm:text-xs md:text-base ms-3'>{localData ? localData : 'Tesis Seçilmedi'}</span>
         </div>
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
