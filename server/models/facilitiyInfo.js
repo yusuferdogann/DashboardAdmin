@@ -22,7 +22,7 @@ const FacilityInfoSchema = new Schema({
     type: String,
     trim: true,
   },
-  productArea: {
+  fieldActivity: {
     type: String,
     // required: true,
   },

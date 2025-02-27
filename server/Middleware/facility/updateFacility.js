@@ -127,7 +127,6 @@ const checkFacilityLimit = asyncErrorWrapper(async (req,res,next)=>{
 
   const userId = await Usermodels.findById(req.user.id);
   const user = await Usermodels.findById(userId);
-  console.log("userId---checkFacilityLimit------",userId)
   if (!user) {
       return res.status(404).json({ message: "Kullanıcı bulunamadı" });
   }
@@ -1034,7 +1033,7 @@ const FacilitySaveInfo = asyncErrorWrapper(async (req, res, next) => {
     companyNumber,
     companyMail,
     companyWebsite,
-    productArea,
+    fieldActivity,
     closeArea,
     openArea,
     workerCount,
@@ -1042,19 +1041,14 @@ const FacilitySaveInfo = asyncErrorWrapper(async (req, res, next) => {
     address,
     facilityId,
   } = req.body;
-  // const tesisName = req.app.locals.data.tesisName
 
-  // console.log("tesisname---",tesisName)
-
-  // const FacilityIdResult = await FacilityModel.find({facilityId:id})
-  // const resultId = FacilityIdResult[0]?._id
   const savedData = await FacilityInfoModel.create({
     companyName,
     cknNumber,
     companyNumber,
     companyMail,
     companyWebsite,
-    productArea,
+    fieldActivity,
     closeArea,
     openArea,
     workerCount,
@@ -1072,42 +1066,62 @@ const FacilitySaveInfo = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const GetFacilityInfo = asyncErrorWrapper(async (req, res, next) => {
-  const tesisNo = req.app.locals.data.tesisNo;
+  try {
+    const tesisNo = req.app.locals.data.tesisNo;
+    console.log("sonc-----------",tesisNo)
+    // TesisNo'ya göre tek bir veri çekmek için findOne kullanıyoruz
+    const FacilityIdResult = await FacilityInfoModel.findOne({
+      facilityId: tesisNo,
+    });
 
-  const FacilityIdResult = await FacilityInfoModel.find({
-    facilityId: tesisNo,
-  });
+    // FacilityIdResult boşsa veya veri bulunamazsa hata dönüyoruz
+    if (!FacilityIdResult) {
+      return res.status(404).json({
+        success: false,
+        message: "Tesis bilgisi bulunamadı.",
+      });
+    }
 
-  const companyName = FacilityIdResult[0]?.companyName;
-  const cknNumber = FacilityIdResult[0]?.cknNumber;
-  const companyNumber = FacilityIdResult[0]?.companyNumber;
-  const companyMail = FacilityIdResult[0]?.companyMail;
-  const companyWebsite = FacilityIdResult[0]?.companyWebsite;
-  const productArea = FacilityIdResult[0]?.productArea;
-  const closeArea = FacilityIdResult[0]?.closeArea;
-  const openArea = FacilityIdResult[0]?.openArea;
-  const workerCount = FacilityIdResult[0]?.workerCount;
-  const totalArea = FacilityIdResult[0]?.totalArea;
-  const address = FacilityIdResult[0]?.address;
-  console.log("comcomcom------", companyName);
-  res.json({
-    success: true,
-    message: "ok tesisNo",
-    data: {
+    // Gelen verileri değişkenlere atıyoruz
+    const {
       companyName,
       cknNumber,
       companyNumber,
       companyMail,
       companyWebsite,
-      productArea,
+      fieldActivity,
       closeArea,
       openArea,
       workerCount,
       totalArea,
       address,
-    },
-  });
+    } = FacilityIdResult;
+
+    // Veriyi başarılı bir şekilde döndürüyoruz
+    res.json({
+      success: true,
+      message: "Tesis bilgisi başarıyla alındı.",
+      data: {
+        companyName,
+        cknNumber,
+        companyNumber,
+        companyMail,
+        companyWebsite,
+        fieldActivity,
+        closeArea,
+        openArea,
+        workerCount,
+        totalArea,
+        address,
+      },
+    });
+  } catch (error) {
+    // Herhangi bir hata olursa, hata mesajını döndürüyoruz
+    console.error("Tesis bilgisi alma hatası: ", error);
+    next(error); // Global error handler'a yönlendirebiliriz
+  }
 });
+
 
 const FacilityUpdateInfo = asyncErrorWrapper(async (req, res, next) => {
   const {
@@ -1116,7 +1130,7 @@ const FacilityUpdateInfo = asyncErrorWrapper(async (req, res, next) => {
     companyNumber,
     companyMail,
     companyWebsite,
-    productArea,
+    fieldActivity,
     closeArea,
     openArea,
     workerCount,
@@ -1138,7 +1152,7 @@ const FacilityUpdateInfo = asyncErrorWrapper(async (req, res, next) => {
         companyNumber: companyNumber,
         companyMail: companyMail,
         companyWebsite: companyWebsite,
-        productArea: productArea,
+        fieldActivity: fieldActivity,
         closeArea: closeArea,
         openArea: openArea,
         workerCount: workerCount,
@@ -1147,22 +1161,6 @@ const FacilityUpdateInfo = asyncErrorWrapper(async (req, res, next) => {
       },
     }
   );
-  // console.log("facility new api---",facility)
-
-  // facility.companyName = companyName;
-  // facility.cknNumber = cknNumber;
-  // facility.companyName = companyNumber;
-  // facility.companyMail = companyMail;
-  // facility.companyWebsite = companyWebsite;
-  // facility.productArea = productArea;
-  // facility.closeArea = closeArea;
-  // facility.openArea = openArea;
-  // facility.workerCount = workerCount;
-  // facility.totalArea = totalArea;
-  // facility.address = address;
-  // facility.companyName = companyName;
-
-  // facility = await facility.save();
 
   res.status(200).json({
     success: true,
